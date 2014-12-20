@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		794EA81022A7750756EEF22C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0429DB9706988259B8ABBDBC /* libPods.a */; };
+		D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */; };
+		D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B721A45F46E00C025A3 /* JSONHelper.swift */; };
 		D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */; };
-		D1A9373E1A3F13CE00CE8E9F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9373D1A3F13CE00CE8E9F /* ViewController.swift */; };
-		D1A937411A3F13CE00CE8E9F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1A9373F1A3F13CE00CE8E9F /* Main.storyboard */; };
 		D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1A937421A3F13CE00CE8E9F /* Images.xcassets */; };
 		D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1A937441A3F13CE00CE8E9F /* LaunchScreen.xib */; };
 		D1A937521A3F13CE00CE8E9F /* KidsInMuseumsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A937511A3F13CE00CE8E9F /* KidsInMuseumsTests.swift */; };
@@ -30,12 +30,12 @@
 		0429DB9706988259B8ABBDBC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		178E2BCF28A93B00DE560DD1 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		66A9EDF93D81EE3989B695A5 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsListViewController.swift; sourceTree = "<group>"; };
+		D1169B721A45F46E00C025A3 /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
 		D13DC70C1A45E08A0036A1F0 /* KidsInMuseums-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KidsInMuseums-Bridging-Header.h"; sourceTree = "<group>"; };
 		D1A937361A3F13CE00CE8E9F /* KidsInMuseums.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KidsInMuseums.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A9373A1A3F13CE00CE8E9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D1A9373D1A3F13CE00CE8E9F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		D1A937401A3F13CE00CE8E9F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D1A937421A3F13CE00CE8E9F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D1A937451A3F13CE00CE8E9F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		D1A9374B1A3F13CE00CE8E9F /* KidsInMuseumsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KidsInMuseumsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +79,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D1169B711A45F45600C025A3 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				D1169B721A45F46E00C025A3 /* JSONHelper.swift */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
 		D1A9372D1A3F13CE00CE8E9F = {
 			isa = PBXGroup;
 			children = (
@@ -102,9 +110,8 @@
 		D1A937381A3F13CE00CE8E9F /* KidsInMuseums */ = {
 			isa = PBXGroup;
 			children = (
-				D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */,
-				D1A9373D1A3F13CE00CE8E9F /* ViewController.swift */,
-				D1A9373F1A3F13CE00CE8E9F /* Main.storyboard */,
+				D1169B711A45F45600C025A3 /* Libraries */,
+				D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */,
 				D1A937421A3F13CE00CE8E9F /* Images.xcassets */,
 				D1A937441A3F13CE00CE8E9F /* LaunchScreen.xib */,
 				D1A937391A3F13CE00CE8E9F /* Supporting Files */,
@@ -115,6 +122,7 @@
 		D1A937391A3F13CE00CE8E9F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */,
 				D1A9373A1A3F13CE00CE8E9F /* Info.plist */,
 				D13DC70C1A45E08A0036A1F0 /* KidsInMuseums-Bridging-Header.h */,
 			);
@@ -220,7 +228,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1A937411A3F13CE00CE8E9F /* Main.storyboard in Resources */,
 				D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */,
 				D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */,
 			);
@@ -273,8 +280,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1A9373E1A3F13CE00CE8E9F /* ViewController.swift in Sources */,
+				D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */,
 				D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */,
+				D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,14 +305,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		D1A9373F1A3F13CE00CE8E9F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D1A937401A3F13CE00CE8E9F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		D1A937441A3F13CE00CE8E9F /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -333,7 +333,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
