@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>501F1930-E370-45AE-9E89-E6B72FA3730A</string>
+	<key>IDESourceControlProjectName</key>
+	<string>KidsInMuseums</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>0FD3DBC057C46162C6B092E3FDCB47629E433CD9</key>
+		<string>bitbucket.org:karabatov/kidsinmuseums.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>KidsInMuseums.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>0FD3DBC057C46162C6B092E3FDCB47629E433CD9</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>bitbucket.org:karabatov/kidsinmuseums.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>0FD3DBC057C46162C6B092E3FDCB47629E433CD9</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>0FD3DBC057C46162C6B092E3FDCB47629E433CD9</string>
+			<key>IDESourceControlWCCName</key>
+			<string>kidsinmuseums</string>
+		</dict>
+	</array>
+</dict>
+</plist>
