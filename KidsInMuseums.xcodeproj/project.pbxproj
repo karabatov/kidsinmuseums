@@ -10,6 +10,7 @@
 		794EA81022A7750756EEF22C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0429DB9706988259B8ABBDBC /* libPods.a */; };
 		D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */; };
 		D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B721A45F46E00C025A3 /* JSONHelper.swift */; };
+		D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B751A45F68D00C025A3 /* DataModel.swift */; };
 		D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */; };
 		D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1A937421A3F13CE00CE8E9F /* Images.xcassets */; };
 		D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1A937441A3F13CE00CE8E9F /* LaunchScreen.xib */; };
@@ -32,6 +33,7 @@
 		66A9EDF93D81EE3989B695A5 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsListViewController.swift; sourceTree = "<group>"; };
 		D1169B721A45F46E00C025A3 /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
+		D1169B751A45F68D00C025A3 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		D13DC70C1A45E08A0036A1F0 /* KidsInMuseums-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KidsInMuseums-Bridging-Header.h"; sourceTree = "<group>"; };
 		D1A937361A3F13CE00CE8E9F /* KidsInMuseums.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KidsInMuseums.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A9373A1A3F13CE00CE8E9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -87,6 +89,14 @@
 			name = Libraries;
 			sourceTree = "<group>";
 		};
+		D1169B741A45F67900C025A3 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		D1A9372D1A3F13CE00CE8E9F = {
 			isa = PBXGroup;
 			children = (
@@ -111,7 +121,8 @@
 			isa = PBXGroup;
 			children = (
 				D1169B711A45F45600C025A3 /* Libraries */,
-				D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */,
+				D1169B741A45F67900C025A3 /* UI */,
+				D1169B751A45F68D00C025A3 /* DataModel.swift */,
 				D1A937421A3F13CE00CE8E9F /* Images.xcassets */,
 				D1A937441A3F13CE00CE8E9F /* LaunchScreen.xib */,
 				D1A937391A3F13CE00CE8E9F /* Supporting Files */,
@@ -281,6 +292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */,
+				D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */,
 				D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */,
 				D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */,
 			);
