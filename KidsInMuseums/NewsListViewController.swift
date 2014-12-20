@@ -10,6 +10,6 @@ import Foundation
 
 class NewsListController: UIViewController {
     override func viewDidLoad() {
-        NSLog("We are the news!");
+        self.view.backgroundColor = UIColor.whiteColor()
     }
 }
