@@ -15,6 +15,7 @@ class NewsListController: UITableViewController, UITableViewDelegate, UITableVie
 
     override func viewDidLoad() {
         title = NSLocalizedString("News", comment: "News controller title")
+        self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | .FlexibleWidth
         self.view.backgroundColor = UIColor.whiteColor()
         self.tableView = listView
         listView.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -41,7 +42,7 @@ class NewsListController: UITableViewController, UITableViewDelegate, UITableVie
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let news = newsItems[indexPath.row]
-        return NewsListCell.sharedCell.heightForCellWithNewsItem(news) + 1
+        return NewsListCell.sharedCell.heightForCellWithNewsItem(news, width: tableView.bounds.size.width) + 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -17,6 +17,7 @@ public class NewsListCell : UITableViewCell {
         return Static.instance
     }
     private var label: UILabel
+    private var cellWidth: NSLayoutConstraint?
 
     required public init(coder: NSCoder) {
         self.label = UILabel(coder: coder)
@@ -29,6 +30,7 @@ public class NewsListCell : UITableViewCell {
         self.label.numberOfLines = 0
         self.label.lineBreakMode = .ByWordWrapping
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.contentView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | .FlexibleWidth
         self.contentView.addSubview(self.label)
         let views: [NSObject: AnyObject] = ["label": self.label]
         self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-15-[label]-15-|", options: .allZeros, metrics: nil, views: views))
@@ -37,24 +39,31 @@ public class NewsListCell : UITableViewCell {
     }
 
     public func configureWithNewsItem(newsItem: NewsItem) {
-        let dateParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline), NSForegroundColorAttributeName: UIColor(red: 151.0/255.0, green: 151.0/255.0, blue: 151.0/255.0, alpha: 1.0)]
+        let dateParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor(red: 151.0/255.0, green: 151.0/255.0, blue: 151.0/255.0, alpha: 1.0)]
         let headingParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), NSForegroundColorAttributeName: UIColor.blackColor()]
-        let descriptionParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), NSForegroundColorAttributeName: UIColor(red: 71.0/255.0, green: 71.0/255.0, blue: 71.0/255.0, alpha: 1.0)]
+        let descriptionParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline), NSForegroundColorAttributeName: UIColor(red: 71.0/255.0, green: 71.0/255.0, blue: 71.0/255.0, alpha: 1.0)]
         var df = NSDateFormatter()
         df.dateStyle = NSDateFormatterStyle.LongStyle
         df.timeStyle = NSDateFormatterStyle.NoStyle
 
         var labelStr = NSMutableAttributedString()
-        let dateStr = NSAttributedString(string: df.stringFromDate(newsItem.updatedAt) + "\n", attributes: dateParams)
+        let dateStr = NSAttributedString(string: df.stringFromDate(newsItem.updatedAt) + "\n\n", attributes: dateParams)
         let titleStr = NSAttributedString(string: newsItem.title, attributes: headingParams)
-        let descriptionStr = NSAttributedString(string: "\n" + newsItem.description, attributes: descriptionParams)
+        let descriptionStr = NSAttributedString(string: "\n\n" + newsItem.description, attributes: descriptionParams)
         labelStr.appendAttributedString(dateStr)
         labelStr.appendAttributedString(titleStr)
         labelStr.appendAttributedString(descriptionStr)
         self.label.attributedText = labelStr
     }
 
-    public func heightForCellWithNewsItem(newsItem: NewsItem) -> CGFloat {
+    public func heightForCellWithNewsItem(newsItem: NewsItem, width: CGFloat) -> CGFloat {
+        if let widthConstraint = self.cellWidth {
+            widthConstraint.constant = width
+        }
+        else {
+            self.cellWidth = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutAttribute.Width, relatedBy: .Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: width)
+            self.contentView.addConstraint(self.cellWidth!)
+        }
         self.configureWithNewsItem(newsItem)
         return self.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
     }

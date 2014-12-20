@@ -75,6 +75,12 @@ public class DataModel {
             if (error == nil) {
                 let pdata: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
                 self.news <<<<* pdata
+                self.news = self.news.sorted({ (obj1: NewsItem, obj2: NewsItem) -> Bool in
+                    if (obj1.updatedAt.compare(obj2.updatedAt) == NSComparisonResult.OrderedAscending) {
+                        return false
+                    }
+                    return true
+                })
                 NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationNewsUpdated, object: self)
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
                     NSUserDefaults.standardUserDefaults().setObject(data, forKey: kKIMDataStorageKeyNews)
