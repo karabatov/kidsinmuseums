@@ -22,8 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         var news = NewsListController();
         navController = UINavigationController(rootViewController: news)
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = navController
-        window?.becomeKeyWindow()
+        window?.makeKeyAndVisible()
 
         return true
     }
