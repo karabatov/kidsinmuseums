@@ -9,5 +9,7 @@
 #ifndef KidsInMuseums_KidsInMuseums_Bridging_Header_h
 #define KidsInMuseums_KidsInMuseums_Bridging_Header_h
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <AsyncDisplayKit/AsyncDisplayKit.h>
+#import <AsyncDisplayKit/ASDisplayNode+Subclasses.h>
 
 #endif
