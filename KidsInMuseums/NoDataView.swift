@@ -15,6 +15,7 @@ public class NoDataView: ASDisplayNode {
 
     required public override init() {
         textMessage = ASTextNode()
+        textMessage.layerBacked = true
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = .Center
         let attributes = [NSFontAttributeName : UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), NSParagraphStyleAttributeName : paragraph]
@@ -22,6 +23,7 @@ public class NoDataView: ASDisplayNode {
         super.init()
         self.backgroundColor = UIColor.whiteColor()
         self.addSubnode(textMessage)
+        self.shouldRasterizeDescendants = true
     }
 
     public override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {
