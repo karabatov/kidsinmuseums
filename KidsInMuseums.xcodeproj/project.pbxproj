@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		794EA81022A7750756EEF22C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0429DB9706988259B8ABBDBC /* libPods.a */; };
+		D10BFF5F1A48E1890098CCC3 /* NoDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10BFF5E1A48E1890098CCC3 /* NoDataView.swift */; };
 		D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */; };
 		D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B721A45F46E00C025A3 /* JSONHelper.swift */; };
 		D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B751A45F68D00C025A3 /* DataModel.swift */; };
@@ -32,6 +33,7 @@
 		0429DB9706988259B8ABBDBC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		178E2BCF28A93B00DE560DD1 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		66A9EDF93D81EE3989B695A5 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		D10BFF5E1A48E1890098CCC3 /* NoDataView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoDataView.swift; sourceTree = "<group>"; };
 		D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsListViewController.swift; sourceTree = "<group>"; };
 		D1169B721A45F46E00C025A3 /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
 		D1169B751A45F68D00C025A3 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				D1169B721A45F46E00C025A3 /* JSONHelper.swift */,
+				D10BFF5E1A48E1890098CCC3 /* NoDataView.swift */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */,
+				D10BFF5F1A48E1890098CCC3 /* NoDataView.swift in Sources */,
 				D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */,
 				D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */,
 				D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */,

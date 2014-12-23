@@ -9,14 +9,11 @@
 import Foundation
 import UIKit
 
-let kNoDataViewMargin: CGFloat = 45.0
-
 class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewDataSource {
     var listView = ASTableView()
     var newsItems: [NewsItem] = [NewsItem]()
     var refreshControl: UIRefreshControl?
-    var bgView: ASTextNode?
-    var bgQ: dispatch_queue_t = dispatch_queue_create("concurrent queue", DISPATCH_QUEUE_CONCURRENT)
+    var bgView = NoDataView()
 
     // MARK: UIViewController
 
@@ -24,6 +21,15 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
         title = NSLocalizedString("News", comment: "News controller title")
         self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | .FlexibleWidth
         self.view.backgroundColor = UIColor.whiteColor()
+        let b = self.view.bounds
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            self.bgView.measure(b.size)
+            self.bgView.frame = b
+            dispatch_async(dispatch_get_main_queue(), {
+                self.view.addSubview(self.bgView.view)
+                self.view.sendSubviewToBack(self.bgView.view)
+            })
+        })
         self.view.addSubview(listView)
         listView.separatorStyle = UITableViewCellSeparatorStyle.None;
         listView.backgroundColor = UIColor.clearColor()
@@ -35,7 +41,11 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
     }
 
     override func viewWillLayoutSubviews() {
-        self.listView.frame = self.view.bounds
+        let b = self.view.bounds
+        listView.frame = b
+        self.bgView.measure(b.size)
+        self.bgView.frame = b
+        listView.reloadData()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -47,39 +57,6 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
             listView.addSubview(refreshControl!)
             listView.sendSubviewToBack(refreshControl!)
         }
-        updateBackgroundView()
-    }
-
-    func updateBackgroundView() {
-        if (newsItems.count != 0) {
-            return
-        }
-        if let bgV = bgView {
-            dispatch_async(bgQ, { () -> Void in
-                let lvf = self.listView.bounds
-                let textSize = bgV.measure(CGSizeMake(lvf.width - 2 * kNoDataViewMargin, CGFloat.max))
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    bgV.frame = CGRectMake(kNoDataViewMargin, (lvf.height - textSize.height) / 2.0, textSize.width, textSize.height)
-                })
-            })
-            return
-        }
-        dispatch_async(bgQ, { () -> Void in
-            let bgV = ASTextNode()
-            let paragraph = NSMutableParagraphStyle()
-            paragraph.alignment = .Center
-            let attributes = [NSFontAttributeName : UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), NSParagraphStyleAttributeName : paragraph]
-            bgV.attributedString = NSAttributedString(string: NSLocalizedString("No data is currently available. Please pull down to refresh.", comment: "Message when there is no data in the news table view"), attributes: attributes)
-            let lvf = self.listView.bounds
-            let textSize = bgV.measure(CGSizeMake(lvf.width - 2.0 * kNoDataViewMargin, CGFloat.max))
-            bgV.frame = CGRectMake(kNoDataViewMargin, (lvf.height - textSize.height) / 2.0, textSize.width, textSize.height)
-            self.bgView = bgV
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.view.addSubview(bgV.view)
-                self.view.sendSubviewToBack(bgV.view)
-            })
-        })
-
     }
 
     // MARK: Data
@@ -106,7 +83,6 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
     // MARK: ASTableView
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        updateBackgroundView()
         return newsItems.count
     }
 
