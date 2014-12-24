@@ -13,6 +13,7 @@
 #import <AsyncDisplayKit/ASAssert.h>
 #import <AsyncDisplayKit/ASDisplayNode+Subclasses.h>
 #import <AsyncDisplayKit/ASDisplayNodeInternal.h>
+#import <AsyncDisplayKit/ASDisplayNodeExtras.h>
 
 #import "ASImageNode+CGExtras.h"
 
@@ -91,6 +92,7 @@
   _cropEnabled = YES;
   _cropRect = CGRectMake(0.5, 0.5, 0, 0);
   _cropDisplayBounds = CGRectNull;
+  _placeholderColor = ASDisplayNodeDefaultPlaceholderColor();
 
   return self;
 }
@@ -139,6 +141,14 @@
   return _tint;
 }
 
+- (void)setPlaceholderColor:(UIColor *)placeholderColor
+{
+  _placeholderColor = placeholderColor;
+
+  // prevent placeholders if we don't have a color
+  self.placeholderEnabled = placeholderColor != nil;
+}
+
 - (NSObject *)drawParametersForAsyncLayer:(_ASDisplayLayer *)layer;
 {
   BOOL hasValidCropBounds = _cropEnabled && !CGRectIsNull(_cropDisplayBounds) && !CGRectIsEmpty(_cropDisplayBounds);
@@ -181,7 +191,8 @@
                        || alphaInfo == kCGImageAlphaPremultipliedLast;
 
   BOOL contentModeSupported =    contentMode == UIViewContentModeScaleAspectFill
-                              || contentMode == UIViewContentModeScaleAspectFit;
+                              || contentMode == UIViewContentModeScaleAspectFit
+                              || contentMode == UIViewContentModeCenter;
 
   CGSize backingSize;
   CGRect imageDrawRect;
@@ -263,7 +274,7 @@
 #pragma mark -
 - (void)setNeedsDisplayWithCompletion:(void (^)(BOOL canceled))displayCompletionBlock
 {
-  if (self.preventOrCancelDisplay) {
+  if (self.displaySuspended) {
     if (displayCompletionBlock)
       displayCompletionBlock(YES);
     return;
@@ -335,3 +346,30 @@
 }
 
 @end
+
+
+#pragma mark - Extras
+extern asimagenode_modification_block_t ASImageNodeRoundBorderModificationBlock(CGFloat borderWidth, UIColor *borderColor)
+{
+  return ^(UIImage *originalImage) {
+    UIGraphicsBeginImageContextWithOptions(originalImage.size, NO, originalImage.scale);
+    UIBezierPath *roundOutline = [UIBezierPath bezierPathWithOvalInRect:(CGRect){CGPointZero, originalImage.size}];
+
+    // Make the image round
+    [roundOutline addClip];
+
+    // Draw the original image
+    [originalImage drawAtPoint:CGPointZero];
+
+    // Draw a border on top.
+    if (borderWidth > 0.0) {
+      [borderColor setStroke];
+      CGContextSetLineWidth(UIGraphicsGetCurrentContext(), borderWidth);
+      [roundOutline stroke];
+    }
+
+    UIImage *modifiedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return modifiedImage;
+  };
+}

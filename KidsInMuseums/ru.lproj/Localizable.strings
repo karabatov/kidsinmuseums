@@ -1,0 +1,9 @@
+/* Navbar back button title */
+"Back" = "Назад";
+
+/* News controller title */
+"News" = "Новости";
+
+/* Message when there is no data in the news table view */
+"No data is currently available. Please pull down to refresh." = "Здесь пока ничего нет. Потяните вниз, чтобы загрузить новости.";
+

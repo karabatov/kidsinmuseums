@@ -14,6 +14,7 @@
 #import <AsyncDisplayKit/ASHighlightOverlayLayer.h>
 #import <AsyncDisplayKit/ASTextNodeCoreTextAdditions.h>
 #import <AsyncDisplayKit/ASTextNodeTextKitHelpers.h>
+#import <AsyncDisplayKit/ASDisplayNodeExtras.h>
 
 #import "ASTextNodeRenderer.h"
 #import "ASTextNodeShadower.h"
@@ -135,6 +136,11 @@ ASDISPLAYNODE_INLINE CGFloat ceilPixelValue(CGFloat f)
     self.accessibilityTraits = UIAccessibilityTraitStaticText;
 
     _constrainedSize = CGSizeMake(-INFINITY, -INFINITY);
+
+    // Placeholders
+    self.placeholderEnabled = YES;
+    _placeholderColor = ASDisplayNodeDefaultPlaceholderColor();
+    _placeholderInsets = UIEdgeInsetsMake(1.0, 0.0, 1.0, 0.0);
   }
 
   return self;
@@ -418,8 +424,8 @@ ASDISPLAYNODE_INLINE CGFloat ceilPixelValue(CGFloat f)
 
       // Check if delegate implements optional method, if not assume NO.
       // Should the text be highlightable/touchable?
-      if (![_delegate respondsToSelector:@selector(textNode:shouldHighlightLinkAttribute:value:)] ||
-          ![_delegate textNode:self shouldHighlightLinkAttribute:name value:value]) {
+      if (![_delegate respondsToSelector:@selector(textNode:shouldHighlightLinkAttribute:value:atPoint:)] ||
+          ![_delegate textNode:self shouldHighlightLinkAttribute:name value:value atPoint:point]) {
         value = nil;
         name = nil;
       }
@@ -465,8 +471,11 @@ ASDISPLAYNODE_INLINE CGFloat ceilPixelValue(CGFloat f)
     }
 
     // Ask our delegate if a long-press on an attribute is relevant
-    if ([self.delegate respondsToSelector:@selector(textNode:shouldLongPressLinkAttribute:value:)]) {
-      return [self.delegate textNode:self shouldLongPressLinkAttribute:_highlightedLinkAttributeName value:_highlightedLinkAttributeValue];
+    if ([self.delegate respondsToSelector:@selector(textNode:shouldLongPressLinkAttribute:value:atPoint:)]) {
+      return [self.delegate textNode:self
+        shouldLongPressLinkAttribute:_highlightedLinkAttributeName
+                               value:_highlightedLinkAttributeValue
+                             atPoint:[gestureRecognizer locationInView:self.view]];
     }
 
     // Otherwise we are good to go.
@@ -517,12 +526,24 @@ ASDISPLAYNODE_INLINE CGFloat ceilPixelValue(CGFloat f)
 
         weakHighlightLayer.opacity = 0.0;
 
+        CFTimeInterval beginTime = CACurrentMediaTime();
+        CABasicAnimation *possibleFadeIn = (CABasicAnimation *)[weakHighlightLayer animationForKey:@"opacity"];
+        if (possibleFadeIn) {
+          // Calculate when we should begin fading out based on the end of the fade in animation,
+          // Also check to make sure that the new begin time hasn't already passed
+          CGFloat newBeginTime = (possibleFadeIn.beginTime + possibleFadeIn.duration);
+          if (newBeginTime > beginTime) {
+            beginTime = newBeginTime;
+          }
+        }
+        
         CABasicAnimation *fadeOut = [CABasicAnimation animationWithKeyPath:@"opacity"];
         fadeOut.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        fadeOut.fromValue = @(((CALayer *)weakHighlightLayer.presentationLayer).opacity);
+        fadeOut.fromValue = possibleFadeIn.toValue ?: @(((CALayer *)weakHighlightLayer.presentationLayer).opacity);
         fadeOut.toValue = @0.0;
         fadeOut.fillMode = kCAFillModeBoth;
         fadeOut.duration = ASTextNodeHighlightFadeOutDuration;
+        fadeOut.beginTime = beginTime;
 
         dispatch_block_t prev = [CATransaction completionBlock];
         [CATransaction setCompletionBlock:^{
@@ -554,6 +575,11 @@ ASDISPLAYNODE_INLINE CGFloat ceilPixelValue(CGFloat f)
         for (NSValue *rectValue in highlightRects) {
           CGRect rendererRect = [[self class] _adjustRendererRect:rectValue.CGRectValue forShadowPadding:_shadower.shadowPadding];
           CGRect highlightedRect = [self.layer convertRect:rendererRect toLayer:highlightTargetLayer];
+
+          // We set our overlay layer's frame to the bounds of the highlight target layer.
+          // Offset highlight rects to avoid double-counting target layer's bounds.origin.
+          highlightedRect.origin.x -= highlightTargetLayer.bounds.origin.x;
+          highlightedRect.origin.y -= highlightTargetLayer.bounds.origin.y;
           [converted addObject:[NSValue valueWithCGRect:highlightedRect]];
         }
 
@@ -569,6 +595,7 @@ ASDISPLAYNODE_INLINE CGFloat ceilPixelValue(CGFloat f)
           fadeIn.fromValue = @0.0;
           fadeIn.toValue = @(overlayLayer.opacity);
           fadeIn.duration = ASTextNodeHighlightFadeInDuration;
+          fadeIn.beginTime = CACurrentMediaTime();
 
           [overlayLayer addAnimation:fadeIn forKey:fadeIn.keyPath];
         }
@@ -643,6 +670,43 @@ ASDISPLAYNODE_INLINE CGFloat ceilPixelValue(CGFloat f)
 {
   CGRect frame = [[self _renderer] frameForTextRange:textRange];
   return [self.class _adjustRendererRect:frame forShadowPadding:self.shadowPadding];
+}
+
+#pragma mark - Placeholders
+
+- (void)setPlaceholderColor:(UIColor *)placeholderColor
+{
+  _placeholderColor = placeholderColor;
+
+  // prevent placeholders if we don't have a color
+  self.placeholderEnabled = placeholderColor != nil;
+}
+
+- (UIImage *)placeholderImage
+{
+  CGSize size = self.calculatedSize;
+  UIGraphicsBeginImageContext(size);
+  [self.placeholderColor setFill];
+
+  ASTextNodeRenderer *renderer = [self _renderer];
+  NSRange textRange = [renderer visibleRange];
+
+  // cap height is both faster and creates less subpixel blending
+  NSArray *lineRects = [self _rectsForTextRange:textRange measureOption:ASTextNodeRendererMeasureOptionLineHeight];
+
+  // fill each line with the placeholder color
+  for (NSValue *rectValue in lineRects) {
+    CGRect lineRect = [rectValue CGRectValue];
+    CGRect fillBounds = UIEdgeInsetsInsetRect(lineRect, self.placeholderInsets);
+
+    if (fillBounds.size.width > 0.0 && fillBounds.size.height > 0.0) {
+      UIRectFill(fillBounds);
+    }
+  }
+
+  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  return image;
 }
 
 #pragma mark - Touch Handling

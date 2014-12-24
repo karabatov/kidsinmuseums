@@ -11,6 +11,7 @@
 #import "ASAssert.h"
 #import "ASDisplayNode+Subclasses.h"
 #import "ASDisplayNodeInternal.h"
+#import "ASEqualityHelpers.h"
 
 /**
  * The following macros are conveniences to help in the common tasks related to the bridging that ASDisplayNode does to UIView and CALayer.
@@ -76,6 +77,18 @@
 {
   _bridge_prologue;
   _setToViewOrLayer(opacity, newAlpha, alpha, newAlpha);
+}
+
+- (CGFloat)cornerRadius
+{
+  _bridge_prologue;
+  return _getFromLayer(cornerRadius);
+}
+
+-(void)setCornerRadius:(CGFloat)newCornerRadius
+{
+  _bridge_prologue;
+  _setToLayer(cornerRadius, newCornerRadius);
 }
 
 - (CGFloat)contentsScale
@@ -167,14 +180,20 @@
 
 - (void)setOpaque:(BOOL)newOpaque
 {
+  BOOL prevOpaque = self.opaque;
+
   _bridge_prologue;
   _setToLayer(opaque, newOpaque);
+
+  if (prevOpaque != newOpaque) {
+    [self setNeedsDisplay];
+  }
 }
 
 - (BOOL)isUserInteractionEnabled
 {
   _bridge_prologue;
-  if (_flags.isLayerBacked) return NO;
+  if (_flags.layerBacked) return NO;
   return _getFromViewOnly(userInteractionEnabled);
 }
 
@@ -307,28 +326,28 @@
 - (BOOL)autoresizesSubviews
 {
   _bridge_prologue;
-  ASDisplayNodeAssert(!_flags.isLayerBacked, @"Danger: this property is undefined on layer-backed nodes.");
+  ASDisplayNodeAssert(!_flags.layerBacked, @"Danger: this property is undefined on layer-backed nodes.");
   return _getFromViewOnly(autoresizesSubviews);
 }
 
 - (void)setAutoresizesSubviews:(BOOL)flag
 {
   _bridge_prologue;
-  ASDisplayNodeAssert(!_flags.isLayerBacked, @"Danger: this property is undefined on layer-backed nodes.");
+  ASDisplayNodeAssert(!_flags.layerBacked, @"Danger: this property is undefined on layer-backed nodes.");
   _setToViewOnly(autoresizesSubviews, flag);
 }
 
 - (UIViewAutoresizing)autoresizingMask
 {
   _bridge_prologue;
-  ASDisplayNodeAssert(!_flags.isLayerBacked, @"Danger: this property is undefined on layer-backed nodes.");
+  ASDisplayNodeAssert(!_flags.layerBacked, @"Danger: this property is undefined on layer-backed nodes.");
   return _getFromViewOnly(autoresizingMask);
 }
 
 - (void)setAutoresizingMask:(UIViewAutoresizing)mask
 {
   _bridge_prologue;
-  ASDisplayNodeAssert(!_flags.isLayerBacked, @"Danger: this property is undefined on layer-backed nodes.");
+  ASDisplayNodeAssert(!_flags.layerBacked, @"Danger: this property is undefined on layer-backed nodes.");
   _setToViewOnly(autoresizingMask, mask);
 }
 
@@ -358,10 +377,36 @@
   return [UIColor colorWithCGColor:_getFromLayer(backgroundColor)];
 }
 
-- (void)setBackgroundColor:(UIColor *)backgroundColor
+- (void)setBackgroundColor:(UIColor *)newBackgroundColor
 {
+  UIColor *prevBackgroundColor = self.backgroundColor;
+
   _bridge_prologue;
-  _setToLayer(backgroundColor, backgroundColor.CGColor);
+  _setToLayer(backgroundColor, newBackgroundColor.CGColor);
+
+  // Note: This check assumes that the colors are within the same color space.
+  if (!ASObjectIsEqual(prevBackgroundColor, newBackgroundColor)) {
+    [self setNeedsDisplay];
+  }
+}
+
+- (UIColor *)tintColor
+{
+    _bridge_prologue;
+    ASDisplayNodeAssert(!_flags.layerBacked, @"Danger: this property is undefined on layer-backed nodes.");
+    return _getFromViewOnly(tintColor);
+}
+
+- (void)setTintColor:(UIColor *)color
+{
+    _bridge_prologue;
+    ASDisplayNodeAssert(!_flags.layerBacked, @"Danger: this property is undefined on layer-backed nodes.");
+    _setToViewOnly(tintColor, color);
+}
+
+- (void)tintColorDidChange
+{
+    // ignore this, allow subclasses to be notified
 }
 
 - (CGColorRef)shadowColor

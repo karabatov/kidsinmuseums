@@ -48,6 +48,13 @@ public class NewsItem: Deserializable {
         createdAt <<< (value: data["created_at"], format: kKIMAPIDateFormat)
         updatedAt <<< (value: data["updated_at"], format: kKIMAPIDateFormat)
     }
+
+    public func formattedDate() -> String {
+        var df = NSDateFormatter()
+        df.dateStyle = NSDateFormatterStyle.LongStyle
+        df.timeStyle = NSDateFormatterStyle.NoStyle
+        return df.stringFromDate(updatedAt)
+    }
 }
 
 public class DataModel {
@@ -70,28 +77,30 @@ public class DataModel {
     }
 
     public func updateNews() {
-        let newsUrl = NSURL(string: kKIMAPIServerURL + kKIMAPINewsURL)
-        let newsRequest = NSURLSession.sharedSession().dataTaskWithURL(newsUrl!) { (data, response, error) -> Void in
-            if (error == nil) {
-                let pdata: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
-                self.news <<<<* pdata
-                self.news = self.news.sorted({ (obj1: NewsItem, obj2: NewsItem) -> Bool in
-                    if (obj1.updatedAt.compare(obj2.updatedAt) == NSComparisonResult.OrderedAscending) {
-                        return false
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            let newsUrl = NSURL(string: kKIMAPIServerURL + kKIMAPINewsURL)
+            let newsRequest = NSURLSession.sharedSession().dataTaskWithURL(newsUrl!) { (data, response, error) -> Void in
+                if (error == nil) {
+                    let pdata: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+                    self.news <<<<* pdata
+                    self.news = self.news.sorted({ (obj1: NewsItem, obj2: NewsItem) -> Bool in
+                        if (obj1.updatedAt.compare(obj2.updatedAt) == NSComparisonResult.OrderedAscending) {
+                            return false
+                        }
+                        return true
+                    })
+                    NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationNewsUpdated, object: self)
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                        NSUserDefaults.standardUserDefaults().setObject(data, forKey: kKIMDataStorageKeyNews)
+                        NSUserDefaults.standardUserDefaults().synchronize()
                     }
-                    return true
-                })
-                NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationNewsUpdated, object: self)
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-                    NSUserDefaults.standardUserDefaults().setObject(data, forKey: kKIMDataStorageKeyNews)
-                    NSUserDefaults.standardUserDefaults().synchronize()
+                }
+                else {
+                    NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationNewsUpdateFailed, object: self)
                 }
             }
-            else {
-                NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationNewsUpdateFailed, object: self)
-            }
+            newsRequest.resume()
         }
-        newsRequest.resume()
     }
 
     public func loadFromCache() {

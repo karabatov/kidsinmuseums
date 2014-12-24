@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = navController
         navController?.navigationBar.backgroundColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
         navController?.navigationBar.barTintColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
+        navController?.navigationBar.tintColor = UIColor.whiteColor();
         navController?.navigationBar.translucent = false
         navController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         window?.makeKeyAndVisible()

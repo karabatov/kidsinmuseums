@@ -18,12 +18,9 @@ public class NewsCell : ASCellNode {
         let dateParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor(red: 151.0/255.0, green: 151.0/255.0, blue: 151.0/255.0, alpha: 1.0)]
         let headingParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), NSForegroundColorAttributeName: UIColor.blackColor()]
         let descriptionParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline), NSForegroundColorAttributeName: UIColor(red: 71.0/255.0, green: 71.0/255.0, blue: 71.0/255.0, alpha: 1.0)]
-        var df = NSDateFormatter()
-        df.dateStyle = NSDateFormatterStyle.LongStyle
-        df.timeStyle = NSDateFormatterStyle.NoStyle
 
         var labelStr = NSMutableAttributedString()
-        let dateStr = NSAttributedString(string: df.stringFromDate(newsItem.updatedAt) + "\n\n", attributes: dateParams)
+        let dateStr = NSAttributedString(string: newsItem.formattedDate() + "\n\n", attributes: dateParams)
         let titleStr = NSAttributedString(string: newsItem.title, attributes: headingParams)
         let descriptionStr = NSAttributedString(string: "\n\n" + newsItem.description, attributes: descriptionParams)
         labelStr.appendAttributedString(dateStr)
@@ -37,7 +34,6 @@ public class NewsCell : ASCellNode {
         divider.backgroundColor = UIColor.lightGrayColor()
 
         super.init()
-
         self.addSubnode(newsText)
         self.addSubnode(divider)
     }

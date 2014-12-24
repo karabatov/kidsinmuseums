@@ -19,6 +19,7 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
 
     override func viewDidLoad() {
         title = NSLocalizedString("News", comment: "News controller title")
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navbar back button title"), style: .Plain, target: nil, action: nil)
         self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | .FlexibleWidth
         self.view.backgroundColor = UIColor.whiteColor()
         let b = self.view.bounds
@@ -37,7 +38,7 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
         listView.asyncDataSource = self
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "newsItemsUpdated:", name: kKIMNotificationNewsUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "newsItemsUpdateFailed:", name: kKIMNotificationNewsUpdated, object: nil)
-        // DataModel.sharedInstance.updateNews()
+        DataModel.sharedInstance.updateNews()
     }
 
     override func viewWillLayoutSubviews() {
@@ -70,6 +71,7 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
             self.refreshControl?.endRefreshing()
             self.newsItems = DataModel.sharedInstance.news
             self.listView.reloadData()
+            self.bgView.hidden = true
         }
     }
 
@@ -93,6 +95,17 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
     }
 
     func tableView(tableView: UITableView!, shouldHighlightRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
-        return false
+        return true
+    }
+
+    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        let news = newsItems[indexPath.row]
+        let nic = NewsItemViewController(newsItem: news)
+        nic.title = self.title
+        self.navigationController?.pushViewController(nic, animated: true)
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            self.listView.deselectRowAtIndexPath(indexPath, animated: false)
+        }
     }
 }

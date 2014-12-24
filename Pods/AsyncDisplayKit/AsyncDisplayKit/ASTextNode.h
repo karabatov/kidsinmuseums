@@ -69,6 +69,18 @@ typedef NS_ENUM(NSUInteger, ASTextNodeHighlightStyle) {
  */
 @property (nonatomic, readonly, assign) NSUInteger lineCount;
 
+#pragma mark - Placeholders
+
+/**
+ @abstract The placeholder color.
+ */
+@property (nonatomic, strong) UIColor *placeholderColor;
+
+/**
+ @abstract Inset each line of the placeholder.
+ */
+@property (nonatomic, assign) UIEdgeInsets placeholderInsets;
+
 #pragma mark - Shadow
 
 /**
@@ -204,19 +216,21 @@ typedef NS_ENUM(NSUInteger, ASTextNodeHighlightStyle) {
  @param textNode The text node containing the entity attribute.
  @param attribute The attribute that was tapped. Will not be nil.
  @param value The value of the tapped attribute.
+ @param point The point within textNode, in textNode's coordinate system, that was touched to trigger a highlight.
  @discussion If not implemented, the default value is NO.
  @return YES if the entity attribute should be a link, NO otherwise.
  */
-- (BOOL)textNode:(ASTextNode *)textNode shouldHighlightLinkAttribute:(NSString *)attribute value:(id)value;
+- (BOOL)textNode:(ASTextNode *)textNode shouldHighlightLinkAttribute:(NSString *)attribute value:(id)value atPoint:(CGPoint)point;
 
 /**
  @abstract Indicates to the text node if an attribute is a valid long-press target
  @param textNode The text node containing the entity attribute.
  @param attribute The attribute that was tapped. Will not be nil.
  @param value The value of the tapped attribute.
+ @param point The point within textNode, in textNode's coordinate system, that was long-pressed.
  @discussion If not implemented, the default value is NO.
  @return YES if the entity attribute should be treated as a long-press target, NO otherwise.
  */
-- (BOOL)textNode:(ASTextNode *)textNode shouldLongPressLinkAttribute:(NSString *)attribute value:(id)value;
+- (BOOL)textNode:(ASTextNode *)textNode shouldLongPressLinkAttribute:(NSString *)attribute value:(id)value atPoint:(CGPoint)point;
 
 @end

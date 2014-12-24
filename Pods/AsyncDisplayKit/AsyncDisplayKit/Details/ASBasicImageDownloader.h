@@ -6,10 +6,11 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-#import "ASCellNode.h"
+#import <AsyncDisplayKit/ASImageProtocols.h>
 
-@interface ASCellNode (ASRangeController)
-
-@property (nonatomic, copy) NSIndexPath *asyncdisplaykit_indexPath;
+/**
+ * @abstract Simple NSURLSession-based image downloader.
+ */
+@interface ASBasicImageDownloader : NSObject <ASImageDownloaderProtocol>
 
 @end

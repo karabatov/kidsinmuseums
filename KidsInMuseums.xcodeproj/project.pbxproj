@@ -12,6 +12,12 @@
 		D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */; };
 		D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B721A45F46E00C025A3 /* JSONHelper.swift */; };
 		D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B751A45F68D00C025A3 /* DataModel.swift */; };
+		D155CC741A4B49F50072E183 /* NewsItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D155CC731A4B49F50072E183 /* NewsItemViewController.swift */; };
+		D155CC761A4B5EEF0072E183 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D155CC751A4B5EEF0072E183 /* AssetsLibrary.framework */; };
+		D155CC781A4B5EFD0072E183 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D155CC771A4B5EFD0072E183 /* Photos.framework */; };
+		D155CC7C1A4B73A50072E183 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC7E1A4B73A50072E183 /* InfoPlist.strings */; };
+		D155CC811A4B73A50072E183 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC831A4B73A50072E183 /* InfoPlist.strings */; };
+		D155CC861A4B73A50072E183 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC881A4B73A50072E183 /* Localizable.strings */; };
 		D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */; };
 		D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1A937421A3F13CE00CE8E9F /* Images.xcassets */; };
 		D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1A937441A3F13CE00CE8E9F /* LaunchScreen.xib */; };
@@ -38,6 +44,13 @@
 		D1169B721A45F46E00C025A3 /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
 		D1169B751A45F68D00C025A3 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		D13DC70C1A45E08A0036A1F0 /* KidsInMuseums-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KidsInMuseums-Bridging-Header.h"; sourceTree = "<group>"; };
+		D155CC731A4B49F50072E183 /* NewsItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsItemViewController.swift; sourceTree = "<group>"; };
+		D155CC751A4B5EEF0072E183 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		D155CC771A4B5EFD0072E183 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		D155CC791A4B72BB0072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		D155CC7D1A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D155CC821A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D155CC871A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D1A937361A3F13CE00CE8E9F /* KidsInMuseums.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KidsInMuseums.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A9373A1A3F13CE00CE8E9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -54,6 +67,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D155CC781A4B5EFD0072E183 /* Photos.framework in Frameworks */,
+				D155CC761A4B5EEF0072E183 /* AssetsLibrary.framework in Frameworks */,
 				794EA81022A7750756EEF22C /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -80,6 +95,8 @@
 		3C3CA6EDE177BA748BB8C00F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D155CC771A4B5EFD0072E183 /* Photos.framework */,
+				D155CC751A4B5EEF0072E183 /* AssetsLibrary.framework */,
 				0429DB9706988259B8ABBDBC /* libPods.a */,
 			);
 			name = Frameworks;
@@ -98,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */,
+				D155CC731A4B49F50072E183 /* NewsItemViewController.swift */,
 				D1169B791A460C4500C025A3 /* Cells */,
 			);
 			name = UI;
@@ -147,6 +165,8 @@
 		D1A937391A3F13CE00CE8E9F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D155CC881A4B73A50072E183 /* Localizable.strings */,
+				D155CC7E1A4B73A50072E183 /* InfoPlist.strings */,
 				D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */,
 				D1A9373A1A3F13CE00CE8E9F /* Info.plist */,
 				D13DC70C1A45E08A0036A1F0 /* KidsInMuseums-Bridging-Header.h */,
@@ -166,6 +186,7 @@
 		D1A9374F1A3F13CE00CE8E9F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D155CC831A4B73A50072E183 /* InfoPlist.strings */,
 				D1A937501A3F13CE00CE8E9F /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -255,6 +276,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */,
+				D155CC861A4B73A50072E183 /* Localizable.strings in Resources */,
+				D155CC7C1A4B73A50072E183 /* InfoPlist.strings in Resources */,
 				D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -263,6 +286,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D155CC811A4B73A50072E183 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +336,7 @@
 				D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */,
 				D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */,
 				D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */,
+				D155CC741A4B49F50072E183 /* NewsItemViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,10 +359,35 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		D155CC7E1A4B73A50072E183 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D155CC7D1A4B73A50072E183 /* ru */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D155CC831A4B73A50072E183 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D155CC821A4B73A50072E183 /* ru */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D155CC881A4B73A50072E183 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D155CC871A4B73A50072E183 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		D1A937441A3F13CE00CE8E9F /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				D1A937451A3F13CE00CE8E9F /* Base */,
+				D155CC791A4B72BB0072E183 /* ru */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";

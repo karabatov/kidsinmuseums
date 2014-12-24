@@ -74,7 +74,7 @@
 
 
 /** 
- * @abstract Returns whether the view is synchronous.
+ * @abstract Returns whether the node is synchronous.
  *
  * @return NO if the node wraps a _ASDisplayView, YES otherwise.
  */
@@ -98,7 +98,7 @@
 /** 
  * @abstract Returns whether a node's backing view or layer is loaded.
  *
- * @return YES if a view is loaded, or if isLayerBacked is YES and layer is not nil; NO otherwise.
+ * @return YES if a view is loaded, or if layerBacked is YES and layer is not nil; NO otherwise.
  */
 @property (atomic, readonly, assign, getter=isNodeLoaded) BOOL nodeLoaded;
 
@@ -295,45 +295,55 @@
 @property (nonatomic, assign) BOOL shouldRasterizeDescendants;
 
 /** 
- * @abstract Display the node's view/layer immediately on the current thread, bypassing the background thread rendering.
- */
-- (void)displayImmediately;
-
-/** 
  * @abstract Prevent the node's layer from displaying.
  *
  * @discussion A subclass may check this flag during -display or -drawInContext: to cancel a display that is already in 
  * progress.
  *
  * Defaults to NO. Does not control display for any child or descendant nodes; for that, use 
- * -recursiveSetPreventOrCancelDisplay:.
+ * -recursivelySetDisplaySuspended:.
  *
- * If a setNeedsDisplay occurs while preventOrCancelDisplay is YES, and preventOrCancelDisplay is set to NO, then the 
+ * If a setNeedsDisplay occurs while displaySuspended is YES, and displaySuspended is set to NO, then the 
  * layer will be automatically displayed.
  */
-@property (nonatomic, assign) BOOL preventOrCancelDisplay;
+@property (nonatomic, assign) BOOL displaySuspended;
 
 /** 
  * @abstract Prevent the node and its descendants' layer from displaying.
  *
  * @param flag YES if display should be prevented or cancelled; NO otherwise.
  *
- * @see preventOrCancelDisplay
+ * @see displaySuspended
  */
-- (void)recursiveSetPreventOrCancelDisplay:(BOOL)flag;
+- (void)recursivelySetDisplaySuspended:(BOOL)flag;
 
 /**
  * @abstract Calls -reclaimMemory on the receiver and its subnode hierarchy.
  *
  * @discussion Clears backing stores and other memory-intensive intermediates.
  * If the node is removed from a visible hierarchy and then re-added, it will automatically trigger a new asynchronous display,
- * as long as preventOrCancelDisplay is not set.
+ * as long as displaySuspended is not set.
  * If the node remains in the hierarchy throughout, -setNeedsDisplay is required to trigger a new asynchronous display.
  *
- * @see preventOrCancelDisplay and setNeedsDisplay
+ * @see displaySuspended and setNeedsDisplay
  */
 
 - (void)recursivelyReclaimMemory;
+
+/**
+ * @abstract Toggle displaying a placeholder over the node that covers content until the node and all subnodes are
+ * displayed.
+ *
+ * @discussion Defaults to NO.
+ */
+@property (nonatomic, assign) BOOL placeholderEnabled;
+
+/**
+ * @abstract Toggle to fade-out the placeholder when a node's contents are finished displaying.
+ *
+ * @discussion Defaults to NO.
+ */
+@property (nonatomic, assign) BOOL placeholderFadesOut;
 
 
 /** @name Hit Testing */
@@ -461,6 +471,7 @@
 @property (atomic, assign)           CGPoint anchorPoint;                   // default={0.5, 0.5}
 @property (atomic, assign)           CGFloat zPosition;                     // default=0.0
 @property (atomic, assign)           CGPoint position;                      // default=CGPointZero
+@property (atomic, assign)           CGFloat cornerRadius;                  // default=0.0
 @property (atomic, assign)           CGFloat contentsScale;                 // default=1.0f. See @contentsScaleForDisplay for more info
 @property (atomic, assign)           CATransform3D transform;               // default=CATransform3DIdentity
 @property (atomic, assign)           CATransform3D subnodeTransform;        // default=CATransform3DIdentity
@@ -473,6 +484,9 @@
  * This only affects nodes that implement +drawRect like ASTextNode.
 */
 @property (atomic, retain)           UIColor *backgroundColor;              // default=nil
+
+@property (atomic, retain)           UIColor *tintColor;                    // default=Blue
+- (void)tintColorDidChange;     // Notifies the node when the tintColor has changed.
 
 /**
  * @abstract A flag used to determine how a node lays out its content when its bounds change.

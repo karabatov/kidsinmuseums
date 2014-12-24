@@ -9,7 +9,12 @@
 #import "ASTableView.h"
 
 #import "ASAssert.h"
+#import "ASDataController.h"
+#import "ASFlowLayoutController.h"
+#import "ASLayoutController.h"
 #import "ASRangeController.h"
+#import "ASDisplayNodeInternal.h"
+
 
 
 #pragma mark -
@@ -98,9 +103,12 @@ static BOOL _isInterceptedSelector(SEL sel)
 #pragma mark -
 #pragma mark ASTableView.
 
-@interface ASTableView () <ASRangeControllerDelegate> {
+@interface ASTableView () <ASRangeControllerDelegate, ASDataControllerSource> {
   _ASTableViewProxy *_proxyDataSource;
   _ASTableViewProxy *_proxyDelegate;
+
+  ASDataController *_dataController;
+  ASFlowLayoutController *_layoutController;
 
   ASRangeController *_rangeController;
 }
@@ -117,21 +125,21 @@ static BOOL _isInterceptedSelector(SEL sel)
   if (!(self = [super initWithFrame:frame style:style]))
     return nil;
 
+  _layoutController = [[ASFlowLayoutController alloc] initWithScrollOption:ASFlowLayoutDirectionVertical];
+
   _rangeController = [[ASRangeController alloc] init];
+  _rangeController.layoutController = _layoutController;
   _rangeController.delegate = self;
+
+  _dataController = [[ASDataController alloc] init];
+  _dataController.dataSource = self;
+  _dataController.delegate = _rangeController;
 
   return self;
 }
 
-
 #pragma mark -
 #pragma mark Overrides.
-
-- (void)reloadData
-{
-  [_rangeController rebuildData];
-  [super reloadData];
-}
 
 - (void)setDataSource:(id<UITableViewDataSource>)dataSource
 {
@@ -149,9 +157,15 @@ static BOOL _isInterceptedSelector(SEL sel)
   if (_asyncDataSource == asyncDataSource)
     return;
 
-  _asyncDataSource = asyncDataSource;
-  _proxyDataSource = [[_ASTableViewProxy alloc] initWithTarget:_asyncDataSource interceptor:self];
-  super.dataSource = (id<UITableViewDataSource>)_proxyDataSource;
+  if (asyncDataSource == nil) {
+    _asyncDataSource = nil;
+    _proxyDataSource = nil;
+    super.dataSource = nil;
+  } else {
+    _asyncDataSource = asyncDataSource;
+    _proxyDataSource = [[_ASTableViewProxy alloc] initWithTarget:_asyncDataSource interceptor:self];
+    super.dataSource = (id<UITableViewDataSource>)_proxyDataSource;
+  }
 }
 
 - (void)setAsyncDelegate:(id<ASTableViewDelegate>)asyncDelegate
@@ -159,24 +173,33 @@ static BOOL _isInterceptedSelector(SEL sel)
   if (_asyncDelegate == asyncDelegate)
     return;
 
-  _asyncDelegate = asyncDelegate;
-  _proxyDelegate = [[_ASTableViewProxy alloc] initWithTarget:_asyncDelegate interceptor:self];
-  super.delegate = (id<UITableViewDelegate>)_proxyDelegate;
+  if (asyncDelegate == nil) {
+    _asyncDelegate = nil;
+    _proxyDelegate = nil;
+    super.delegate = nil;
+  } else {
+    _asyncDelegate = asyncDelegate;
+    _proxyDelegate = [[_ASTableViewProxy alloc] initWithTarget:_asyncDelegate interceptor:self];
+    super.delegate = (id<UITableViewDelegate>)_proxyDelegate;
+  }
+}
+
+- (void)reloadData
+{
+  ASDisplayNodePerformBlockOnMainThread(^{
+    [super reloadData];
+  });
+  [_dataController reloadData];
 }
 
 - (ASRangeTuningParameters)rangeTuningParameters
 {
-  return _rangeController.tuningParameters;
+  return _layoutController.tuningParameters;
 }
 
 - (void)setRangeTuningParameters:(ASRangeTuningParameters)tuningParameters
 {
-  _rangeController.tuningParameters = tuningParameters;
-}
-
-- (void)appendNodesWithIndexPaths:(NSArray *)indexPaths
-{
-  [_rangeController appendNodesWithIndexPaths:indexPaths];
+  _layoutController.tuningParameters = tuningParameters;
 }
 
 #pragma mark Assertions.
@@ -184,7 +207,7 @@ static BOOL _isInterceptedSelector(SEL sel)
 - (void)throwUnimplementedException
 {
   [[NSException exceptionWithName:@"UnimplementedException"
-                           reason:@"ASTableView's update/editing support is not yet implemented.  Please see ASTableView.h."
+                           reason:@"ASTableView's grouped updates aren't currently supported yet, please call the insert/delete function directly."
                          userInfo:nil] raise];
 }
 
@@ -200,54 +223,43 @@ static BOOL _isInterceptedSelector(SEL sel)
 
 - (void)insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
-  [self throwUnimplementedException];
+  [_dataController insertSections:sections];
 }
 
 - (void)deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
-  [self throwUnimplementedException];
+  [_dataController deleteSections:sections];
 }
 
 - (void)reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
-  [self throwUnimplementedException];
+  [_dataController reloadSections:sections];
 }
 
 - (void)moveSection:(NSInteger)section toSection:(NSInteger)newSection
 {
-  [self throwUnimplementedException];
+  [_dataController moveSection:section toSection:newSection];
 }
 
 - (void)insertRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
-  [self throwUnimplementedException];
+  [_dataController insertRowsAtIndexPaths:indexPaths];
 }
 
 - (void)deleteRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
-  [self throwUnimplementedException];
+  [_dataController deleteRowsAtIndexPaths:indexPaths];
 }
 
 - (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
-  [self throwUnimplementedException];
+  [_dataController reloadRowsAtIndexPaths:indexPaths];
 }
 
 - (void)moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath
 {
-  [self throwUnimplementedException];
+  [_dataController moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
 }
-
-- (void)setEditing:(BOOL)editing
-{
-  [self throwUnimplementedException];
-}
-
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated
-{
-  [self throwUnimplementedException];
-}
-
 
 #pragma mark -
 #pragma mark Intercepted selectors.
@@ -261,29 +273,55 @@ static BOOL _isInterceptedSelector(SEL sel)
     cell = [[_ASTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
   }
 
-  [_rangeController configureContentView:cell.contentView forIndexPath:indexPath];
+  ASCellNode *node = [_dataController nodeAtIndexPath:indexPath];
+  [_rangeController configureContentView:cell.contentView forCellNode:node];
+
+  cell.backgroundColor = node.backgroundColor;
+  cell.selectionStyle = node.selectionStyle;
 
   return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  return [_rangeController calculatedSizeForNodeAtIndexPath:indexPath].height;
+  ASCellNode *node = [_dataController nodeAtIndexPath:indexPath];
+  return node.calculatedSize.height;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-  return [_rangeController numberOfSizedSections];
+  return [_dataController numberOfSections];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  return [_rangeController numberOfSizedRowsInSection:section];
+  return [_dataController numberOfRowsInSection:section];
+}
+
+- (ASScrollDirection)scrollDirection
+{
+  CGPoint scrollVelocity = [self.panGestureRecognizer velocityInView:self.superview];
+  ASScrollDirection direction = ASScrollDirectionNone;
+  if (_layoutController.layoutDirection == ASFlowLayoutDirectionHorizontal) {
+    if (scrollVelocity.x > 0) {
+      direction = ASScrollDirectionRight;
+    } else if (scrollVelocity.x < 0) {
+      direction = ASScrollDirectionLeft;
+    }
+  } else {
+    if (scrollVelocity.y > 0) {
+      direction = ASScrollDirectionDown;
+    } else {
+      direction = ASScrollDirectionUp;
+    }
+  }
+
+  return direction;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  [_rangeController visibleNodeIndexPathsDidChange];
+  [_rangeController visibleNodeIndexPathsDidChangeWithScrollDirection:self.scrollDirection];
 
   if ([_asyncDelegate respondsToSelector:@selector(tableView:willDisplayNodeForRowAtIndexPath:)]) {
     [_asyncDelegate tableView:self willDisplayNodeForRowAtIndexPath:indexPath];
@@ -292,7 +330,7 @@ static BOOL _isInterceptedSelector(SEL sel)
 
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath
 {
-  [_rangeController visibleNodeIndexPathsDidChange];
+  [_rangeController visibleNodeIndexPathsDidChangeWithScrollDirection:self.scrollDirection];
 
   if ([_asyncDelegate respondsToSelector:@selector(tableView:didEndDisplayingNodeForRowAtIndexPath:)]) {
     [_asyncDelegate tableView:self didEndDisplayingNodeForRowAtIndexPath:indexPath];
@@ -309,60 +347,70 @@ static BOOL _isInterceptedSelector(SEL sel)
   return [self indexPathsForVisibleRows];
 }
 
+- (NSArray *)rangeController:(ASRangeController *)rangeController nodesAtIndexPaths:(NSArray *)indexPaths {
+  return [_dataController nodesAtIndexPaths:indexPaths];
+}
+
 - (CGSize)rangeControllerViewportSize:(ASRangeController *)rangeController
 {
   ASDisplayNodeAssertMainThread();
   return self.bounds.size;
 }
 
-- (NSInteger)rangeControllerSections:(ASRangeController *)rangeController
-{
+- (void)rangeController:(ASRangeController *)rangeController didInsertNodesAtIndexPaths:(NSArray *)indexPaths {
   ASDisplayNodeAssertMainThread();
-  if ([_asyncDataSource respondsToSelector:@selector(numberOfSectionsInTableView:)]) {
-    return [_asyncDataSource numberOfSectionsInTableView:self];
-  } else {
-    return 1;
-  }
-}
 
-- (NSInteger)rangeController:(ASRangeController *)rangeController rowsInSection:(NSInteger)section
-{
-  ASDisplayNodeAssertMainThread();
-  return [_asyncDataSource tableView:self numberOfRowsInSection:section];
-}
-
-- (ASCellNode *)rangeController:(ASRangeController *)rangeController nodeForIndexPath:(NSIndexPath *)indexPath
-{
-  ASDisplayNodeAssertNotMainThread();
-  return [_asyncDataSource tableView:self nodeForRowAtIndexPath:indexPath];
-}
-
-- (CGSize)rangeController:(ASRangeController *)rangeController constrainedSizeForNodeAtIndexPath:(NSIndexPath *)indexPath
-{
-  ASDisplayNodeAssertNotMainThread();
-  return CGSizeMake(self.bounds.size.width, FLT_MAX);
-}
-
-- (void)rangeController:(ASRangeController *)rangeController didSizeNodesWithIndexPaths:(NSArray *)indexPaths
-{
-  ASDisplayNodeAssertMainThread();
   [UIView performWithoutAnimation:^{
-    [super beginUpdates];
-
-    // -insertRowsAtIndexPaths:: is insufficient; UITableView also needs to be notified of section changes
-    NSInteger sectionCount = [super numberOfSections];
-    NSInteger newSectionCount = [_rangeController numberOfSizedSections];
-    if (newSectionCount > sectionCount) {
-      NSRange range = NSMakeRange(sectionCount, newSectionCount - sectionCount);
-      NSIndexSet *sections = [NSIndexSet indexSetWithIndexesInRange:range];
-      [super insertSections:sections withRowAnimation:UITableViewRowAnimationNone];
-    }
-
     [super insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-
-    [super endUpdates];
   }];
 }
 
+- (void)rangeController:(ASRangeController *)rangeController didDeleteNodesAtIndexPaths:(NSArray *)indexPaths {
+  ASDisplayNodeAssertMainThread();
+
+  [UIView performWithoutAnimation:^{
+    [super deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+  }];
+}
+
+- (void)rangeController:(ASRangeController *)rangeController didInsertSectionsAtIndexSet:(NSIndexSet *)indexSet {
+  ASDisplayNodeAssertMainThread();
+
+  [UIView performWithoutAnimation:^{
+    [super insertSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+  }];
+}
+
+- (void)rangeController:(ASRangeController *)rangeController didDeleteSectionsAtIndexSet:(NSIndexSet *)indexSet {
+  ASDisplayNodeAssertMainThread();
+
+  [UIView performWithoutAnimation:^{
+    [super deleteSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+  }];
+}
+
+#pragma mark - ASDataControllerDelegate
+
+- (ASCellNode *)dataController:(ASDataController *)dataController nodeAtIndexPath:(NSIndexPath *)indexPath {
+  ASCellNode *node = [_asyncDataSource tableView:self nodeForRowAtIndexPath:indexPath];
+  ASDisplayNodeAssert([node isKindOfClass:ASCellNode.class], @"invalid node class, expected ASCellNode");
+  return node;
+}
+
+- (CGSize)dataController:(ASDataController *)dataController constrainedSizeForNodeAtIndexPath:(NSIndexPath *)indexPath {
+  return CGSizeMake(self.bounds.size.width, FLT_MAX);
+}
+
+- (NSUInteger)dataController:(ASDataController *)dataControllre rowsInSection:(NSUInteger)section {
+  return [_asyncDataSource tableView:self numberOfRowsInSection:section];
+}
+
+- (NSUInteger)dataControllerNumberOfSections:(ASDataController *)dataController {
+  if ([_asyncDataSource respondsToSelector:@selector(numberOfSectionsInTableView:)]) {
+    return [_asyncDataSource numberOfSectionsInTableView:self];
+  } else {
+    return 1; // default section number
+  }
+}
 
 @end
