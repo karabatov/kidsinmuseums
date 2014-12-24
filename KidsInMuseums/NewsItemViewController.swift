@@ -36,6 +36,7 @@ public class NewsItemViewController: UIViewController, ASMultiplexImageNodeDataS
         newsImage.delegate = self
 
         self.edgesForExtendedLayout = UIRectEdge.None
+        self.view.backgroundColor = UIColor.whiteColor()
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var contentHeight: CGFloat = 0.0
