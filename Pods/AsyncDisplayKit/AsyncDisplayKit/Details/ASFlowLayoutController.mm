@@ -153,9 +153,9 @@ static const std::pair<int, int> ASFindIndexForRange(const std::vector<std::vect
                                                      ASFlowLayoutDirection layoutDirection) {
   std::pair<int, int> cur = pos, pre = pos;
 
-  if (range < 0.0 && cur.first >= 0 && cur.second >= 0) {
+  if (range < 0.0 && cur.first >= 0 && cur.first < nodes.size() && cur.second >= 0 && cur.second < nodes[cur.first].size()) {
     // search backward
-    while (range < 0.0 && cur.second >= 0) {
+    while (range < 0.0 && cur.first >= 0 && cur.second >= 0) {
       pre = cur;
       CGSize size = nodes[cur.first][cur.second];
       range += layoutDirection == ASFlowLayoutDirectionHorizontal ? size.width : size.height;
@@ -170,7 +170,7 @@ static const std::pair<int, int> ASFindIndexForRange(const std::vector<std::vect
     }
   } else {
     // search forward
-    while (range > 0.0 && cur.second < nodes[cur.first].size()) {
+    while (range > 0.0 && cur.first >= 0 && cur.first < nodes.size() && cur.second >= 0 && cur.second < nodes[cur.first].size()) {
       pre = cur;
       CGSize size = nodes[cur.first][cur.second];
       range -= layoutDirection == ASFlowLayoutDirectionHorizontal ? size.width : size.height;

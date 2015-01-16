@@ -1,7 +1,7 @@
 PODS:
-  - AsyncDisplayKit (HEAD based on 1.0.1):
-    - AsyncDisplayKit/ASDealloc2MainObject (= HEAD based on 1.0.1)
-  - AsyncDisplayKit/ASDealloc2MainObject (HEAD based on 1.0.1)
+  - AsyncDisplayKit (HEAD based on 1.1.1):
+    - AsyncDisplayKit/ASDealloc2MainObject (= HEAD based on 1.1.1)
+  - AsyncDisplayKit/ASDealloc2MainObject (HEAD based on 1.1.1)
   - SDWebImage (3.7.1):
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
@@ -11,7 +11,7 @@ DEPENDENCIES:
   - SDWebImage
 
 SPEC CHECKSUMS:
-  AsyncDisplayKit: 1bbf78b78795370cc191b15ad7755683c32cc927
+  AsyncDisplayKit: 897b28140c6c73fbe8d6168f19ce7cbd87c94ee8
   SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
 
 COCOAPODS: 0.35.0

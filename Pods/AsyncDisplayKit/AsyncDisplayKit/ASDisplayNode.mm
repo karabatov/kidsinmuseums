@@ -51,16 +51,23 @@ CGFloat ASDisplayNodeScreenScale()
 {
   static CGFloat screenScale = 0.0;
   static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    if ([NSThread isMainThread]) {
-      screenScale = [[UIScreen mainScreen] scale];
-    } else {
-      dispatch_sync(dispatch_get_main_queue(), ^{
-        screenScale = [[UIScreen mainScreen] scale];
-      });
-    }
+  ASDispatchOnceOnMainThread(&onceToken, ^{
+    screenScale = [[UIScreen mainScreen] scale];
   });
   return screenScale;
+}
+
+static void ASDispatchOnceOnMainThread(dispatch_once_t *predicate, dispatch_block_t block)
+{
+  if ([NSThread isMainThread]) {
+    dispatch_once(predicate, block);
+  } else {
+    if (DISPATCH_EXPECT(*predicate == 0L, NO)) {
+      dispatch_sync(dispatch_get_main_queue(), ^{
+        dispatch_once(predicate, block);
+      });
+    }
+  }
 }
 
 void ASDisplayNodePerformBlockOnMainThread(void (^block)())
@@ -118,6 +125,21 @@ void ASDisplayNodePerformBlockOnMainThread(void (^block)())
   _flags.implementsDrawParameters = ([self respondsToSelector:@selector(drawParametersForAsyncLayer:)] ? 1 : 0);
 
   _fadeAnimationDuration = 0.1;
+
+  ASDisplayNodeMethodOverrides overrides = ASDisplayNodeMethodOverrideNone;
+  if (ASDisplayNodeSubclassOverridesSelector([self class], @selector(touchesBegan:withEvent:))) {
+    overrides |= ASDisplayNodeMethodOverrideTouchesBegan;
+  }
+  if (ASDisplayNodeSubclassOverridesSelector([self class], @selector(touchesMoved:withEvent:))) {
+    overrides |= ASDisplayNodeMethodOverrideTouchesMoved;
+  }
+  if (ASDisplayNodeSubclassOverridesSelector([self class], @selector(touchesCancelled:withEvent:))) {
+    overrides |= ASDisplayNodeMethodOverrideTouchesCancelled;
+  }
+  if (ASDisplayNodeSubclassOverridesSelector([self class], @selector(touchesEnded:withEvent:))) {
+    overrides |= ASDisplayNodeMethodOverrideTouchesEnded;
+  }
+  _methodOverrides = overrides;
 }
 
 - (id)init
@@ -1260,7 +1282,7 @@ static NSInteger incrementIfFound(NSInteger i) {
 
   [_supernode subnodeDisplayWillStart:self];
 
-  if (_placeholderImage && _placeholderLayer) {
+  if (_placeholderImage && _placeholderLayer && self.layer.contents == nil) {
     _placeholderLayer.contents = (id)_placeholderImage.CGImage;
     [self.layer addSublayer:_placeholderLayer];
   }
@@ -1303,50 +1325,22 @@ static NSInteger incrementIfFound(NSInteger i) {
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-  ASDisplayNodeAssertMainThread();
-
-  if (!_view)
-    return;
-
-  // If we reach the base implementation, forward up the view hierarchy.
-  UIView *superview = _view.superview;
-  [superview touchesBegan:touches withEvent:event];
+    // subclass hook
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-  ASDisplayNodeAssertMainThread();
-
-  if (!_view)
-    return;
-
-  // If we reach the base implementation, forward up the view hierarchy.
-  UIView *superview = _view.superview;
-  [superview touchesMoved:touches withEvent:event];
+    // subclass hook
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-  ASDisplayNodeAssertMainThread();
-
-  if (!_view)
-    return;
-
-  // If we reach the base implementation, forward up the view hierarchy.
-  UIView *superview = _view.superview;
-  [superview touchesEnded:touches withEvent:event];
+    // subclass hook
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-  ASDisplayNodeAssertMainThread();
-
-  if (!_view)
-    return;
-
-  // If we reach the base implementation, forward up the view hierarchy.
-  UIView *superview = _view.superview;
-  [superview touchesCancelled:touches withEvent:event];
+    // subclass hook
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
