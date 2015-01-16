@@ -100,7 +100,7 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         let news = newsItems[indexPath.row]
-        let nic = NewsItemViewController(newsItem: news)
+        let nic = NewsItemViewController(newsItem: news, frame: self.view.bounds)
         nic.title = self.title
         self.navigationController?.pushViewController(nic, animated: true)
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))

@@ -16,7 +16,7 @@ public class NewsItemViewController: UIViewController, ASMultiplexImageNodeDataS
     var newsText: ASTextNode
     var images = NSMutableArray()
 
-    required public init(newsItem: NewsItem) {
+    required public init(newsItem: NewsItem, frame b: CGRect) {
         self.newsItem = newsItem
 
         scrollView = ASDisplayNode(viewClass: UIScrollView.self)
@@ -40,7 +40,6 @@ public class NewsItemViewController: UIViewController, ASMultiplexImageNodeDataS
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var contentHeight: CGFloat = 0.0
-            let b = UIScreen.mainScreen().bounds
             let kMargin: CGFloat = 15.0
             let kRatio: CGFloat = 2.33
             let dateParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor(red: 151.0/255.0, green: 151.0/255.0, blue: 151.0/255.0, alpha: 1.0)]
@@ -81,7 +80,7 @@ public class NewsItemViewController: UIViewController, ASMultiplexImageNodeDataS
             dispatch_async(dispatch_get_main_queue(), {
                 self.view.addSubview(self.scrollView.view)
                 let scroll = self.scrollView.view as UIScrollView
-                scroll.contentSize = CGSizeMake(b.width, self.newsText.frame.origin.y + textSize.height + 6 * kMargin)
+                scroll.contentSize = CGSizeMake(b.width, self.newsText.frame.origin.y + textSize.height + kMargin)
             })
         })
     }
