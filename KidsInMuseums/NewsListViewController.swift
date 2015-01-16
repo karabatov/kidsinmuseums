@@ -19,10 +19,13 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
 
     override func viewDidLoad() {
         title = NSLocalizedString("News", comment: "News controller title")
+        tabBarItem = UITabBarItem(title: title, image: UIImage(named: "icon-news"), tag: 0)
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navbar back button title"), style: .Plain, target: nil, action: nil)
         self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | .FlexibleWidth
         self.view.backgroundColor = UIColor.whiteColor()
+        self.edgesForExtendedLayout = UIRectEdge.None
         let b = self.view.bounds
+        NSLog("b = \(b)")
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             self.bgView.measure(b.size)
             self.bgView.frame = b
@@ -43,10 +46,12 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
 
     override func viewWillLayoutSubviews() {
         let b = self.view.bounds
-        listView.frame = b
-        self.bgView.measure(b.size)
-        self.bgView.frame = b
-        listView.reloadData()
+        if (listView.frame != b) {
+            listView.frame = b
+            self.bgView.measure(b.size)
+            self.bgView.frame = b
+            listView.reloadData()
+        }
     }
 
     override func viewDidAppear(animated: Bool) {

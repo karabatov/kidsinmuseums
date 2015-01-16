@@ -22,9 +22,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabController?.viewControllers = [newsNavController!]
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = tabController
+        let purpleColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
+        tabController?.tabBar.translucent = false
+        tabController?.tabBar.tintColor = purpleColor
         newsNavController?.navigationBar.barStyle = UIBarStyle.Black
-        newsNavController?.navigationBar.backgroundColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
-        newsNavController?.navigationBar.barTintColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
+        newsNavController?.navigationBar.backgroundColor = purpleColor
+        newsNavController?.navigationBar.barTintColor = purpleColor
         newsNavController?.navigationBar.tintColor = UIColor.whiteColor();
         newsNavController?.navigationBar.translucent = false
         newsNavController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
