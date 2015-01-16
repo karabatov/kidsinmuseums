@@ -12,19 +12,22 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var navController: UINavigationController?
+    var newsNavController: UINavigationController?
+    var tabController: UITabBarController?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        tabController = UITabBarController()
         var news = NewsListController();
-        navController = UINavigationController(rootViewController: news)
+        newsNavController = UINavigationController(rootViewController: news)
+        tabController?.viewControllers = [newsNavController!]
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        window?.rootViewController = navController
-        navController?.navigationBar.barStyle = UIBarStyle.Black
-        navController?.navigationBar.backgroundColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
-        navController?.navigationBar.barTintColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
-        navController?.navigationBar.tintColor = UIColor.whiteColor();
-        navController?.navigationBar.translucent = false
-        navController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        window?.rootViewController = tabController
+        newsNavController?.navigationBar.barStyle = UIBarStyle.Black
+        newsNavController?.navigationBar.backgroundColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
+        newsNavController?.navigationBar.barTintColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
+        newsNavController?.navigationBar.tintColor = UIColor.whiteColor();
+        newsNavController?.navigationBar.translucent = false
+        newsNavController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         window?.makeKeyAndVisible()
 
         return true
