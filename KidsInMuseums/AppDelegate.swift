@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navController = UINavigationController(rootViewController: news)
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = navController
+        navController?.navigationBar.barStyle = UIBarStyle.Black
         navController?.navigationBar.backgroundColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
         navController?.navigationBar.barTintColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
         navController?.navigationBar.tintColor = UIColor.whiteColor();
