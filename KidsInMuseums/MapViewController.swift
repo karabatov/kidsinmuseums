@@ -48,10 +48,12 @@ class MapViewController: UIViewController {
     }
 
     func markersUpdated(notification: NSNotification) {
-        updateMarkers()
+        dispatch_async(dispatch_get_main_queue(), {
+            self.updateMarkers()
+        })
     }
 
-    func updateMarkers(){
+    func updateMarkers() {
         museums = DataModel.sharedInstance.museums
         for marker in markers {
             marker.map = nil
