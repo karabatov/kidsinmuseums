@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var tabController: UITabBarController?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        GMSServices.provideAPIKey("AIzaSyDkk0lJ-Jfyf23-5vCsMalZClkjW3feirE")
         tabController = UITabBarController()
         var news = NewsListController();
         newsNavController = UINavigationController(rootViewController: news)

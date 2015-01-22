@@ -11,5 +11,6 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <AsyncDisplayKit/AsyncDisplayKit.h>
 #import <AsyncDisplayKit/ASDisplayNode+Subclasses.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 #endif
