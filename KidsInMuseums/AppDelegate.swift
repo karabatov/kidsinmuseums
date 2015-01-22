@@ -13,6 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var newsNavController: UINavigationController?
+    var mapNavController: UINavigationController?
     var tabController: UITabBarController?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -25,9 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         tabController = UITabBarController()
-        var news = NewsListController();
+        var news = NewsListController()
         newsNavController = UINavigationController(rootViewController: news)
-        tabController?.viewControllers = [newsNavController!]
+        var map = MapViewController()
+        mapNavController = UINavigationController(rootViewController: map)
+        tabController?.viewControllers = [mapNavController!, newsNavController!]
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = tabController
         tabController?.tabBar.translucent = false
