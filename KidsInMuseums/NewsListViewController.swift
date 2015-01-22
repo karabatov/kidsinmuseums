@@ -17,15 +17,22 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
 
     // MARK: UIViewController
 
-    override func viewDidLoad() {
+    override required init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         title = NSLocalizedString("News", comment: "News controller title")
         tabBarItem = UITabBarItem(title: title, image: UIImage(named: "icon-news"), tag: 0)
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navbar back button title"), style: .Plain, target: nil, action: nil)
         self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | .FlexibleWidth
         self.view.backgroundColor = UIColor.whiteColor()
         self.edgesForExtendedLayout = UIRectEdge.None
         let b = self.view.bounds
-        NSLog("b = \(b)")
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             self.bgView.measure(b.size)
             self.bgView.frame = b

@@ -26,9 +26,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         tabController = UITabBarController()
-        var news = NewsListController()
+        var news = NewsListController(nibName: nil, bundle: nil)
         newsNavController = UINavigationController(rootViewController: news)
-        var map = MapViewController()
+        var map = MapViewController(nibName: nil, bundle: nil)
         mapNavController = UINavigationController(rootViewController: map)
         tabController?.viewControllers = [mapNavController!, newsNavController!]
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
