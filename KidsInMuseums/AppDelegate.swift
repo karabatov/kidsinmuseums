@@ -17,21 +17,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         GMSServices.provideAPIKey("AIzaSyDkk0lJ-Jfyf23-5vCsMalZClkjW3feirE")
+        let purpleColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
+        UINavigationBar.appearance().barStyle = UIBarStyle.Black
+        UINavigationBar.appearance().backgroundColor = purpleColor
+        UINavigationBar.appearance().barTintColor = purpleColor
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor();
+        UINavigationBar.appearance().translucent = false
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         tabController = UITabBarController()
         var news = NewsListController();
         newsNavController = UINavigationController(rootViewController: news)
         tabController?.viewControllers = [newsNavController!]
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = tabController
-        let purpleColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
         tabController?.tabBar.translucent = false
         tabController?.tabBar.tintColor = purpleColor
-        newsNavController?.navigationBar.barStyle = UIBarStyle.Black
-        newsNavController?.navigationBar.backgroundColor = purpleColor
-        newsNavController?.navigationBar.barTintColor = purpleColor
-        newsNavController?.navigationBar.tintColor = UIColor.whiteColor();
-        newsNavController?.navigationBar.translucent = false
-        newsNavController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         window?.makeKeyAndVisible()
 
         return true
