@@ -16,11 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var newsNavController: UINavigationController?
     var mapNavController: UINavigationController?
     var tabController: UITabBarController?
-    internal var wantsLocation: Bool {
-        get {
-            return self.wantsLocation
-        }
-        set(newWantsLocation) {
+    internal var wantsLocation: Bool = false {
+        willSet(newWantsLocation) {
             setupLocationService(newWantsLocation)
         }
     }
