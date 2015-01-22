@@ -35,6 +35,8 @@
 		D1A0F7451A710F2200981257 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7441A710F2200981257 /* SystemConfiguration.framework */; };
 		D1A0F7471A71128600981257 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0F7461A71128600981257 /* MapViewController.swift */; };
 		D1A0F7491A7115ED00981257 /* icon-map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F7481A7115ED00981257 /* icon-map@2x.png */; };
+		D1A0F74C1A71318E00981257 /* marker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F74A1A71318E00981257 /* marker@2x.png */; };
+		D1A0F74D1A71318E00981257 /* marker@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F74B1A71318E00981257 /* marker@3x.png */; };
 		D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */; };
 		D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1A937421A3F13CE00CE8E9F /* Images.xcassets */; };
 		D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1A937441A3F13CE00CE8E9F /* LaunchScreen.xib */; };
@@ -85,6 +87,8 @@
 		D1A0F7441A710F2200981257 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		D1A0F7461A71128600981257 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D1A0F7481A7115ED00981257 /* icon-map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-map@2x.png"; sourceTree = "<group>"; };
+		D1A0F74A1A71318E00981257 /* marker@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "marker@2x.png"; sourceTree = "<group>"; };
+		D1A0F74B1A71318E00981257 /* marker@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "marker@3x.png"; sourceTree = "<group>"; };
 		D1A937361A3F13CE00CE8E9F /* KidsInMuseums.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KidsInMuseums.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A9373A1A3F13CE00CE8E9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -195,6 +199,8 @@
 			children = (
 				D122D6DC1A697149009D30AB /* icon-news@2x.png */,
 				D1A0F7481A7115ED00981257 /* icon-map@2x.png */,
+				D1A0F74A1A71318E00981257 /* marker@2x.png */,
+				D1A0F74B1A71318E00981257 /* marker@3x.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -348,9 +354,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */,
+				D1A0F74D1A71318E00981257 /* marker@3x.png in Resources */,
 				D122D6DD1A697149009D30AB /* icon-news@2x.png in Resources */,
 				D155CC861A4B73A50072E183 /* Localizable.strings in Resources */,
 				D1A0F72D1A710EA100981257 /* GoogleMaps.bundle in Resources */,
+				D1A0F74C1A71318E00981257 /* marker@2x.png in Resources */,
 				D155CC7C1A4B73A50072E183 /* InfoPlist.strings in Resources */,
 				D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */,
 				D1A0F7491A7115ED00981257 /* icon-map@2x.png in Resources */,

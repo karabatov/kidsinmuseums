@@ -51,6 +51,7 @@ class MapViewController: UIViewController {
             marker.title = museum.name
             marker.userData = museum.id
             marker.appearAnimation = kGMSMarkerAnimationPop
+            marker.icon = UIImage(named: "marker")
             marker.map = self.view as GMSMapView
             markers.append(marker)
         }
