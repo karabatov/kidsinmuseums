@@ -9,6 +9,9 @@
 import Foundation
 
 class MapViewController: UIViewController {
+    var museums: [Museum] = [Museum]()
+    var markers: [GMSMarker] = [GMSMarker]()
+
     // MARK: UIViewController
 
     override required init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -25,9 +28,31 @@ class MapViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navbar back button title"), style: .Plain, target: nil, action: nil)
         edgesForExtendedLayout = UIRectEdge.None
 
-        var camera = GMSCameraPosition.cameraWithLatitude(55.75, longitude: 37.61, zoom: 12)
+        var camera = GMSCameraPosition.cameraWithLatitude(55.75, longitude: 37.61, zoom: 10)
         var mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
         mapView.myLocationEnabled = true
         view = mapView
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "markersUpdated:", name: kKIMNotificationMuseumsUpdated, object: nil)
+        updateMarkers()
+    }
+
+    func markersUpdated(notification: NSNotification) {
+        updateMarkers()
+    }
+
+    func updateMarkers(){
+        museums = DataModel.sharedInstance.museums
+        for marker in markers {
+            marker.map = nil
+        }
+        markers.removeAll(keepCapacity: true)
+        for museum in museums {
+            var marker = GMSMarker(position: CLLocationCoordinate2DMake(museum.latitude, museum.longitude))
+            marker.title = museum.name
+            marker.userData = museum.id
+            marker.appearAnimation = kGMSMarkerAnimationPop
+            marker.map = self.view as GMSMapView
+            markers.append(marker)
+        }
     }
 }

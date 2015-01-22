@@ -36,6 +36,7 @@ public class NewsCell : ASCellNode {
         super.init()
         self.addSubnode(newsText)
         self.addSubnode(divider)
+        self.backgroundColor = UIColor.whiteColor()
     }
 
     public override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {

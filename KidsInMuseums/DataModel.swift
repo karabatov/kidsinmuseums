@@ -74,8 +74,8 @@ public class Museum: Deserializable {
     var openingHours: String = ""
     var fares: String = ""
     var description: String = ""
-    var latitude: Float = 0
-    var longitude: Float = 0
+    var latitude: Double = 0
+    var longitude: Double = 0
     var previewImage: KImage?
     var shortDescription: String = ""
 

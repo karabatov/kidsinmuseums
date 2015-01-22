@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var tabController: UITabBarController?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        DataModel.sharedInstance
+        DataModel.sharedInstance.update()
         GMSServices.provideAPIKey("AIzaSyDkk0lJ-Jfyf23-5vCsMalZClkjW3feirE")
         let purpleColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
         UINavigationBar.appearance().barStyle = UIBarStyle.Black
