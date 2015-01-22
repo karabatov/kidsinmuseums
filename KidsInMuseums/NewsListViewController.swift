@@ -48,6 +48,7 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
         listView.asyncDataSource = self
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "newsItemsUpdated:", name: kKIMNotificationNewsUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "newsItemsUpdateFailed:", name: kKIMNotificationNewsUpdated, object: nil)
+        newsItems = DataModel.sharedInstance.news
         DataModel.sharedInstance.updateNews()
     }
 
