@@ -36,6 +36,17 @@ class MapViewController: UIViewController {
         updateMarkers()
     }
 
+    override func viewDidAppear(animated: Bool) {
+        let delegate = UIApplication.sharedApplication().delegate as AppDelegate
+        delegate.requestLocationPermissions()
+        delegate.wantsLocation = true
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        let delegate = UIApplication.sharedApplication().delegate as AppDelegate
+        delegate.wantsLocation = false
+    }
+
     func markersUpdated(notification: NSNotification) {
         updateMarkers()
     }

@@ -1,6 +1,9 @@
 /* Navbar back button title */
 "Back" = "Назад";
 
+/* Map controller title */
+"Map" = "Карта";
+
 /* News controller title */
 "News" = "Новости";
 

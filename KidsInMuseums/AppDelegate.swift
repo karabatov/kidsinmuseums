@@ -9,15 +9,30 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
     var window: UIWindow?
+    var location: CLLocationManager?
     var newsNavController: UINavigationController?
     var mapNavController: UINavigationController?
     var tabController: UITabBarController?
+    internal var wantsLocation: Bool {
+        get {
+            return self.wantsLocation
+        }
+        set(newWantsLocation) {
+            setupLocationService(newWantsLocation)
+        }
+    }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         DataModel.sharedInstance.update()
+
+        location = CLLocationManager()
+        location?.delegate = self
+        location?.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        location?.distanceFilter = 50
+
         GMSServices.provideAPIKey("AIzaSyDkk0lJ-Jfyf23-5vCsMalZClkjW3feirE")
         let purpleColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
         UINavigationBar.appearance().barStyle = UIBarStyle.Black
@@ -63,6 +78,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    internal func requestLocationPermissions() {
+        let status = CLLocationManager.authorizationStatus()
+        if (CLLocationManager.authorizationStatus() == .NotDetermined) {
+            if (CLLocationManager.respondsToSelector("requestWhenInUseAuthorization")) {
+                location?.requestWhenInUseAuthorization()
+            }
+        }
+    }
 
+    func setupLocationService(enabled: Bool) {
+        let status = CLLocationManager.authorizationStatus()
+        if (enabled && CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse) {
+            location?.startUpdatingLocation()
+        } else {
+            location?.stopUpdatingLocation()
+        }
+    }
+
+    // MARK: CLLocationDelegate
+
+    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if (status == .AuthorizedWhenInUse && wantsLocation) {
+            setupLocationService(true)
+        } else {
+            setupLocationService(false)
+        }
+    }
 }
 
