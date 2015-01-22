@@ -8,49 +8,48 @@
 #import "ASCellNode.h"
 #import "ASDisplayNode.h"
 #import "ASMultidimensionalArrayUtils.h"
-#import "ASDisplayNodeInternal.h"
 
-#define INSERT_NODES(multidimensionalArray, indexPath, elements, animationOption) \
+#define INSERT_NODES(multidimensionalArray, indexPath, elements) \
 { \
-  if ([_delegate respondsToSelector:@selector(dataController:willInsertNodes:atIndexPaths:withAnimationOption:)]) { \
-    [_delegate dataController:self willInsertNodes:elements atIndexPaths:indexPath withAnimationOption:animationOption]; \
+  if ([_delegate respondsToSelector:@selector(dataController:willInsertNodes:atIndexPaths:)]) { \
+    [_delegate dataController:self willInsertNodes:elements atIndexPaths:indexPath]; \
   } \
   ASInsertElementsIntoMultidimensionalArrayAtIndexPaths(multidimensionalArray, indexPath, elements); \
-  if ([_delegate respondsToSelector:@selector(dataController:didInsertNodes:atIndexPaths:withAnimationOption:)]) { \
-    [_delegate dataController:self didInsertNodes:elements atIndexPaths:indexPath withAnimationOption:animationOption]; \
+  if ([_delegate respondsToSelector:@selector(dataController:didInsertNodes:atIndexPaths:)]) { \
+    [_delegate dataController:self didInsertNodes:elements atIndexPaths:indexPath]; \
   } \
 }
 
-#define DELETE_NODES(multidimensionalArray, indexPath, animationOption) \
+#define DELETE_NODES(multidimensionalArray, indexPath) \
 { \
-  if ([_delegate respondsToSelector:@selector(dataController:willDeleteNodesAtIndexPaths:withAnimationOption:)]) { \
-    [_delegate dataController:self willDeleteNodesAtIndexPaths:indexPath withAnimationOption:animationOption]; \
+  if ([_delegate respondsToSelector:@selector(dataController:willDeleteNodesAtIndexPaths:)]) { \
+    [_delegate dataController:self willDeleteNodesAtIndexPaths:indexPath]; \
   } \
   ASDeleteElementsInMultidimensionalArrayAtIndexPaths(multidimensionalArray, indexPath); \
-  if ([_delegate respondsToSelector:@selector(dataController:didDeleteNodesAtIndexPaths:withAnimationOption:)]) { \
-    [_delegate dataController:self didDeleteNodesAtIndexPaths:indexPath withAnimationOption:animationOption]; \
+  if ([_delegate respondsToSelector:@selector(dataController:didDeleteNodesAtIndexPaths:)]) { \
+    [_delegate dataController:self didDeleteNodesAtIndexPaths:indexPath]; \
   } \
 }
 
-#define INSERT_SECTIONS(multidimensionalArray, indexSet, sections, animationOption) \
+#define INSERT_SECTIONS(multidimensionalArray, indexSet, sections) \
 { \
-  if ([_delegate respondsToSelector:@selector(dataController:willInsertSections:atIndexSet:withAnimationOption:)]) { \
-    [_delegate dataController:self willInsertSections:sections atIndexSet:indexSet withAnimationOption:animationOption]; \
+  if ([_delegate respondsToSelector:@selector(dataController:willInsertSections:atIndexSet:)]) { \
+    [_delegate dataController:self willInsertSections:sections atIndexSet:indexSet]; \
   } \
   [multidimensionalArray insertObjects:sections atIndexes:indexSet]; \
-  if ([_delegate respondsToSelector:@selector(dataController:didInsertSections:atIndexSet:withAnimationOption:)]) { \
-    [_delegate dataController:self didInsertSections:sections atIndexSet:indexSet withAnimationOption:animationOption]; \
+  if ([_delegate respondsToSelector:@selector(dataController:didInsertSections:atIndexSet:)]) { \
+    [_delegate dataController:self didInsertSections:sections atIndexSet:indexSet]; \
   } \
 }
 
-#define DELETE_SECTIONS(multidimensionalArray, indexSet, animationOption) \
+#define DELETE_SECTIONS(multidimensionalArray, indexSet) \
 { \
-  if ([_delegate respondsToSelector:@selector(dataController:willDeleteSectionsAtIndexSet:withAnimationOption:)]) { \
-    [_delegate dataController:self willDeleteSectionsAtIndexSet:indexSet withAnimationOption:animationOption]; \
+  if ([_delegate respondsToSelector:@selector(dataController:willDeleteSectionsAtIndexSet:)]) { \
+    [_delegate dataController:self willDeleteSectionsAtIndexSet:indexSet]; \
   } \
   [multidimensionalArray removeObjectsAtIndexes:indexSet]; \
-  if ([_delegate respondsToSelector:@selector(dataController:didDeleteSectionsAtIndexSet:withAnimationOption:)]) { \
-    [_delegate dataController:self didDeleteSectionsAtIndexSet:indexSet withAnimationOption:animationOption]; \
+  if ([_delegate respondsToSelector:@selector(dataController:didDeleteSectionsAtIndexSet:)]) { \
+    [_delegate dataController:self didDeleteSectionsAtIndexSet:indexSet]; \
   } \
 }
 
@@ -79,8 +78,6 @@ static void *kASDataUpdatingQueueContext = &kASDataUpdatingQueueContext;
   NSMutableArray *_nodes;
 }
 
-@property (atomic, assign) NSUInteger batchUpdateCounter;
-
 @end
 
 @implementation ASDataController
@@ -88,7 +85,6 @@ static void *kASDataUpdatingQueueContext = &kASDataUpdatingQueueContext;
 - (instancetype)init {
   if (self = [super init]) {
     _nodes = [NSMutableArray array];
-    _batchUpdateCounter = 0;
   }
 
   return self;
@@ -185,13 +181,13 @@ static void *kASDataUpdatingQueueContext = &kASDataUpdatingQueueContext;
 
 #pragma mark - Initial Data Loading
 
-- (void)initialDataLoadingWithAnimationOption:(ASDataControllerAnimationOptions)animationOption {
+- (void)initialDataLoading {
   NSMutableArray *indexPaths = [NSMutableArray array];
 
   NSUInteger sectionNum = [_dataSource dataControllerNumberOfSections:self];
 
   // insert sections
-  [self insertSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, sectionNum)] withAnimationOption:0];
+  [self insertSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, sectionNum)]];
 
   for (NSUInteger i = 0; i < sectionNum; i++) {
     NSIndexPath *indexPath = [[NSIndexPath alloc] initWithIndex:i];
@@ -203,30 +199,12 @@ static void *kASDataUpdatingQueueContext = &kASDataUpdatingQueueContext;
   }
 
   // insert elements
-  [self insertRowsAtIndexPaths:indexPaths withAnimationOption:animationOption];
+  [self insertRowsAtIndexPaths:indexPaths];
 }
 
 #pragma mark - Data Update
 
-- (void)beginUpdates {
-  dispatch_async([[self class] sizingQueue], ^{
-    [self asyncUpdateDataWithBlock:^{
-      _batchUpdateCounter++;
-      [_delegate dataControllerBeginUpdates:self];
-    }];
-  });
-}
-
-- (void)endUpdates {
-  dispatch_async([[self class] sizingQueue], ^{
-    [self asyncUpdateDataWithBlock:^{
-      _batchUpdateCounter--;
-      [_delegate dataControllerEndUpdates:self];
-    }];
-  });
-}
-
-- (void)insertSections:(NSIndexSet *)indexSet withAnimationOption:(ASDataControllerAnimationOptions)animationOption {
+- (void)insertSections:(NSIndexSet *)indexSet {
   __block int nodeTotalCnt = 0;
   NSMutableArray *nodeCounts = [NSMutableArray arrayWithCapacity:indexSet.count];
   [indexSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
@@ -257,26 +235,26 @@ static void *kASDataUpdatingQueueContext = &kASDataUpdatingQueueContext;
       for (NSUInteger i = 0; i < indexSet.count; i++) {
         [sectionArray addObject:[NSMutableArray array]];
       }
-      INSERT_SECTIONS(_nodes , indexSet, sectionArray, animationOption);
+      INSERT_SECTIONS(_nodes , indexSet, sectionArray);
     }];
 
-    [self _batchInsertNodes:nodes atIndexPaths:indexPaths withAnimationOptions:animationOption];
+    [self _batchInsertNodes:nodes atIndexPaths:indexPaths];
   });
 }
 
-- (void)deleteSections:(NSIndexSet *)indexSet withAnimationOption:(ASDataControllerAnimationOptions)animationOption {
+- (void)deleteSections:(NSIndexSet *)indexSet {
   dispatch_async([[self class] sizingQueue], ^{
     [self asyncUpdateDataWithBlock:^{
       // remove elements
       NSArray *indexPaths = ASIndexPathsForMultidimensionalArrayAtIndexSet(_nodes, indexSet);
       
-      DELETE_NODES(_nodes, indexPaths, animationOption);
-      DELETE_SECTIONS(_nodes, indexSet, animationOption);
+      DELETE_NODES(_nodes, indexPaths);
+      DELETE_SECTIONS(_nodes, indexSet);
     }];
   });
 }
 
-- (void)reloadSections:(NSIndexSet *)sections withAnimationOption:(ASDataControllerAnimationOptions)animationOption {
+- (void)reloadSections:(NSIndexSet *)sections {
   // We need to keep data query on data source in the calling thread.
   NSMutableArray *updatedIndexPaths = [[NSMutableArray alloc] init];
   NSMutableArray *updatedNodes = [[NSMutableArray alloc] init];
@@ -296,21 +274,21 @@ static void *kASDataUpdatingQueueContext = &kASDataUpdatingQueueContext;
     [self syncUpdateDataWithBlock:^{
       // remove elements
       NSArray *indexPaths = ASIndexPathsForMultidimensionalArrayAtIndexSet(_nodes, sections);
-      DELETE_NODES(_nodes, indexPaths, animationOption);
+      DELETE_NODES(_nodes, indexPaths);
     }];
 
     // reinsert the elements
-    [self _batchInsertNodes:updatedNodes atIndexPaths:updatedIndexPaths withAnimationOptions:animationOption];
+    [self _batchInsertNodes:updatedNodes atIndexPaths:updatedIndexPaths];
   });
 }
 
-- (void)moveSection:(NSInteger)section toSection:(NSInteger)newSection withAnimationOption:(ASDataControllerAnimationOptions)animationOption {
+- (void)moveSection:(NSInteger)section toSection:(NSInteger)newSection {
   dispatch_async([ASDataController sizingQueue], ^{
     [self asyncUpdateDataWithBlock:^{
       // remove elements
       NSArray *indexPaths = ASIndexPathsForMultidimensionalArrayAtIndexSet(_nodes, [NSIndexSet indexSetWithIndex:section]);
       NSArray *nodes = ASFindElementsInMultidimensionalArrayAtIndexPaths(_nodes, indexPaths);
-      DELETE_NODES(_nodes, indexPaths, animationOption);
+      DELETE_NODES(_nodes, indexPaths);
 
       // update the section of indexpaths
       NSIndexPath *sectionIndexPath = [[NSIndexPath alloc] initWithIndex:newSection];
@@ -320,14 +298,13 @@ static void *kASDataUpdatingQueueContext = &kASDataUpdatingQueueContext;
       }];
 
       // Don't re-calculate size for moving
-      INSERT_NODES(_nodes, updatedIndexPaths, nodes, animationOption);
+      INSERT_NODES(_nodes, updatedIndexPaths, nodes);
     }];
   });
 }
 
 - (void)_insertNodes:(NSArray *)nodes
-        atIndexPaths:(NSArray *)indexPaths
- withAnimationOption:(ASDataControllerAnimationOptions)animationOption {
+        atIndexPaths:(NSArray *)indexPaths {
   if (!nodes.count) {
     return;
   }
@@ -356,7 +333,7 @@ static void *kASDataUpdatingQueueContext = &kASDataUpdatingQueueContext;
 
     [self asyncUpdateDataWithBlock:^{
       // updating the cells
-      INSERT_NODES(_nodes, indexPaths, nodes, animationOption);
+      INSERT_NODES(_nodes, indexPaths, nodes);
     }];
   };
 
@@ -368,8 +345,7 @@ static void *kASDataUpdatingQueueContext = &kASDataUpdatingQueueContext;
 }
 
 - (void)_batchInsertNodes:(NSArray *)nodes
-             atIndexPaths:(NSArray *)indexPaths
-     withAnimationOptions:(ASDataControllerAnimationOptions)animationOption {
+             atIndexPaths:(NSArray *)indexPaths {
   NSUInteger blockSize = [[ASDataController class] parallelProcessorCount] * kASDataControllerSizingCountPerProcessor;
 
   // Processing in batches
@@ -378,11 +354,11 @@ static void *kASDataUpdatingQueueContext = &kASDataUpdatingQueueContext;
     NSArray *batchedIndexPaths = [indexPaths subarrayWithRange:batchedRange];
     NSArray *batchedNodes = [nodes subarrayWithRange:batchedRange];
 
-    [self _insertNodes:batchedNodes atIndexPaths:batchedIndexPaths withAnimationOption:animationOption];
+    [self _insertNodes:batchedNodes atIndexPaths:batchedIndexPaths];
   }
 }
 
-- (void)insertRowsAtIndexPaths:(NSArray *)indexPaths withAnimationOption:(ASDataControllerAnimationOptions)animationOption {
+- (void)insertRowsAtIndexPaths:(NSArray *)indexPaths {
   // sort indexPath to avoid messing up the index when inserting in several batches
   NSArray *sortedIndexPaths = [indexPaths sortedArrayUsingSelector:@selector(compare:)];
   NSMutableArray *nodes = [[NSMutableArray alloc] initWithCapacity:indexPaths.count];
@@ -390,21 +366,21 @@ static void *kASDataUpdatingQueueContext = &kASDataUpdatingQueueContext;
     [nodes addObject:[_dataSource dataController:self nodeAtIndexPath:sortedIndexPaths[i]]];
   }
 
-  [self _batchInsertNodes:nodes atIndexPaths:indexPaths withAnimationOptions:animationOption];
+  [self _batchInsertNodes:nodes atIndexPaths:indexPaths];
 }
 
-- (void)deleteRowsAtIndexPaths:(NSArray *)indexPaths withAnimationOption:(ASDataControllerAnimationOptions)animationOption {
+- (void)deleteRowsAtIndexPaths:(NSArray *)indexPaths {
   // sort indexPath in order to avoid messing up the index when deleting
   NSArray *sortedIndexPaths = [indexPaths sortedArrayUsingSelector:@selector(compare:)];
 
   dispatch_async([ASDataController sizingQueue], ^{
     [self asyncUpdateDataWithBlock:^{
-      DELETE_NODES(_nodes, sortedIndexPaths, animationOption);
+      DELETE_NODES(_nodes, sortedIndexPaths);
     }];
   });
 }
 
-- (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths withAnimationOption:(ASDataControllerAnimationOptions)animationOption {
+- (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths {
   // The reloading operation required reloading the data
   // Loading data in the calling thread
   NSMutableArray *nodes = [[NSMutableArray alloc] initWithCapacity:indexPaths.count];
@@ -415,28 +391,28 @@ static void *kASDataUpdatingQueueContext = &kASDataUpdatingQueueContext;
 
   dispatch_async([ASDataController sizingQueue], ^{
     [self syncUpdateDataWithBlock:^{
-      DELETE_NODES(_nodes, indexPaths, animationOption);
+      DELETE_NODES(_nodes, indexPaths);
     }];
 
-    [self _batchInsertNodes:nodes atIndexPaths:indexPaths withAnimationOptions:animationOption];
+    [self _batchInsertNodes:nodes atIndexPaths:indexPaths];
   });
 }
 
-- (void)moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath withAnimationOption:(ASDataControllerAnimationOptions)animationOption {
+- (void)moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath {
   dispatch_async([ASDataController sizingQueue], ^{
     [self asyncUpdateDataWithBlock:^{
       NSArray *nodes = ASFindElementsInMultidimensionalArrayAtIndexPaths(_nodes, [NSArray arrayWithObject:indexPath]);
       NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
-      DELETE_NODES(_nodes, indexPaths, animationOption);
+      DELETE_NODES(_nodes, indexPaths);
 
       // Don't re-calculate size for moving
       NSArray *newIndexPaths = [NSArray arrayWithObject:newIndexPath];
-      INSERT_NODES(_nodes, newIndexPaths, nodes, animationOption);
+      INSERT_NODES(_nodes, newIndexPaths, nodes);
     }];
   });
 }
 
-- (void)reloadDataWithAnimationOption:(ASDataControllerAnimationOptions)animationOption {
+- (void)reloadData {
   // Fetching data in calling thread
   NSMutableArray *updatedNodes = [[NSMutableArray alloc] init];
   NSMutableArray *updatedIndexPaths = [[NSMutableArray alloc] init];
@@ -457,10 +433,10 @@ static void *kASDataUpdatingQueueContext = &kASDataUpdatingQueueContext;
     [self syncUpdateDataWithBlock:^{
 
       NSArray *indexPaths = ASIndexPathsForMultidimensionalArray(_nodes);
-      DELETE_NODES(_nodes, indexPaths, animationOption);
+      DELETE_NODES(_nodes, indexPaths);
 
       NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] initWithIndexesInRange:NSMakeRange(0, _nodes.count)];
-      DELETE_SECTIONS(_nodes, indexSet, animationOption);
+      DELETE_SECTIONS(_nodes, indexSet);
 
 
       // Insert section
@@ -470,11 +446,11 @@ static void *kASDataUpdatingQueueContext = &kASDataUpdatingQueueContext;
         [sections addObject:[[NSMutableArray alloc] init]];
       }
 
-      INSERT_SECTIONS(_nodes, [[NSMutableIndexSet alloc] initWithIndexesInRange:NSMakeRange(0, sectionNum)], sections, animationOption);
+      INSERT_SECTIONS(_nodes, [[NSMutableIndexSet alloc] initWithIndexesInRange:NSMakeRange(0, sectionNum)], sections);
 
     }];
 
-    [self _batchInsertNodes:updatedNodes atIndexPaths:updatedIndexPaths withAnimationOptions:animationOption];
+    [self _batchInsertNodes:updatedNodes atIndexPaths:updatedIndexPaths];
   });
 }
 
