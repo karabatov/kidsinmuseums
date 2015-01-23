@@ -32,6 +32,7 @@ class MapViewController: UIViewController {
         var camera = GMSCameraPosition.cameraWithLatitude(55.75, longitude: 37.61, zoom: 10)
         var mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
         mapView.myLocationEnabled = true
+        mapView.settings.compassButton = true
         view = mapView
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "markersUpdated:", name: kKIMNotificationMuseumsUpdated, object: nil)
         updateMarkers()
