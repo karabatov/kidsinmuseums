@@ -26,6 +26,7 @@ class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navbar back button title"), style: .Plain, target: nil, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "location"), style: .Plain, target: self, action: "showMyLocation")
         edgesForExtendedLayout = UIRectEdge.None
 
         var camera = GMSCameraPosition.cameraWithLatitude(55.75, longitude: 37.61, zoom: 10)
@@ -67,6 +68,13 @@ class MapViewController: UIViewController {
             marker.icon = UIImage(named: "marker")
             marker.map = self.view as GMSMapView
             markers.append(marker)
+        }
+    }
+
+    func showMyLocation() {
+        let mapView = view as GMSMapView
+        if let location = mapView.myLocation {
+            mapView.animateToLocation(location.coordinate)
         }
     }
 }
