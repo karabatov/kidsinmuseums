@@ -37,6 +37,8 @@
 		D1A0F7491A7115ED00981257 /* icon-map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F7481A7115ED00981257 /* icon-map@2x.png */; };
 		D1A0F74C1A71318E00981257 /* marker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F74A1A71318E00981257 /* marker@2x.png */; };
 		D1A0F74D1A71318E00981257 /* marker@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F74B1A71318E00981257 /* marker@3x.png */; };
+		D1A0F7591A72AA9900981257 /* Default-huge.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F7581A72AA9900981257 /* Default-huge.png */; };
+		D1A0F75D1A72AB2200981257 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F75C1A72AB2200981257 /* logo@2x.png */; };
 		D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */; };
 		D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1A937421A3F13CE00CE8E9F /* Images.xcassets */; };
 		D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1A937441A3F13CE00CE8E9F /* LaunchScreen.xib */; };
@@ -67,7 +69,6 @@
 		D155CC731A4B49F50072E183 /* NewsItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsItemViewController.swift; sourceTree = "<group>"; };
 		D155CC751A4B5EEF0072E183 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		D155CC771A4B5EFD0072E183 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
-		D155CC791A4B72BB0072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		D155CC7D1A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D155CC821A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D155CC871A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -89,6 +90,8 @@
 		D1A0F7481A7115ED00981257 /* icon-map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-map@2x.png"; sourceTree = "<group>"; };
 		D1A0F74A1A71318E00981257 /* marker@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "marker@2x.png"; sourceTree = "<group>"; };
 		D1A0F74B1A71318E00981257 /* marker@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "marker@3x.png"; sourceTree = "<group>"; };
+		D1A0F7581A72AA9900981257 /* Default-huge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-huge.png"; sourceTree = "<group>"; };
+		D1A0F75C1A72AB2200981257 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		D1A937361A3F13CE00CE8E9F /* KidsInMuseums.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KidsInMuseums.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A9373A1A3F13CE00CE8E9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -197,8 +200,10 @@
 		D122D6D91A696FC6009D30AB /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D1A0F7581A72AA9900981257 /* Default-huge.png */,
 				D122D6DC1A697149009D30AB /* icon-news@2x.png */,
 				D1A0F7481A7115ED00981257 /* icon-map@2x.png */,
+				D1A0F75C1A72AB2200981257 /* logo@2x.png */,
 				D1A0F74A1A71318E00981257 /* marker@2x.png */,
 				D1A0F74B1A71318E00981257 /* marker@3x.png */,
 			);
@@ -354,11 +359,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */,
+				D1A0F75D1A72AB2200981257 /* logo@2x.png in Resources */,
 				D1A0F74D1A71318E00981257 /* marker@3x.png in Resources */,
 				D122D6DD1A697149009D30AB /* icon-news@2x.png in Resources */,
 				D155CC861A4B73A50072E183 /* Localizable.strings in Resources */,
 				D1A0F72D1A710EA100981257 /* GoogleMaps.bundle in Resources */,
 				D1A0F74C1A71318E00981257 /* marker@2x.png in Resources */,
+				D1A0F7591A72AA9900981257 /* Default-huge.png in Resources */,
 				D155CC7C1A4B73A50072E183 /* InfoPlist.strings in Resources */,
 				D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */,
 				D1A0F7491A7115ED00981257 /* icon-map@2x.png in Resources */,
@@ -471,7 +478,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				D1A937451A3F13CE00CE8E9F /* Base */,
-				D155CC791A4B72BB0072E183 /* ru */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
