@@ -44,6 +44,9 @@
 		D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1A937421A3F13CE00CE8E9F /* Images.xcassets */; };
 		D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1A937441A3F13CE00CE8E9F /* LaunchScreen.xib */; };
 		D1A937521A3F13CE00CE8E9F /* KidsInMuseumsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A937511A3F13CE00CE8E9F /* KidsInMuseumsTests.swift */; };
+		D1A9E15E1A7D01A000E06F02 /* icon-more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A9E15C1A7D01A000E06F02 /* icon-more@2x.png */; };
+		D1A9E15F1A7D01A000E06F02 /* icon-more@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A9E15D1A7D01A000E06F02 /* icon-more@3x.png */; };
+		D1A9E1611A7D01D200E06F02 /* MoreScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9E1601A7D01D200E06F02 /* MoreScreen.swift */; };
 		D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -102,6 +105,9 @@
 		D1A9374B1A3F13CE00CE8E9F /* KidsInMuseumsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KidsInMuseumsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A937501A3F13CE00CE8E9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1A937511A3F13CE00CE8E9F /* KidsInMuseumsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KidsInMuseumsTests.swift; sourceTree = "<group>"; };
+		D1A9E15C1A7D01A000E06F02 /* icon-more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-more@2x.png"; sourceTree = "<group>"; };
+		D1A9E15D1A7D01A000E06F02 /* icon-more@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-more@3x.png"; sourceTree = "<group>"; };
+		D1A9E1601A7D01D200E06F02 /* MoreScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreScreen.swift; sourceTree = "<group>"; };
 		D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -186,6 +192,7 @@
 				D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */,
 				D155CC731A4B49F50072E183 /* NewsItemViewController.swift */,
 				D1A0F7461A71128600981257 /* MapViewController.swift */,
+				D1A9E1601A7D01D200E06F02 /* MoreScreen.swift */,
 				D1169B791A460C4500C025A3 /* Cells */,
 			);
 			name = UI;
@@ -205,6 +212,8 @@
 				D1A0F7581A72AA9900981257 /* Default-huge.png */,
 				D122D6DC1A697149009D30AB /* icon-news@2x.png */,
 				D1A0F7481A7115ED00981257 /* icon-map@2x.png */,
+				D1A9E15C1A7D01A000E06F02 /* icon-more@2x.png */,
+				D1A9E15D1A7D01A000E06F02 /* icon-more@3x.png */,
 				D1A0F75E1A72ADC700981257 /* location@2x.png */,
 				D1A0F75C1A72AB2200981257 /* logo@2x.png */,
 				D1A0F74A1A71318E00981257 /* marker@2x.png */,
@@ -368,11 +377,13 @@
 				D155CC861A4B73A50072E183 /* Localizable.strings in Resources */,
 				D1A0F72D1A710EA100981257 /* GoogleMaps.bundle in Resources */,
 				D1A0F74C1A71318E00981257 /* marker@2x.png in Resources */,
+				D1A9E15E1A7D01A000E06F02 /* icon-more@2x.png in Resources */,
 				D1A0F7591A72AA9900981257 /* Default-huge.png in Resources */,
 				D155CC7C1A4B73A50072E183 /* InfoPlist.strings in Resources */,
 				D1A0F75F1A72ADC700981257 /* location@2x.png in Resources */,
 				D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */,
 				D1A0F7491A7115ED00981257 /* icon-map@2x.png in Resources */,
+				D1A9E15F1A7D01A000E06F02 /* icon-more@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,6 +437,7 @@
 			files = (
 				D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */,
 				D10BFF5F1A48E1890098CCC3 /* NoDataView.swift in Sources */,
+				D1A9E1611A7D01D200E06F02 /* MoreScreen.swift in Sources */,
 				D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */,
 				D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */,
 				D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */,
