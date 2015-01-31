@@ -1,12 +1,36 @@
+/* About the app */
+"About the app" = "О приложении";
+
+/* About the project */
+"About the project" = "О проекте";
+
 /* Navbar back button title */
 "Back" = "Назад";
 
+/* Social networks section */
+"Connect with us on social networks" = "Мы в социальных сетях";
+
+/* Facebook */
+"Facebook" = "Facebook";
+
+/* Family trip */
+"Family trip" = "Семейное путешествие";
+
 /* Map controller title */
 "Map" = "Карта";
+
+/* More controller title */
+"More" = "Ещё";
 
 /* News controller title */
 "News" = "Новости";
 
 /* Message when there is no data in the news table view */
 "No data is currently available. Please pull down to refresh." = "Здесь пока ничего нет. Потяните вниз, чтобы загрузить новости.";
+
+/* Search */
+"Search" = "Поиск";
+
+/* Vkontakte */
+"Vkontakte" = "Вконтакте";
 

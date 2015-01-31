@@ -108,6 +108,7 @@
 		D1A9E15C1A7D01A000E06F02 /* icon-more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-more@2x.png"; sourceTree = "<group>"; };
 		D1A9E15D1A7D01A000E06F02 /* icon-more@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-more@3x.png"; sourceTree = "<group>"; };
 		D1A9E1601A7D01D200E06F02 /* MoreScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreScreen.swift; sourceTree = "<group>"; };
+		D1A9E1621A7D0C4000E06F02 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -494,6 +495,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				D1A937451A3F13CE00CE8E9F /* Base */,
+				D1A9E1621A7D0C4000E06F02 /* ru */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
