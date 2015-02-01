@@ -259,4 +259,16 @@ public class DataModel {
             }
         }
     }
+
+    public func findMuseum(museumId: Int) -> Museum? {
+        if museumId == -1 || self.museums.count == 0 {
+            return nil
+        }
+        for museum in self.museums {
+            if museum.id == museumId {
+                return museum
+            }
+        }
+        return nil
+    }
 }
