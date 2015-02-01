@@ -99,8 +99,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func tableView(tableView: ASTableView!, nodeForRowAtIndexPath indexPath: NSIndexPath!) -> ASCellNode! {
         let event = eventItems[indexPath.row]
-        let node = ASTextCellNode()
-        node.text = event.name
+        let node = EventCell(event: event)
         return node
     }
 
