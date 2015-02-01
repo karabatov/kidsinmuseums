@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var newsNavController: UINavigationController?
     var mapNavController: UINavigationController?
     var moreNavController: UINavigationController?
+    var eventsNavController: UINavigationController?
     var tabController: UITabBarController?
     internal var wantsLocation: Bool = false {
         willSet(newWantsLocation) {
@@ -48,7 +49,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         mapNavController = UINavigationController(rootViewController: map)
         var more = MoreScreen(style: UITableViewStyle.Grouped);
         moreNavController = UINavigationController(rootViewController: more);
-        tabController?.viewControllers = [mapNavController!, newsNavController!, moreNavController!]
+        var events = EventsListViewController(nibName: nil, bundle: nil)
+        eventsNavController = UINavigationController(rootViewController: events)
+        tabController?.viewControllers = [eventsNavController!, mapNavController!, newsNavController!, moreNavController!]
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = tabController
         tabController?.tabBar.translucent = false
