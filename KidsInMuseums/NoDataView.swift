@@ -8,7 +8,8 @@
 
 import Foundation
 
-let kNoDataViewMargin: CGFloat = 45.0
+let kNoDataViewMarginX: CGFloat = 45.0
+let kNoDataViewMarginY: CGFloat = 200.0
 
 public class NoDataView: ASDisplayNode {
     var textMessage: ASTextNode
@@ -27,13 +28,13 @@ public class NoDataView: ASDisplayNode {
     }
 
     public override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {
-        let cSize = CGSizeMake(constrainedSize.width - 2 * kNoDataViewMargin, CGFloat.max)
+        let cSize = CGSizeMake(constrainedSize.width - 2 * kNoDataViewMarginX, CGFloat.max)
         let textSize: CGSize = textMessage.measure(cSize)
-        return CGSizeMake(constrainedSize.width, textSize.height + 2 * kNoDataViewMargin)
+        return CGSizeMake(constrainedSize.width, textSize.height + 2 * kNoDataViewMarginX)
     }
 
     public override func layout() {
         let textSize = textMessage.calculatedSize
-        textMessage.frame = CGRectMake(kNoDataViewMargin, round((self.bounds.height - textSize.height) / 2.0), textSize.width, textSize.height)
+        textMessage.frame = CGRectMake(kNoDataViewMarginX, kNoDataViewMarginY, textSize.width, textSize.height)
     }
 }
