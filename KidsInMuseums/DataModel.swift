@@ -12,14 +12,18 @@ public let kKIMNotificationNewsUpdated = "kKIMNotificationNewsUpdated"
 public let kKIMNotificationNewsUpdateFailed = "kKIMNotificationNewsUpdateFailed"
 public let kKIMNotificationMuseumsUpdated = "kKIMNotificationMuseumsUpdated"
 public let kKIMNotificationMuseumsUpdateFailed = "kKIMNotificationMuseumsUpdateFailed"
+public let kKIMNotificationEventsUpdated = "kKIMNotificationEventsUpdated"
+public let kKIMNotificationEventsUpdateFailed = "kKIMNotificationEventsUpdateFailed"
 
 let kKIMAPIServerURL = "http://www.kidsinmuseums.ru"
 let kKIMAPINewsURL = "/api/news_articles/all"
 let kKIMAPIMuseumsURL = "/api/museum_users/all"
+let kKIMAPIEventsURL = "/api/events/all"
 
 let kKIMAPIDateFormat: NSString = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
 let kKIMDataStorageKeyNews = "kKIMDataStorageKeyNews"
 let kKIMDataStorageKeyMuseums = "kKIMDataStorageKeyMuseums"
+let kKIMDataStorageKeyEvents = "kKIMDataStorageKeyEvents"
 
 public class KImage: Deserializable {
     var url: String = ""
@@ -97,6 +101,50 @@ public class Museum: Deserializable {
     }
 }
 
+public class EventTime: Deserializable {
+    var id: Int = -1
+    var eventId: Int = -1
+    var timeFrom: NSDate = NSDate(timeIntervalSince1970: 0)
+    var comment: String = ""
+    var durationHours: Int = -1
+    var durationMinutes: Int = -30
+
+    required public init(data: [String : AnyObject]) {
+        id <<< data["id"]
+        eventId <<< data["event_id"]
+        timeFrom <<< (value: data["time_from"], format: kKIMAPIDateFormat)
+        comment <<< data["comment"]
+        durationHours <<< data["duration_hours"]
+        durationMinutes <<< data["duration_minutes"]
+    }
+}
+
+public class Event: Deserializable {
+    var id: Int = -1
+    var name: String = ""
+    var museumUserId: Int = -1
+    var ageFrom: Int = -1
+    var ageTo: Int = -1
+    var description: String = ""
+    var previewImage: KImage?
+    var shortDescription: String = ""
+    var eventTimes: [EventTime]?
+    var tags: [String] = [String]()
+
+    required public init(data: [String : AnyObject]) {
+        id <<< data["id"]
+        name <<< data["name"]
+        museumUserId <<< data["museum_user_id"]
+        ageFrom <<< data["age_from"]
+        ageTo <<< data["age_to"]
+        description <<< data["description"]
+        previewImage <<<< data["preview_image"]
+        shortDescription <<< data["short_description"]
+        eventTimes <<<<* data["event_times"]
+        tags <<<* data["tags"]
+    }
+}
+
 public class DataModel {
     // Singleton model as per https://github.com/hpique/SwiftSingleton
     public class var sharedInstance : DataModel {
@@ -108,6 +156,7 @@ public class DataModel {
 
     public var news : [NewsItem] = [NewsItem]()
     public var museums : [Museum] = [Museum]()
+    public var events : [Event] = [Event]()
 
     required public init() {
         loadFromCache()
@@ -116,6 +165,7 @@ public class DataModel {
     public func update() {
         updateNews()
         updateMuseums()
+        updateEvents()
     }
 
     public func updateNews() {
@@ -166,6 +216,27 @@ public class DataModel {
         }
     }
 
+    public func updateEvents() {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            let eventsUrl = NSURL(string: kKIMAPIServerURL + kKIMAPIEventsURL)
+            let eventsRequest = NSURLSession.sharedSession().dataTaskWithURL(eventsUrl!) { (data, response, error) -> Void in
+                if (error == nil) {
+                    let pdata: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+                    self.events <<<<* pdata
+                    NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationEventsUpdated, object: self)
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                        NSUserDefaults.standardUserDefaults().setObject(data, forKey: kKIMDataStorageKeyEvents)
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                    }
+                }
+                else {
+                    NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationEventsUpdateFailed, object: self)
+                }
+            }
+            eventsRequest.resume()
+        }
+    }
+
     public func loadFromCache() {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             if let cachedNewsJSON: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyNews) {
@@ -178,6 +249,12 @@ public class DataModel {
                 self.museums <<<<* cachedMuseumsJSON
                 if (self.museums.count > 0) {
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationMuseumsUpdated, object: self)
+                }
+            }
+            if let cachedEventsJSON: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyEvents) {
+                self.events <<<<* cachedEventsJSON
+                if (self.events.count > 0) {
+                    NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationEventsUpdated, object: self)
                 }
             }
         }
