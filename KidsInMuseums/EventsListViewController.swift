@@ -11,6 +11,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     var eventItems: [Event] = [Event]()
     var refreshControl: UIRefreshControl?
     var bgView = NoDataView()
+    var location: CLLocation?
 
     // MARK: UIViewController
 
@@ -45,7 +46,11 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         listView.asyncDataSource = self
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdated:", name: kKIMNotificationEventsUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdateFailed:", name: kKIMNotificationEventsUpdated, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "locationUpdated:", name: kKIMLocationUpdated, object: nil)
         eventItems = DataModel.sharedInstance.events
+        if eventItems.count > 0 {
+            listView.reloadData()
+        }
     }
 
     override func viewWillLayoutSubviews() {
@@ -67,6 +72,14 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
             listView.addSubview(refreshControl!)
             listView.sendSubviewToBack(refreshControl!)
         }
+        let delegate = UIApplication.sharedApplication().delegate as AppDelegate
+        delegate.requestLocationPermissions()
+        delegate.wantsLocation = true
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        let delegate = UIApplication.sharedApplication().delegate as AppDelegate
+        delegate.wantsLocation = false
     }
 
     // MARK: Data
@@ -91,6 +104,15 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         }
     }
 
+    func locationUpdated(notification: NSNotification) {
+        if let loc = notification.userInfo?[kKIMLocationUpdatedKey] as? CLLocation {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.location = loc
+                self.listView.reloadRowsAtIndexPaths(self.listView.indexPathsForVisibleRows(), withRowAnimation: UITableViewRowAnimation.None)
+            })
+        }
+    }
+
     // MARK: ASTableView
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -99,7 +121,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func tableView(tableView: ASTableView!, nodeForRowAtIndexPath indexPath: NSIndexPath!) -> ASCellNode! {
         let event = eventItems[indexPath.row]
-        let node = EventCell(event: event)
+        let node = EventCell(event: event, location: location)
         return node
     }
 

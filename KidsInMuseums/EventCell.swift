@@ -16,7 +16,7 @@ public class EventCell: ASCellNode {
     var museumNode: ASTextNode
     var divider: ASDisplayNode
 
-    required public init(event: Event) {
+    required public init(event: Event, location: CLLocation?) {
         eventRef = event
         eventTitle = ASTextNode()
         museumNode = ASTextNode()
@@ -38,6 +38,14 @@ public class EventCell: ASCellNode {
         var museumStr = NSMutableAttributedString()
         if let museum = DataModel.sharedInstance.findMuseum(event.museumUserId) {
             museumRef = museum
+
+            if let loc = location {
+                let museumLocation = CLLocation(latitude: museum.latitude, longitude: museum.longitude)
+                let distance = loc.distanceFromLocation(museumLocation)
+                let locStr = NSAttributedString(string: "\(distance) \u{25b8} ", attributes: museumParams)
+                museumStr.appendAttributedString(locStr)
+            }
+
             let museumTitleStr = NSAttributedString(string: museum.name, attributes: museumParams)
             museumStr.appendAttributedString(museumTitleStr)
         }

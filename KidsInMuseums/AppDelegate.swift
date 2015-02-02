@@ -8,6 +8,9 @@
 
 import UIKit
 
+let kKIMLocationUpdated = "kKIMLocationUpdated"
+let kKIMLocationUpdatedKey = "kKIMLocationUpdatedKey"
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
@@ -108,6 +111,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             setupLocationService(true)
         } else {
             setupLocationService(false)
+        }
+    }
+
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        if let lastLocation = locations.last as? CLLocation {
+            let userInfo = [kKIMLocationUpdatedKey: lastLocation]
+            NSNotificationCenter.defaultCenter().postNotificationName(kKIMLocationUpdated, object: self, userInfo:userInfo)
         }
     }
 }
