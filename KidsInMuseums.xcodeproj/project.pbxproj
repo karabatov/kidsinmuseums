@@ -51,6 +51,7 @@
 		D1A9E1671A7E3ADC00E06F02 /* icon-events@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A9E1651A7E3ADC00E06F02 /* icon-events@2x.png */; };
 		D1A9E1681A7E3ADC00E06F02 /* icon-events@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A9E1661A7E3ADC00E06F02 /* icon-events@3x.png */; };
 		D1A9E16A1A7E44A700E06F02 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9E1691A7E44A700E06F02 /* EventCell.swift */; };
+		D1A9E16F1A7FABA900E06F02 /* CLLocationHumanReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9E16E1A7FABA900E06F02 /* CLLocationHumanReadable.swift */; };
 		D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -118,6 +119,7 @@
 		D1A9E1661A7E3ADC00E06F02 /* icon-events@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-events@3x.png"; sourceTree = "<group>"; };
 		D1A9E1691A7E44A700E06F02 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		D1A9E16B1A7F989F00E06F02 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D1A9E16E1A7FABA900E06F02 /* CLLocationHumanReadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocationHumanReadable.swift; sourceTree = "<group>"; };
 		D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -192,6 +194,7 @@
 			children = (
 				D1169B721A45F46E00C025A3 /* JSONHelper.swift */,
 				D10BFF5E1A48E1890098CCC3 /* NoDataView.swift */,
+				D1A9E16E1A7FABA900E06F02 /* CLLocationHumanReadable.swift */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -457,6 +460,7 @@
 				D1A9E1611A7D01D200E06F02 /* MoreScreen.swift in Sources */,
 				D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */,
 				D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */,
+				D1A9E16F1A7FABA900E06F02 /* CLLocationHumanReadable.swift in Sources */,
 				D1A9E16A1A7E44A700E06F02 /* EventCell.swift in Sources */,
 				D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */,
 				D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */,

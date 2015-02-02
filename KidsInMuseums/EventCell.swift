@@ -42,7 +42,7 @@ public class EventCell: ASCellNode {
             if let loc = location {
                 let museumLocation = CLLocation(latitude: museum.latitude, longitude: museum.longitude)
                 let distance = loc.distanceFromLocation(museumLocation)
-                let locStr = NSAttributedString(string: "\(distance) \u{25b8} ", attributes: museumParams)
+                let locStr = NSAttributedString(string: "\(distance.humanReadable()) \u{25b8} ", attributes: museumParams)
                 museumStr.appendAttributedString(locStr)
             }
 
