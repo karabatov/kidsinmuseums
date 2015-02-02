@@ -1,0 +1,11 @@
+/* x1 (except 11) */
+"year1" = "year";
+
+/* 0, 5-19, x0 */
+"years0" = "years";
+
+/* x2, x3, x4 except 12...14 */
+"years24" = "years";
+
+/* x5...x9 except 15...19 */
+"years59" = "years";

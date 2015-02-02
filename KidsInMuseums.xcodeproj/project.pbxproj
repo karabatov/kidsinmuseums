@@ -117,6 +117,7 @@
 		D1A9E1651A7E3ADC00E06F02 /* icon-events@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-events@2x.png"; sourceTree = "<group>"; };
 		D1A9E1661A7E3ADC00E06F02 /* icon-events@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-events@3x.png"; sourceTree = "<group>"; };
 		D1A9E1691A7E44A700E06F02 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
+		D1A9E16B1A7F989F00E06F02 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -503,6 +504,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				D155CC871A4B73A50072E183 /* ru */,
+				D1A9E16B1A7F989F00E06F02 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
