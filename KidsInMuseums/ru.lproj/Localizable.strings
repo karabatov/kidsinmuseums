@@ -2,7 +2,7 @@
 "%0.0f m" = "%0.0f м";
 
 /* Distance in km format */
-"%0.2f km" = "%0.2f км";
+"%0.0f km" = "%0.0f км";
 
 /* About the app */
 "About the app" = "О приложении";

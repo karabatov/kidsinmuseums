@@ -9,7 +9,7 @@
 extension CLLocationDistance {
     func humanReadable() -> String {
         if self > 999 {
-            return NSString(format: NSLocalizedString("%0.2f km", comment: "Distance in km format"), self / 1000)
+            return NSString(format: NSLocalizedString("%0.0f km", comment: "Distance in km format"), self / 1000)
         } else {
             return NSString(format: NSLocalizedString("%0.0f m", comment: "Distance in m format"), self)
         }
