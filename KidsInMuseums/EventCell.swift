@@ -76,7 +76,7 @@ public class EventCell: ASCellNode {
         switch (toAge) {
         case 0, 5...20, 30, 40, 50, 60, 70, 80, 90, 100: yearStr = NSLocalizedString("years0", comment: "0, 5-19, x0")
         case 1, 21, 31, 41, 51, 61, 71, 81, 91, 101: yearStr = NSLocalizedString("year1", comment: "x1 (except 11)")
-        case 2...4, 22...24, 32...34, 42...44, 52...54, 62...64, 72...74, 82...84, 92...94: yearStr = NSLocalizedString("years24", comment: "x2, x3, x4 except 12...14")
+        case 2...4, 22...24, 32...34, 42...44, 52...54, 62...64, 72...74, 82...84, 92...94, 102...104: yearStr = NSLocalizedString("years24", comment: "x2, x3, x4 except 12...14")
         default: yearStr = NSLocalizedString("years59", comment: "x5...x9 except 15...19")
         }
         yearStr = NSLocalizedString("\(fromAge) – \(toAge) ", comment: "5 – 7 ") + yearStr
