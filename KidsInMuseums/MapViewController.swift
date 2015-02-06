@@ -9,6 +9,8 @@
 import Foundation
 import MapKit
 
+let kKIMMapPinAnnotationView = "com.yurikarabatov.kKIMMapPinAnnotationView"
+
 class MapViewController: UIViewController, MKMapViewDelegate {
     var museums: [Museum] = [Museum]()
 
@@ -65,9 +67,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         mapView.removeAnnotations(mapView.annotations)
         museums = DataModel.sharedInstance.museums
         for museum in museums {
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = museum.coordinate()
-            annotation.title = museum.name
+            let annotation = MuseumAnnotation(museum: museum)
             mapView.addAnnotation(annotation)
         }
     }
@@ -84,6 +84,21 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
         if overlay.isKindOfClass(MKTileOverlay) {
             return MKTileOverlayRenderer(overlay: overlay)
+        }
+        return nil
+    }
+
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+        if annotation.isKindOfClass(MuseumAnnotation) {
+            var annView = mapView.dequeueReusableAnnotationViewWithIdentifier(kKIMMapPinAnnotationView)
+            if annView == nil {
+                annView = MKAnnotationView(annotation: annotation, reuseIdentifier: kKIMMapPinAnnotationView)
+            }
+            annView.image = UIImage(named: "marker")
+            annView.centerOffset = CGPointMake(0, -annView.image.size.height / 2)
+            annView.enabled = true
+            annView.canShowCallout = true
+            return annView
         }
         return nil
     }
