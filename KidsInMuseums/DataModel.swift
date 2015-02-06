@@ -306,6 +306,13 @@ public class DataModel {
     }
 
     internal func futureEventsFilter(event: Event) -> Bool {
+        if let eventTimes = event.eventTimes {
+            for eventTime in eventTimes {
+                if eventTime.timeFrom.compare(NSDate()) == NSComparisonResult.OrderedDescending {
+                    return true
+                }
+            }
+        }
         return false
     }
 }
