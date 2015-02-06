@@ -13,6 +13,9 @@ public enum EventFilterMode {
 let kKIMSegmentedControlMarginV: CGFloat = 6.0
 let kKIMSegmentedControlMarginH: CGFloat = 8.0
 let kKIMSegmentedControlHeight: CGFloat = 30.0
+let kKIMSectionHeaderParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor(red: 151.0/255.0, green: 151.0/255.0, blue: 151.0/255.0, alpha: 1.0)]
+let kKIMSectionHeaderMarginH: CGFloat = 8.0
+let kKIMSectionHeaderMarginV: CGFloat = 6.0
 
 public func removeDuplicates<C: ExtensibleCollectionType where C.Generator.Element : Equatable>(aCollection: C) -> C {
     var container = C()
@@ -37,6 +40,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     var segControl: UISegmentedControl?
     var days = [NSDate]()
     var sectionHeaderFormatter = NSDateFormatter()
+    var sectionHeaderHeight: CGFloat = 0
 
     // MARK: UIViewController
 
@@ -100,12 +104,12 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         }
     }
 
-    override func viewWillAppear(animated: Bool) {
-        if DataModel.sharedInstance.dataLoaded() {
-            self.fillAndReload()
-            bgView.hidden = true
-        }
-    }
+//    override func viewWillAppear(animated: Bool) {
+//        if DataModel.sharedInstance.dataLoaded() {
+//            self.fillAndReload()
+//            bgView.hidden = true
+//        }
+//    }
 
     override func viewDidAppear(animated: Bool) {
         if (refreshControl == nil) {
@@ -130,33 +134,29 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func fillAndReload() {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-            switch self.filterMode {
-            case .Date:
-                self.days.removeAll(keepCapacity: false)
-                self.eventsByDay.removeAll(keepCapacity: false)
+            // Date
+            self.days.removeAll(keepCapacity: false)
+            self.eventsByDay.removeAll(keepCapacity: false)
 
-                let events = DataModel.sharedInstance.events
-                let reduced = events.map({ (event: Event) -> [NSDate] in
-                        return event.futureDays(NSDate())
-                }).reduce([], +)
-                self.days.extend(removeDuplicates(reduced))
-                self.days.sort({ (d1: NSDate, d2: NSDate) -> Bool in
+            let events = DataModel.sharedInstance.events
+            let reduced = events.map({ (event: Event) -> [NSDate] in
+                    return event.futureDays(NSDate())
+            }).reduce([], +)
+            self.days.extend(removeDuplicates(reduced))
+            self.days.sort({ (d1: NSDate, d2: NSDate) -> Bool in
+                return d1.compare(d2) == NSComparisonResult.OrderedAscending
+            })
+
+            for day in self.days {
+                var evts = events.filter({(testEvt: Event) -> Bool in
+                    return testEvt.hasEventsDuringTheDay(day)
+                })
+                evts.sort({ (e1: Event, e2: Event) -> Bool in
+                    let d1 = e1.earliestEventTime(day)!.timeFrom
+                    let d2 = e2.earliestEventTime(day)!.timeFrom
                     return d1.compare(d2) == NSComparisonResult.OrderedAscending
                 })
-
-                for day in self.days {
-                    var evts = events.filter({(testEvt: Event) -> Bool in
-                        return testEvt.hasEventsDuringTheDay(day)
-                    })
-                    evts.sort({ (e1: Event, e2: Event) -> Bool in
-                        let d1 = e1.earliestEventTime(day)!.timeFrom
-                        let d2 = e2.earliestEventTime(day)!.timeFrom
-                        return d1.compare(d2) == NSComparisonResult.OrderedAscending
-                    })
-                    self.eventsByDay.append(evts)
-                }
-            case .Distance: NSLog("Fill distance")
-            case .Rating: NSLog("Fill rating")
+                self.eventsByDay.append(evts)
             }
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.listView.reloadData()
@@ -189,7 +189,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         if let loc = notification.userInfo?[kKIMLocationUpdatedKey] as? CLLocation {
             dispatch_async(dispatch_get_main_queue(), {
                 self.location = loc
-                self.listView.reloadRowsAtIndexPaths(self.listView.indexPathsForVisibleRows(), withRowAnimation: UITableViewRowAnimation.None)
+                self.listView.reloadRowsAtIndexPaths(self.listView.indexPathsForVisibleRows(), withRowAnimation: UITableViewRowAnimation.Automatic)
             })
         }
     }
@@ -221,11 +221,27 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         return node
     }
 
-    func tableView(tableView: UITableView!, titleForHeaderInSection section: Int) -> String! {
+    func tableView(tableView: UITableView!, heightForHeaderInSection section: Int) -> CGFloat {
         if filterMode == .Date && days.count > section {
-            return sectionHeaderFormatter.stringFromDate(days[section])
+            if sectionHeaderHeight == 0 {
+                let text = sectionHeaderFormatter.stringFromDate(days[section])
+                let attrText = NSAttributedString(string: text, attributes: kKIMSectionHeaderParams)
+                let size = attrText.boundingRectWithSize(CGSizeMake(UIScreen.mainScreen().bounds.width - kKIMSectionHeaderMarginH * 2, CGFloat.max), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
+                sectionHeaderHeight = size.height + kKIMSectionHeaderMarginV * 2
+            }
+            return sectionHeaderHeight
         }
-        return ""
+        return 0
+    }
+
+    func tableView(tableView: UITableView!, viewForHeaderInSection section: Int) -> UIView! {
+        let header = UITableViewHeaderFooterView()
+        header.contentView.backgroundColor = UIColor.whiteColor()
+        if filterMode == .Date && days.count > section {
+            let text = sectionHeaderFormatter.stringFromDate(days[section])
+            header.textLabel.attributedText = NSAttributedString(string: text, attributes: kKIMSectionHeaderParams)
+        }
+        return header
     }
 
     func tableView(tableView: UITableView!, shouldHighlightRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
