@@ -61,15 +61,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
 
     func updateMarkers() {
+        let mapView = view as MKMapView
+        mapView.removeAnnotations(mapView.annotations)
         museums = DataModel.sharedInstance.museums
         for museum in museums {
-//            var marker = GMSMarker(position: CLLocationCoordinate2DMake(museum.latitude, museum.longitude))
-//            marker.title = museum.name
-//            marker.userData = museum.id
-//            marker.appearAnimation = kGMSMarkerAnimationPop
-//            marker.icon = UIImage(named: "marker")
-//            marker.map = self.view as GMSMapView
-//            markers.append(marker)
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = museum.coordinate()
+            annotation.title = museum.name
+            mapView.addAnnotation(annotation)
         }
     }
 

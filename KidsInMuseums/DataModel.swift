@@ -100,6 +100,10 @@ public class Museum: Deserializable {
         previewImage <<<< data["preview_image"]
         shortDescription <<< data["short_description"]
     }
+
+    public func coordinate() -> CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
 }
 
 public class EventTime: Deserializable {
