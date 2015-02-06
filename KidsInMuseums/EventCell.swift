@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Golova Media. All rights reserved.
 //
 
+import CoreLocation
+
 let kEventCellMargin: CGFloat = 15.0
 let kEventCellMarginIntra: CGFloat = 4.0
 

@@ -19,8 +19,6 @@
 		D155CC7C1A4B73A50072E183 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC7E1A4B73A50072E183 /* InfoPlist.strings */; };
 		D155CC811A4B73A50072E183 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC831A4B73A50072E183 /* InfoPlist.strings */; };
 		D155CC861A4B73A50072E183 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC881A4B73A50072E183 /* Localizable.strings */; };
-		D1A0F72B1A710E7F00981257 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F72A1A710E7F00981257 /* GoogleMaps.framework */; };
-		D1A0F72D1A710EA100981257 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F72C1A710EA100981257 /* GoogleMaps.bundle */; };
 		D1A0F72F1A710EC100981257 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F72E1A710EC100981257 /* AVFoundation.framework */; };
 		D1A0F7311A710ECA00981257 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7301A710ECA00981257 /* CoreData.framework */; };
 		D1A0F7331A710ED400981257 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7321A710ED400981257 /* CoreLocation.framework */; };
@@ -33,7 +31,6 @@
 		D1A0F7411A710F1300981257 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7401A710F1300981257 /* OpenGLES.framework */; };
 		D1A0F7431A710F1B00981257 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7421A710F1B00981257 /* QuartzCore.framework */; };
 		D1A0F7451A710F2200981257 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7441A710F2200981257 /* SystemConfiguration.framework */; };
-		D1A0F7471A71128600981257 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0F7461A71128600981257 /* MapViewController.swift */; };
 		D1A0F7491A7115ED00981257 /* icon-map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F7481A7115ED00981257 /* icon-map@2x.png */; };
 		D1A0F74C1A71318E00981257 /* marker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F74A1A71318E00981257 /* marker@2x.png */; };
 		D1A0F74D1A71318E00981257 /* marker@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F74B1A71318E00981257 /* marker@3x.png */; };
@@ -52,6 +49,7 @@
 		D1A9E1681A7E3ADC00E06F02 /* icon-events@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A9E1661A7E3ADC00E06F02 /* icon-events@3x.png */; };
 		D1A9E16A1A7E44A700E06F02 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9E1691A7E44A700E06F02 /* EventCell.swift */; };
 		D1A9E16F1A7FABA900E06F02 /* CLLocationHumanReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9E16E1A7FABA900E06F02 /* CLLocationHumanReadable.swift */; };
+		D1A9E1731A8536DD00E06F02 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9E1721A8536DD00E06F02 /* MapViewController.swift */; };
 		D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -81,8 +79,6 @@
 		D155CC7D1A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D155CC821A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D155CC871A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		D1A0F72A1A710E7F00981257 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
-		D1A0F72C1A710EA100981257 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = SOURCE_ROOT; };
 		D1A0F72E1A710EC100981257 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D1A0F7301A710ECA00981257 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		D1A0F7321A710ED400981257 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -95,7 +91,6 @@
 		D1A0F7401A710F1300981257 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		D1A0F7421A710F1B00981257 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D1A0F7441A710F2200981257 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		D1A0F7461A71128600981257 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D1A0F7481A7115ED00981257 /* icon-map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-map@2x.png"; sourceTree = "<group>"; };
 		D1A0F74A1A71318E00981257 /* marker@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "marker@2x.png"; sourceTree = "<group>"; };
 		D1A0F74B1A71318E00981257 /* marker@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "marker@3x.png"; sourceTree = "<group>"; };
@@ -120,6 +115,7 @@
 		D1A9E1691A7E44A700E06F02 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		D1A9E16B1A7F989F00E06F02 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D1A9E16E1A7FABA900E06F02 /* CLLocationHumanReadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocationHumanReadable.swift; sourceTree = "<group>"; };
+		D1A9E1721A8536DD00E06F02 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,7 +138,6 @@
 				D1A0F72F1A710EC100981257 /* AVFoundation.framework in Frameworks */,
 				D155CC781A4B5EFD0072E183 /* Photos.framework in Frameworks */,
 				D155CC761A4B5EEF0072E183 /* AssetsLibrary.framework in Frameworks */,
-				D1A0F72B1A710E7F00981257 /* GoogleMaps.framework in Frameworks */,
 				794EA81022A7750756EEF22C /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -181,7 +176,6 @@
 				D1A0F7321A710ED400981257 /* CoreLocation.framework */,
 				D1A0F7301A710ECA00981257 /* CoreData.framework */,
 				D1A0F72E1A710EC100981257 /* AVFoundation.framework */,
-				D1A0F72A1A710E7F00981257 /* GoogleMaps.framework */,
 				D155CC771A4B5EFD0072E183 /* Photos.framework */,
 				D155CC751A4B5EEF0072E183 /* AssetsLibrary.framework */,
 				0429DB9706988259B8ABBDBC /* libPods.a */,
@@ -204,7 +198,7 @@
 			children = (
 				D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */,
 				D155CC731A4B49F50072E183 /* NewsItemViewController.swift */,
-				D1A0F7461A71128600981257 /* MapViewController.swift */,
+				D1A9E1721A8536DD00E06F02 /* MapViewController.swift */,
 				D1A9E1601A7D01D200E06F02 /* MoreScreen.swift */,
 				D1A9E1631A7E39CD00E06F02 /* EventsListViewController.swift */,
 				D1169B791A460C4500C025A3 /* Cells */,
@@ -276,7 +270,6 @@
 		D1A937391A3F13CE00CE8E9F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D1A0F72C1A710EA100981257 /* GoogleMaps.bundle */,
 				D155CC881A4B73A50072E183 /* Localizable.strings */,
 				D155CC7E1A4B73A50072E183 /* InfoPlist.strings */,
 				D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */,
@@ -392,7 +385,6 @@
 				D1A0F74D1A71318E00981257 /* marker@3x.png in Resources */,
 				D122D6DD1A697149009D30AB /* icon-news@2x.png in Resources */,
 				D155CC861A4B73A50072E183 /* Localizable.strings in Resources */,
-				D1A0F72D1A710EA100981257 /* GoogleMaps.bundle in Resources */,
 				D1A0F74C1A71318E00981257 /* marker@2x.png in Resources */,
 				D1A9E15E1A7D01A000E06F02 /* icon-more@2x.png in Resources */,
 				D1A0F7591A72AA9900981257 /* Default-huge.png in Resources */,
@@ -460,12 +452,12 @@
 				D1A9E1611A7D01D200E06F02 /* MoreScreen.swift in Sources */,
 				D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */,
 				D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */,
+				D1A9E1731A8536DD00E06F02 /* MapViewController.swift in Sources */,
 				D1A9E16F1A7FABA900E06F02 /* CLLocationHumanReadable.swift in Sources */,
 				D1A9E16A1A7E44A700E06F02 /* EventCell.swift in Sources */,
 				D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */,
 				D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */,
 				D155CC741A4B49F50072E183 /* NewsItemViewController.swift in Sources */,
-				D1A0F7471A71128600981257 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

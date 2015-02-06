@@ -7,10 +7,10 @@
 //
 
 import Foundation
+import MapKit
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, MKMapViewDelegate {
     var museums: [Museum] = [Museum]()
-    var markers: [GMSMarker] = [GMSMarker]()
 
     // MARK: UIViewController
 
@@ -29,11 +29,16 @@ class MapViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "location"), style: .Plain, target: self, action: "showMyLocation")
         edgesForExtendedLayout = UIRectEdge.None
 
-        var camera = GMSCameraPosition.cameraWithLatitude(55.75, longitude: 37.61, zoom: 10)
-        var mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
-        mapView.myLocationEnabled = true
-        mapView.settings.compassButton = true
+        let mapView = MKMapView()
+        mapView.showsUserLocation = true
         view = mapView
+        mapView.region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2D(latitude: 55.75, longitude: 37.61), 10000, 10000)
+        mapView.delegate = self
+        let template = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        let overlay = MKTileOverlay(URLTemplate: template)
+        overlay.canReplaceMapContent = true
+        mapView.addOverlay(overlay, level: MKOverlayLevel.AboveLabels)
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "markersUpdated:", name: kKIMNotificationMuseumsUpdated, object: nil)
         updateMarkers()
     }
@@ -57,25 +62,30 @@ class MapViewController: UIViewController {
 
     func updateMarkers() {
         museums = DataModel.sharedInstance.museums
-        for marker in markers {
-            marker.map = nil
-        }
-        markers.removeAll(keepCapacity: true)
         for museum in museums {
-            var marker = GMSMarker(position: CLLocationCoordinate2DMake(museum.latitude, museum.longitude))
-            marker.title = museum.name
-            marker.userData = museum.id
-            marker.appearAnimation = kGMSMarkerAnimationPop
-            marker.icon = UIImage(named: "marker")
-            marker.map = self.view as GMSMapView
-            markers.append(marker)
+//            var marker = GMSMarker(position: CLLocationCoordinate2DMake(museum.latitude, museum.longitude))
+//            marker.title = museum.name
+//            marker.userData = museum.id
+//            marker.appearAnimation = kGMSMarkerAnimationPop
+//            marker.icon = UIImage(named: "marker")
+//            marker.map = self.view as GMSMapView
+//            markers.append(marker)
         }
     }
 
     func showMyLocation() {
-        let mapView = view as GMSMapView
-        if let location = mapView.myLocation {
-            mapView.animateToLocation(location.coordinate)
+        let mapView = view as MKMapView
+        if let location = mapView.userLocation {
+            mapView.setCenterCoordinate(location.coordinate, animated: true)
         }
+    }
+
+    // MARK: MKMapViewDelegate
+
+    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+        if overlay.isKindOfClass(MKTileOverlay) {
+            return MKTileOverlayRenderer(overlay: overlay)
+        }
+        return nil
     }
 }

@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Golova Media. All rights reserved.
 //
 
+import CoreLocation
+
 public enum EventFilterMode {
     case Date, Distance, Rating
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 public let kKIMNotificationNewsUpdated = "kKIMNotificationNewsUpdated"
 public let kKIMNotificationNewsUpdateFailed = "kKIMNotificationNewsUpdateFailed"

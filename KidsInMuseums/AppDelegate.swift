@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 let kKIMLocationUpdated = "kKIMLocationUpdated"
 let kKIMLocationUpdatedKey = "kKIMLocationUpdatedKey"
@@ -35,7 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         location?.desiredAccuracy = kCLLocationAccuracyHundredMeters
         location?.distanceFilter = 50
 
-        GMSServices.provideAPIKey("AIzaSyDkk0lJ-Jfyf23-5vCsMalZClkjW3feirE")
         let purpleColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
         UINavigationBar.appearance().barStyle = UIBarStyle.Black
         UINavigationBar.appearance().backgroundColor = purpleColor
