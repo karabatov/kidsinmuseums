@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        DataModel.sharedInstance.update()
+        DataModel.sharedInstance // Trigger update
 
         location = CLLocationManager()
         location?.delegate = self

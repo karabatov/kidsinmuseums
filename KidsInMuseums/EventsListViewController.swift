@@ -50,12 +50,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         listView.asyncDelegate = self
         listView.asyncDataSource = self
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdated:", name: kKIMNotificationEventsUpdated, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdated:", name: kKIMNotificationMuseumsUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdateFailed:", name: kKIMNotificationEventsUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "locationUpdated:", name: kKIMLocationUpdated, object: nil)
-        eventItems = DataModel.sharedInstance.events
-        if eventItems.count > 0 {
-            listView.reloadData()
-        }
     }
 
     override func viewWillLayoutSubviews() {
@@ -65,6 +62,14 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
             self.bgView.measure(b.size)
             self.bgView.frame = b
             listView.reloadData()
+        }
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        if DataModel.sharedInstance.dataLoaded() {
+            eventItems = DataModel.sharedInstance.events
+            listView.reloadData()
+            bgView.hidden = true
         }
     }
 
@@ -94,11 +99,13 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     }
 
     func eventItemsUpdated(notification: NSNotification) {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.refreshControl?.endRefreshing()
-            self.eventItems = DataModel.sharedInstance.events
-            self.listView.reloadData()
-            self.bgView.hidden = true
+        if DataModel.sharedInstance.dataLoaded() {
+            dispatch_async(dispatch_get_main_queue()) {
+                self.refreshControl?.endRefreshing()
+                self.eventItems = DataModel.sharedInstance.events
+                self.listView.reloadData()
+                self.bgView.hidden = true
+            }
         }
     }
 

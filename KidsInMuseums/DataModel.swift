@@ -194,9 +194,16 @@ public class DataModel {
     }
 
     public func update() {
-        updateNews()
         updateMuseums()
         updateEvents()
+        updateNews()
+    }
+
+    public func dataLoaded() -> Bool {
+        if news.count > 0 && museums.count > 0 && events.count > 0 {
+            return true
+        }
+        return false
     }
 
     public func updateNews() {
@@ -204,14 +211,7 @@ public class DataModel {
             let newsUrl = NSURL(string: kKIMAPIServerURL + kKIMAPINewsURL)
             let newsRequest = NSURLSession.sharedSession().dataTaskWithURL(newsUrl!) { (data, response, error) -> Void in
                 if (error == nil) {
-                    let pdata: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
-                    self.news <<<<* pdata
-                    self.news = self.news.sorted({ (obj1: NewsItem, obj2: NewsItem) -> Bool in
-                        if (obj1.updatedAt.compare(obj2.updatedAt) == NSComparisonResult.OrderedAscending) {
-                            return false
-                        }
-                        return true
-                    })
+                    self.news = self.newsWithData(data)
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationNewsUpdated, object: self)
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
                         NSUserDefaults.standardUserDefaults().setObject(data, forKey: kKIMDataStorageKeyNews)
@@ -221,6 +221,7 @@ public class DataModel {
                 else {
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationNewsUpdateFailed, object: self)
                 }
+                NSLog("News updated.")
             }
             newsRequest.resume()
         }
@@ -231,8 +232,7 @@ public class DataModel {
             let museumsUrl = NSURL(string: kKIMAPIServerURL + kKIMAPIMuseumsURL)
             let museumsRequest = NSURLSession.sharedSession().dataTaskWithURL(museumsUrl!) { (data, response, error) -> Void in
                 if (error == nil) {
-                    let pdata: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
-                    self.museums <<<<* pdata
+                    self.museums = self.museumsWithData(data)
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationMuseumsUpdated, object: self)
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
                         NSUserDefaults.standardUserDefaults().setObject(data, forKey: kKIMDataStorageKeyMuseums)
@@ -242,6 +242,7 @@ public class DataModel {
                 else {
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationMuseumsUpdateFailed, object: self)
                 }
+                NSLog("Museums updated.")
             }
             museumsRequest.resume()
         }
@@ -252,9 +253,7 @@ public class DataModel {
             let eventsUrl = NSURL(string: kKIMAPIServerURL + kKIMAPIEventsURL)
             let eventsRequest = NSURLSession.sharedSession().dataTaskWithURL(eventsUrl!) { (data, response, error) -> Void in
                 if (error == nil) {
-                    let pdata: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
-                    self.events <<<<* pdata
-                    self.events = self.events.filter(self.futureEventsFilter)
+                    self.events = self.eventsWithData(data)
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationEventsUpdated, object: self)
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
                         NSUserDefaults.standardUserDefaults().setObject(data, forKey: kKIMDataStorageKeyEvents)
@@ -264,6 +263,7 @@ public class DataModel {
                 else {
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationEventsUpdateFailed, object: self)
                 }
+                NSLog("Events updated.")
             }
             eventsRequest.resume()
         }
@@ -271,25 +271,26 @@ public class DataModel {
 
     public func loadFromCache() {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            if let cachedNewsJSON: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyNews) {
-                self.news <<<<* cachedNewsJSON
+            if let cachedNewsJSON = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyNews) as? NSData {
+                self.news = self.newsWithData(cachedNewsJSON)
                 if (self.news.count > 0) {
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationNewsUpdated, object: self)
                 }
             }
-            if let cachedMuseumsJSON: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyMuseums) {
-                self.museums <<<<* cachedMuseumsJSON
+            if let cachedMuseumsJSON = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyMuseums) as? NSData {
+                self.museums = self.museumsWithData(cachedMuseumsJSON)
                 if (self.museums.count > 0) {
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationMuseumsUpdated, object: self)
                 }
             }
-            if let cachedEventsJSON: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyEvents) {
-                self.events <<<<* cachedEventsJSON
-                self.events = self.events.filter(self.futureEventsFilter)
+            if let cachedEventsJSON = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyEvents) as? NSData {
+                self.events = self.eventsWithData(cachedEventsJSON)
                 if (self.events.count > 0) {
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationEventsUpdated, object: self)
                 }
             }
+            NSLog("Finished loading from cache. Updating now.")
+            self.update()
         }
     }
 
@@ -314,5 +315,36 @@ public class DataModel {
             }
         }
         return false
+    }
+
+    internal func newsWithData(data: NSData) -> [NewsItem] {
+        var news = [NewsItem]()
+        if let pdata: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) {
+            news <<<<* pdata
+            news = news.sorted({ (obj1: NewsItem, obj2: NewsItem) -> Bool in
+                if (obj1.updatedAt.compare(obj2.updatedAt) == NSComparisonResult.OrderedAscending) {
+                    return false
+                }
+                return true
+            })
+        }
+        return news
+    }
+
+    internal func eventsWithData(data: NSData) -> [Event] {
+        var events = [Event]()
+        if let pdata: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) {
+            events <<<<* pdata
+            events = events.filter(self.futureEventsFilter)
+        }
+        return events
+    }
+
+    internal func museumsWithData(data: NSData) -> [Museum] {
+        var museums = [Museum]()
+        if let pdata: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) {
+            museums <<<<* pdata
+        }
+        return museums
     }
 }
