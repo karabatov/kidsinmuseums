@@ -213,6 +213,25 @@ public class Event: Deserializable {
         }
         return false
     }
+
+    public func museum() -> Museum? {
+        if let museum = DataModel.sharedInstance.findMuseum(self.museumUserId) {
+            return museum
+        }
+        return nil
+    }
+
+    public func location() -> CLLocation {
+        if let museum = self.museum() {
+            return CLLocation(latitude: museum.latitude, longitude: museum.longitude)
+        }
+        return CLLocation()
+    }
+
+    public func distanceFromLocation(location: CLLocation) -> CLLocationDistance {
+        let myLocation = self.location()
+        return location.distanceFromLocation(myLocation)
+    }
 }
 
 public class DataModel {

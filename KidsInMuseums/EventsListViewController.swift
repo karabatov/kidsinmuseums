@@ -33,6 +33,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     var listView = ASTableView()
     var eventItems: [Event] = [Event]()
     var eventsByDay = [[Event]]()
+    var eventsByDistance = [Event]()
     var refreshControl: UIRefreshControl?
     var bgView = NoDataView()
     var location: CLLocation?
@@ -134,11 +135,12 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func fillAndReload() {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            let events = DataModel.sharedInstance.events
+
             // Date
             self.days.removeAll(keepCapacity: false)
             self.eventsByDay.removeAll(keepCapacity: false)
 
-            let events = DataModel.sharedInstance.events
             let reduced = events.map({ (event: Event) -> [NSDate] in
                     return event.futureDays(NSDate())
             }).reduce([], +)
@@ -158,6 +160,16 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 })
                 self.eventsByDay.append(evts)
             }
+
+            // Distance 
+            self.eventsByDistance.removeAll(keepCapacity: false)
+            self.eventsByDistance.extend(events)
+            if let loc = self.location {
+                self.eventsByDistance.sort({(e1: Event, e2: Event) -> Bool in
+                    return e1.distanceFromLocation(loc) < e2.distanceFromLocation(loc)
+                })
+            }
+
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.listView.reloadData()
             })
@@ -197,28 +209,38 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     // MARK: ASTableView
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if filterMode == .Date {
-            return eventsByDay[section].count
+        switch filterMode {
+        case .Date: return eventsByDay[section].count
+        case .Distance: return eventsByDistance.count
+        default: return eventItems.count
         }
-        return eventItems.count
     }
 
     func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
-        if filterMode == .Date {
-            return days.count
+        switch filterMode {
+        case .Date: return days.count
+        default: return 1
         }
-        return 1
     }
 
     func tableView(tableView: ASTableView!, nodeForRowAtIndexPath indexPath: NSIndexPath!) -> ASCellNode! {
-        if filterMode == .Date {
-            let event = eventsByDay[indexPath.section][indexPath.row]
-            let node = EventCell(event: event, filterMode: filterMode, referenceDate: days[indexPath.section], location: location)
+        var event: Event?
+        var referenceDate = NSDate()
+        switch filterMode {
+        case .Date:
+            event = eventsByDay[indexPath.section][indexPath.row]
+            referenceDate = days[indexPath.section]
+        case .Distance:
+            event = eventsByDistance[indexPath.row]
+        default:
+            event = eventItems[indexPath.row]
+        }
+
+        if let evt = event {
+            let node = EventCell(event: evt, filterMode: filterMode, referenceDate: referenceDate, location: location)
             return node
         }
-        let event = eventItems[indexPath.row]
-        let node = EventCell(event: event, filterMode: filterMode, referenceDate: NSDate(), location: location)
-        return node
+        return ASCellNode()
     }
 
     func tableView(tableView: UITableView!, heightForHeaderInSection section: Int) -> CGFloat {

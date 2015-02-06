@@ -41,12 +41,9 @@ public class EventCell: ASCellNode {
         wholeTitleStr.appendAttributedString(attStr)
 
         var museumStr = NSMutableAttributedString()
-        if let museum = DataModel.sharedInstance.findMuseum(event.museumUserId) {
-            museumRef = museum
-
+        if let museum = event.museum() {
             if let loc = location {
-                let museumLocation = CLLocation(latitude: museum.latitude, longitude: museum.longitude)
-                let distance = loc.distanceFromLocation(museumLocation)
+                let distance = event.distanceFromLocation(loc)
                 let locStr = NSAttributedString(string: "\(distance.humanReadable()) \u{25b8} ", attributes: museumParams)
                 museumStr.appendAttributedString(locStr)
             }
