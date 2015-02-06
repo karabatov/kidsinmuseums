@@ -14,14 +14,28 @@ let kKIMSegmentedControlMarginV: CGFloat = 6.0
 let kKIMSegmentedControlMarginH: CGFloat = 8.0
 let kKIMSegmentedControlHeight: CGFloat = 30.0
 
+public func removeDuplicates<C: ExtensibleCollectionType where C.Generator.Element : Equatable>(aCollection: C) -> C {
+    var container = C()
+
+    for element in aCollection {
+        if !contains(container, element) {
+            container.append(element)
+        }
+    }
+
+    return container
+}
+
 class EventsListViewController: UIViewController, ASTableViewDataSource, ASTableViewDelegate {
     var listView = ASTableView()
     var eventItems: [Event] = [Event]()
+    var eventsByDay = [[Event]]()
     var refreshControl: UIRefreshControl?
     var bgView = NoDataView()
     var location: CLLocation?
     var filterMode = EventFilterMode.Date
     var segControl: UISegmentedControl?
+    var days = [NSDate]()
 
     // MARK: UIViewController
 
@@ -111,12 +125,39 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     // MARK: Data
 
     func fillAndReload() {
-        switch filterMode {
-        case .Date: NSLog("Fill date.")
-        case .Distance: NSLog("Fill distance")
-        case .Rating: NSLog("Fill rating")
-        }
-        listView.reloadData()
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            switch self.filterMode {
+            case .Date:
+                self.days.removeAll(keepCapacity: false)
+                self.eventsByDay.removeAll(keepCapacity: false)
+
+                let events = DataModel.sharedInstance.events
+                let reduced = events.map({ (event: Event) -> [NSDate] in
+                        return event.futureDays(NSDate())
+                }).reduce([], +)
+                self.days.extend(removeDuplicates(reduced))
+                self.days.sort({ (d1: NSDate, d2: NSDate) -> Bool in
+                    return d1.compare(d2) == NSComparisonResult.OrderedAscending
+                })
+
+                for day in self.days {
+                    var evts = events.filter({(testEvt: Event) -> Bool in
+                        return testEvt.hasEventsDuringTheDay(day)
+                    })
+                    evts.sort({ (e1: Event, e2: Event) -> Bool in
+                        let d1 = e1.earliestEventTime(day)!.timeFrom
+                        let d2 = e2.earliestEventTime(day)!.timeFrom
+                        return d1.compare(d2) == NSComparisonResult.OrderedAscending
+                    })
+                    self.eventsByDay.append(evts)
+                }
+            case .Distance: NSLog("Fill distance")
+            case .Rating: NSLog("Fill rating")
+            }
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.listView.reloadData()
+            })
+        })
     }
 
     func updateEvents() {
@@ -152,13 +193,35 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     // MARK: ASTableView
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if filterMode == .Date {
+            return eventsByDay[section].count
+        }
         return eventItems.count
     }
 
+    func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
+        if filterMode == .Date {
+            return days.count
+        }
+        return 1
+    }
+
     func tableView(tableView: ASTableView!, nodeForRowAtIndexPath indexPath: NSIndexPath!) -> ASCellNode! {
+        if filterMode == .Date {
+            let event = eventsByDay[indexPath.section][indexPath.row]
+            let node = EventCell(event: event, filterMode: filterMode, referenceDate: days[indexPath.section], location: location)
+            return node
+        }
         let event = eventItems[indexPath.row]
         let node = EventCell(event: event, filterMode: filterMode, referenceDate: NSDate(), location: location)
         return node
+    }
+
+    func tableView(tableView: UITableView!, titleForHeaderInSection section: Int) -> String! {
+        if filterMode == .Date && days.count > section {
+            return "\(days[section])"
+        }
+        return ""
     }
 
     func tableView(tableView: UITableView!, shouldHighlightRowAtIndexPath indexPath: NSIndexPath!) -> Bool {

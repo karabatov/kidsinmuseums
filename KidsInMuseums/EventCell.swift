@@ -55,21 +55,9 @@ public class EventCell: ASCellNode {
             museumStr.appendAttributedString(museumTitleStr)
         }
 
-        var chosenEvent: EventTime?
-        if let eventTimes = event.eventTimes {
-            for eventTime in eventTimes {
-                if chosenEvent == nil && eventTime.timeFrom.compare(referenceDate) == NSComparisonResult.OrderedDescending {
-                    chosenEvent = eventTime
-                    continue
-                }
-                if eventTime.timeFrom.compare(referenceDate) == NSComparisonResult.OrderedDescending && eventTime.timeFrom.compare(chosenEvent!.timeFrom) == NSComparisonResult.OrderedAscending {
-                    chosenEvent = eventTime
-                }
-            }
-        }
         var timeStr = NSMutableAttributedString()
-        if let showEvent = chosenEvent {
-            let showTimeStr = NSAttributedString(string: showEvent.humanReadable(filterMode), attributes: timeParams)
+        if let evtTime = event.earliestEventTime(referenceDate) {
+            let showTimeStr = NSAttributedString(string: evtTime.humanReadable(filterMode), attributes: timeParams)
             timeStr.appendAttributedString(showTimeStr)
         }
 

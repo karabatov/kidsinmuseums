@@ -174,6 +174,45 @@ public class Event: Deserializable {
         eventTimes <<<<* data["event_times"]
         tags <<<* data["tags"]
     }
+
+    public func earliestEventTime(afterDate: NSDate) -> EventTime? {
+        var evT: EventTime?
+        if let eventTimes = self.eventTimes {
+            for eventTime in eventTimes {
+                if evT == nil && eventTime.timeFrom.compare(afterDate) == NSComparisonResult.OrderedDescending {
+                    evT = eventTime
+                    continue
+                }
+                if eventTime.timeFrom.compare(afterDate) == NSComparisonResult.OrderedDescending && eventTime.timeFrom.compare(evT!.timeFrom) == NSComparisonResult.OrderedAscending {
+                    evT = eventTime
+                }
+            }
+        }
+        return evT
+    }
+
+    public func futureDays(afterDate: NSDate) -> [NSDate] {
+        var futureDays = [NSDate]()
+        if let eventTimes = self.eventTimes {
+            for eventTime in eventTimes {
+                if eventTime.timeFrom.compare(afterDate) == NSComparisonResult.OrderedDescending {
+                    let cal = NSCalendar.currentCalendar()
+                    let comps = cal.components(.DayCalendarUnit | .MonthCalendarUnit | .YearCalendarUnit, fromDate: eventTime.timeFrom)
+                    if let day = cal.dateFromComponents(comps) {
+                        futureDays.append(day)
+                    }
+                }
+            }
+        }
+        return futureDays
+    }
+
+    public func hasEventsDuringTheDay(day: NSDate) -> Bool {
+        if let evT = self.earliestEventTime(day) {
+            return evT.timeFrom.compare(NSDate(timeInterval: 60 * 60 * 24, sinceDate: day)) == NSComparisonResult.OrderedAscending
+        }
+        return false
+    }
 }
 
 public class DataModel {
