@@ -36,6 +36,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     var filterMode = EventFilterMode.Date
     var segControl: UISegmentedControl?
     var days = [NSDate]()
+    var sectionHeaderFormatter = NSDateFormatter()
 
     // MARK: UIViewController
 
@@ -81,6 +82,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdated:", name: kKIMNotificationMuseumsUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdateFailed:", name: kKIMNotificationEventsUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "locationUpdated:", name: kKIMLocationUpdated, object: nil)
+
+        let timeFormat = NSDateFormatter.dateFormatFromTemplate("EEEE, dMMMM", options: 0, locale: NSLocale.currentLocale())
+        sectionHeaderFormatter.dateFormat = timeFormat
     }
 
     override func viewWillLayoutSubviews() {
@@ -219,7 +223,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func tableView(tableView: UITableView!, titleForHeaderInSection section: Int) -> String! {
         if filterMode == .Date && days.count > section {
-            return "\(days[section])"
+            return sectionHeaderFormatter.stringFromDate(days[section])
         }
         return ""
     }
@@ -240,7 +244,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         case 2: self.filterMode = .Rating
         default: fatalError("The segment that should not be!")
         }
-        self.fillAndReload()
+        listView.reloadData()
     }
 
     // MARK: Helpers
