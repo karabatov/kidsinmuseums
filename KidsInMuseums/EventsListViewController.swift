@@ -7,7 +7,7 @@
 //
 
 public enum EventFilterMode {
-    case Date, Proximity, Rating
+    case Date, Distance, Rating
 }
 
 let kKIMSegmentedControlMarginV: CGFloat = 6.0
@@ -20,7 +20,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     var refreshControl: UIRefreshControl?
     var bgView = NoDataView()
     var location: CLLocation?
-    var filterMode = EventFilterMode.Proximity
+    var filterMode = EventFilterMode.Date
     var segControl: UISegmentedControl?
 
     // MARK: UIViewController
@@ -59,6 +59,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         segItems.append(NSLocalizedString("Distance", comment: "Distance filter segment"))
         segItems.append(NSLocalizedString("Rating", comment: "Rating filter segment"))
         segControl = UISegmentedControl(items: segItems)
+        segControl?.selectedSegmentIndex = 0
+        segControl?.addTarget(self, action: "controlValueChanged:", forControlEvents: .ValueChanged)
         segControl?.frame = self.segControlFrame()
         self.view.addSubview(segControl!)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdated:", name: kKIMNotificationEventsUpdated, object: nil)
@@ -82,8 +84,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     override func viewWillAppear(animated: Bool) {
         if DataModel.sharedInstance.dataLoaded() {
-            eventItems = DataModel.sharedInstance.events
-            listView.reloadData()
+            self.fillAndReload()
             bgView.hidden = true
         }
     }
@@ -109,6 +110,15 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     // MARK: Data
 
+    func fillAndReload() {
+        switch filterMode {
+        case .Date: NSLog("Fill date.")
+        case .Distance: NSLog("Fill distance")
+        case .Rating: NSLog("Fill rating")
+        }
+        listView.reloadData()
+    }
+
     func updateEvents() {
         DataModel.sharedInstance.updateEvents()
     }
@@ -117,8 +127,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         if DataModel.sharedInstance.dataLoaded() {
             dispatch_async(dispatch_get_main_queue()) {
                 self.refreshControl?.endRefreshing()
-                self.eventItems = DataModel.sharedInstance.events
-                self.listView.reloadData()
+                self.fillAndReload()
                 self.bgView.hidden = true
             }
         }
@@ -157,6 +166,18 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     }
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    }
+
+    // MARK: UISegmentedControl
+
+    func controlValueChanged(sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0: self.filterMode = .Date
+        case 1: self.filterMode = .Distance
+        case 2: self.filterMode = .Rating
+        default: fatalError("The segment that should not be!")
+        }
+        self.fillAndReload()
     }
 
     // MARK: Helpers

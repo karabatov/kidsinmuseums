@@ -133,7 +133,7 @@ public class EventTime: Deserializable {
     public func humanReadable(filterMode: EventFilterMode) -> String {
         switch filterMode {
         case .Date: return timeString()
-        case .Proximity, .Rating:
+        case .Distance, .Rating:
             let date = dateString()
             let time = timeString()
             return String(format: NSLocalizedString("%@, %@", comment: "Full event date string"), dateString(), timeString())
