@@ -254,6 +254,7 @@ public class DataModel {
                 if (error == nil) {
                     let pdata: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
                     self.events <<<<* pdata
+                    self.events = self.events.filter(self.futureEventsFilter)
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationEventsUpdated, object: self)
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
                         NSUserDefaults.standardUserDefaults().setObject(data, forKey: kKIMDataStorageKeyEvents)
@@ -284,6 +285,7 @@ public class DataModel {
             }
             if let cachedEventsJSON: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyEvents) {
                 self.events <<<<* cachedEventsJSON
+                self.events = self.events.filter(self.futureEventsFilter)
                 if (self.events.count > 0) {
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationEventsUpdated, object: self)
                 }
@@ -301,5 +303,9 @@ public class DataModel {
             }
         }
         return nil
+    }
+
+    internal func futureEventsFilter(event: Event) -> Bool {
+        return false
     }
 }
