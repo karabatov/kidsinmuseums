@@ -45,6 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             UINavigationBar.appearance().translucent = false
         }
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        UISegmentedControl.appearance().tintColor = purpleColor
         tabController = UITabBarController()
         var news = NewsListController(nibName: nil, bundle: nil)
         newsNavController = UINavigationController(rootViewController: news)

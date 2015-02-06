@@ -9,7 +9,7 @@
 import Foundation
 
 let kNoDataViewMarginX: CGFloat = 45.0
-let kNoDataViewMarginY: CGFloat = 200.0
+let kNoDataViewMarginY: CGFloat = 100.0
 
 public class NoDataView: ASDisplayNode {
     var textMessage: ASTextNode

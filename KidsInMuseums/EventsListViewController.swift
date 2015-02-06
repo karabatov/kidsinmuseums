@@ -10,6 +10,10 @@ public enum EventFilterMode {
     case Date, Proximity, Rating
 }
 
+let kKIMSegmentedControlMarginV: CGFloat = 6.0
+let kKIMSegmentedControlMarginH: CGFloat = 8.0
+let kKIMSegmentedControlHeight: CGFloat = 30.0
+
 class EventsListViewController: UIViewController, ASTableViewDataSource, ASTableViewDelegate {
     var listView = ASTableView()
     var eventItems: [Event] = [Event]()
@@ -17,6 +21,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     var bgView = NoDataView()
     var location: CLLocation?
     var filterMode = EventFilterMode.Proximity
+    var segControl: UISegmentedControl?
 
     // MARK: UIViewController
 
@@ -49,6 +54,13 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         listView.backgroundColor = UIColor.clearColor()
         listView.asyncDelegate = self
         listView.asyncDataSource = self
+        var segItems = [String]()
+        segItems.append(NSLocalizedString("Date", comment: "Date filter segment"))
+        segItems.append(NSLocalizedString("Distance", comment: "Distance filter segment"))
+        segItems.append(NSLocalizedString("Rating", comment: "Rating filter segment"))
+        segControl = UISegmentedControl(items: segItems)
+        segControl?.frame = self.segControlFrame()
+        self.view.addSubview(segControl!)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdated:", name: kKIMNotificationEventsUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdated:", name: kKIMNotificationMuseumsUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdateFailed:", name: kKIMNotificationEventsUpdated, object: nil)
@@ -56,11 +68,14 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     }
 
     override func viewWillLayoutSubviews() {
-        let b = self.view.bounds
+        let a = self.view.bounds
+        let sf = self.segControlFrame()
+        let vDiff: CGFloat = sf.size.height + kKIMSegmentedControlMarginV * 2
+        let b = CGRectMake(0, vDiff, a.size.width, a.size.height - vDiff)
         if (listView.frame != b) {
             listView.frame = b
-            self.bgView.measure(b.size)
-            self.bgView.frame = b
+            self.bgView.measure(a.size)
+            self.bgView.frame = a
             listView.reloadData()
         }
     }
@@ -142,5 +157,11 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     }
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    }
+
+    // MARK: Helpers
+
+    func segControlFrame() -> CGRect {
+        return CGRectMake(kKIMSegmentedControlMarginH, kKIMSegmentedControlMarginV, UIScreen.mainScreen().bounds.size.width - kKIMSegmentedControlMarginH * 2, kKIMSegmentedControlHeight)
     }
 }
