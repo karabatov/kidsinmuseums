@@ -15,20 +15,10 @@
 		D122D6DD1A697149009D30AB /* icon-news@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D122D6DC1A697149009D30AB /* icon-news@2x.png */; };
 		D155CC741A4B49F50072E183 /* NewsItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D155CC731A4B49F50072E183 /* NewsItemViewController.swift */; };
 		D155CC761A4B5EEF0072E183 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D155CC751A4B5EEF0072E183 /* AssetsLibrary.framework */; };
-		D155CC781A4B5EFD0072E183 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D155CC771A4B5EFD0072E183 /* Photos.framework */; };
 		D155CC7C1A4B73A50072E183 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC7E1A4B73A50072E183 /* InfoPlist.strings */; };
 		D155CC811A4B73A50072E183 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC831A4B73A50072E183 /* InfoPlist.strings */; };
 		D155CC861A4B73A50072E183 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC881A4B73A50072E183 /* Localizable.strings */; };
-		D1A0F72F1A710EC100981257 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F72E1A710EC100981257 /* AVFoundation.framework */; };
-		D1A0F7311A710ECA00981257 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7301A710ECA00981257 /* CoreData.framework */; };
 		D1A0F7331A710ED400981257 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7321A710ED400981257 /* CoreLocation.framework */; };
-		D1A0F7351A710EDA00981257 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7341A710EDA00981257 /* CoreText.framework */; };
-		D1A0F7371A710EE300981257 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7361A710EE300981257 /* GLKit.framework */; };
-		D1A0F7391A710EEC00981257 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7381A710EEC00981257 /* ImageIO.framework */; };
-		D1A0F73B1A710EF700981257 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F73A1A710EF700981257 /* libc++.dylib */; };
-		D1A0F73D1A710F0300981257 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F73C1A710F0300981257 /* libicucore.dylib */; };
-		D1A0F73F1A710F0B00981257 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F73E1A710F0B00981257 /* libz.dylib */; };
-		D1A0F7411A710F1300981257 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7401A710F1300981257 /* OpenGLES.framework */; };
 		D1A0F7431A710F1B00981257 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7421A710F1B00981257 /* QuartzCore.framework */; };
 		D1A0F7451A710F2200981257 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7441A710F2200981257 /* SystemConfiguration.framework */; };
 		D1A0F7491A7115ED00981257 /* icon-map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F7481A7115ED00981257 /* icon-map@2x.png */; };
@@ -51,6 +41,7 @@
 		D1A9E16F1A7FABA900E06F02 /* CLLocationHumanReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9E16E1A7FABA900E06F02 /* CLLocationHumanReadable.swift */; };
 		D1A9E1731A8536DD00E06F02 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9E1721A8536DD00E06F02 /* MapViewController.swift */; };
 		D1A9E1751A8542D900E06F02 /* MuseumAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9E1741A8542D900E06F02 /* MuseumAnnotation.swift */; };
+		D1A9E1771A854C0F00E06F02 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A9E1761A854C0F00E06F02 /* MapKit.framework */; };
 		D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -118,6 +109,7 @@
 		D1A9E16E1A7FABA900E06F02 /* CLLocationHumanReadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocationHumanReadable.swift; sourceTree = "<group>"; };
 		D1A9E1721A8536DD00E06F02 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D1A9E1741A8542D900E06F02 /* MuseumAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumAnnotation.swift; sourceTree = "<group>"; };
+		D1A9E1761A854C0F00E06F02 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,17 +120,8 @@
 			files = (
 				D1A0F7451A710F2200981257 /* SystemConfiguration.framework in Frameworks */,
 				D1A0F7431A710F1B00981257 /* QuartzCore.framework in Frameworks */,
-				D1A0F7411A710F1300981257 /* OpenGLES.framework in Frameworks */,
-				D1A0F73F1A710F0B00981257 /* libz.dylib in Frameworks */,
-				D1A0F73D1A710F0300981257 /* libicucore.dylib in Frameworks */,
-				D1A0F73B1A710EF700981257 /* libc++.dylib in Frameworks */,
-				D1A0F7391A710EEC00981257 /* ImageIO.framework in Frameworks */,
-				D1A0F7371A710EE300981257 /* GLKit.framework in Frameworks */,
-				D1A0F7351A710EDA00981257 /* CoreText.framework in Frameworks */,
+				D1A9E1771A854C0F00E06F02 /* MapKit.framework in Frameworks */,
 				D1A0F7331A710ED400981257 /* CoreLocation.framework in Frameworks */,
-				D1A0F7311A710ECA00981257 /* CoreData.framework in Frameworks */,
-				D1A0F72F1A710EC100981257 /* AVFoundation.framework in Frameworks */,
-				D155CC781A4B5EFD0072E183 /* Photos.framework in Frameworks */,
 				D155CC761A4B5EEF0072E183 /* AssetsLibrary.framework in Frameworks */,
 				794EA81022A7750756EEF22C /* libPods.a in Frameworks */,
 			);
@@ -166,6 +149,7 @@
 		3C3CA6EDE177BA748BB8C00F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D1A9E1761A854C0F00E06F02 /* MapKit.framework */,
 				D1A0F7441A710F2200981257 /* SystemConfiguration.framework */,
 				D1A0F7421A710F1B00981257 /* QuartzCore.framework */,
 				D1A0F7401A710F1300981257 /* OpenGLES.framework */,
@@ -352,6 +336,11 @@
 					D1A937351A3F13CE00CE8E9F = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = 9BC9H7L8K6;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					D1A9374A1A3F13CE00CE8E9F = {
 						CreatedOnToolsVersion = 6.1.1;
