@@ -42,6 +42,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         mapView.addOverlay(overlay, level: MKOverlayLevel.AboveLabels)
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "markersUpdated:", name: kKIMNotificationMuseumsUpdated, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "markersUpdated:", name: kKIMNotificationEventsUpdated, object: nil)
         updateMarkers()
     }
 
@@ -63,12 +64,23 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
 
     func updateMarkers() {
-        let mapView = view as MKMapView
-        mapView.removeAnnotations(mapView.annotations)
-        museums = DataModel.sharedInstance.museums
-        for museum in museums {
-            let annotation = MuseumAnnotation(museum: museum)
-            mapView.addAnnotation(annotation)
+        if DataModel.sharedInstance.dataLoaded() {
+            let mapView = view as MKMapView
+            mapView.removeAnnotations(mapView.annotations)
+            var museumsWithEvents = NSMutableSet()
+            for event in DataModel.sharedInstance.events {
+                museumsWithEvents.addObject(event.museumUserId)
+            }
+            museums.removeAll(keepCapacity: false)
+            for museum in DataModel.sharedInstance.museums {
+                if museumsWithEvents.containsObject(museum.id) {
+                    museums.append(museum)
+                }
+            }
+            for museum in museums {
+                let annotation = MuseumAnnotation(museum: museum)
+                mapView.addAnnotation(annotation)
+            }
         }
     }
 
