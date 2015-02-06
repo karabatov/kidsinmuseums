@@ -109,6 +109,37 @@ public class EventTime: Deserializable {
     var durationHours: Int = -1
     var durationMinutes: Int = -30
 
+    public func timeString() -> String {
+        var timeFormat = NSDateFormatter.dateFormatFromTemplate("jm", options: 0, locale: NSLocale.currentLocale())
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = timeFormat
+        let timeFromStr = dateFormatter.stringFromDate(timeFrom)
+        if durationHours >= 0 && durationMinutes >= 0 {
+            let endTime = NSDate(timeInterval: Double(durationHours) * 3600 + Double(durationMinutes) * 60, sinceDate: timeFrom)
+            let timeToStr = dateFormatter.stringFromDate(endTime)
+            return String(format: NSLocalizedString("%@ to %@", comment: "Event duration, time only"), timeFromStr, timeToStr)
+        } else {
+            return String(format: NSLocalizedString("starts at %@", comment: "Event duration if no end time, time only"), timeFromStr)
+        }
+    }
+
+    public func dateString() -> String {
+        var timeFormat = NSDateFormatter.dateFormatFromTemplate("dMMMM", options: 0, locale: NSLocale.currentLocale())
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = timeFormat
+        return dateFormatter.stringFromDate(timeFrom)
+    }
+
+    public func humanReadable(filterMode: EventFilterMode) -> String {
+        switch filterMode {
+        case .Date: return timeString()
+        case .Proximity, .Rating:
+            let date = dateString()
+            let time = timeString()
+            return String(format: NSLocalizedString("%@, %@", comment: "Full event date string"), dateString(), timeString())
+        }
+    }
+
     required public init(data: [String : AnyObject]) {
         id <<< data["id"]
         eventId <<< data["event_id"]

@@ -6,12 +6,17 @@
 //  Copyright (c) 2015 Golova Media. All rights reserved.
 //
 
+public enum EventFilterMode {
+    case Date, Proximity, Rating
+}
+
 class EventsListViewController: UIViewController, ASTableViewDataSource, ASTableViewDelegate {
     var listView = ASTableView()
     var eventItems: [Event] = [Event]()
     var refreshControl: UIRefreshControl?
     var bgView = NoDataView()
     var location: CLLocation?
+    var filterMode = EventFilterMode.Proximity
 
     // MARK: UIViewController
 
@@ -121,7 +126,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func tableView(tableView: ASTableView!, nodeForRowAtIndexPath indexPath: NSIndexPath!) -> ASCellNode! {
         let event = eventItems[indexPath.row]
-        let node = EventCell(event: event, location: location)
+        let node = EventCell(event: event, filterMode: filterMode, referenceDate: NSDate(), location: location)
         return node
     }
 

@@ -1,8 +1,14 @@
+/* Distance in km format */
+"%0.0f km" = "%0.0f км";
+
 /* Distance in m format */
 "%0.0f m" = "%0.0f м";
 
-/* Distance in km format */
-"%0.0f km" = "%0.0f км";
+/* Event duration, time only */
+"%@ to %@" = "с %1$@ до %2$@";
+
+/* Full event date string */
+"%@, %@" = "%1$@ %2$@";
 
 /* About the app */
 "About the app" = "О приложении";
@@ -43,8 +49,8 @@
 /* Vkontakte */
 "Vkontakte" = "Вконтакте";
 
-/* 5 – 7 */
-"\(fromAge) – \(toAge) " = "\(fromAge) – \(toAge) ";
+/* Event duration if no end time, time only */
+"starts at %@" = "с %@";
 
 /* x1 (except 11) */
 "year1" = "год";

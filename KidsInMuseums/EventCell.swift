@@ -14,17 +14,22 @@ public class EventCell: ASCellNode {
     let museumRef: Museum?
     var eventTitle: ASTextNode
     var museumNode: ASTextNode
+    var timeNode: ASTextNode
     var divider: ASDisplayNode
 
-    required public init(event: Event, location: CLLocation?) {
+    required public init(event: Event, filterMode: EventFilterMode, referenceDate: NSDate, location: CLLocation?) {
         eventRef = event
         eventTitle = ASTextNode()
         museumNode = ASTextNode()
+        timeNode = ASTextNode()
         divider = ASDisplayNode()
         super.init()
 
+        let caption1Font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+        let timeFontSize = caption1Font.pointSize - 2
         let headingParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), NSForegroundColorAttributeName: UIColor.blackColor()]
-        let museumParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor(red: 74.0/255.0, green: 74.0/255.0, blue: 74.0/255.0, alpha: 1.0)]
+        let museumParams = [NSFontAttributeName: caption1Font, NSForegroundColorAttributeName: UIColor(red: 74.0/255.0, green: 74.0/255.0, blue: 74.0/255.0, alpha: 1.0)]
+        let timeParams = [NSFontAttributeName: UIFont.systemFontOfSize(timeFontSize), NSForegroundColorAttributeName: UIColor(red: 151.0/255.0, green: 151.0/255.0, blue: 151.0/255.0, alpha: 1.0)]
 
         var wholeTitleStr = NSMutableAttributedString()
         let titleStr = NSAttributedString(string: "\(event.name)   ", attributes: headingParams)
@@ -50,12 +55,35 @@ public class EventCell: ASCellNode {
             museumStr.appendAttributedString(museumTitleStr)
         }
 
+        var chosenEvent: EventTime?
+        if let eventTimes = event.eventTimes {
+            for eventTime in eventTimes {
+                if chosenEvent == nil && eventTime.timeFrom.compare(referenceDate) == NSComparisonResult.OrderedDescending {
+                    chosenEvent = eventTime
+                    continue
+                }
+                if eventTime.timeFrom.compare(referenceDate) == NSComparisonResult.OrderedDescending && eventTime.timeFrom.compare(chosenEvent!.timeFrom) == NSComparisonResult.OrderedAscending {
+                    chosenEvent = eventTime
+                }
+            }
+        }
+        var timeStr = NSMutableAttributedString()
+        if let showEvent = chosenEvent {
+            let showTimeStr = NSAttributedString(string: showEvent.humanReadable(filterMode), attributes: timeParams)
+            timeStr.appendAttributedString(showTimeStr)
+        }
+
+        eventTitle.placeholderColor = UIColor.whiteColor()
         eventTitle.attributedString = wholeTitleStr
+        museumNode.placeholderColor = UIColor.whiteColor()
         museumNode.attributedString = museumStr
+        timeNode.placeholderColor = UIColor.whiteColor()
+        timeNode.attributedString = timeStr
         divider.backgroundColor = UIColor.lightGrayColor()
 
         self.addSubnode(eventTitle)
         self.addSubnode(museumNode)
+        self.addSubnode(timeNode)
         self.addSubnode(divider)
         self.backgroundColor = UIColor.whiteColor()
     }
@@ -64,7 +92,8 @@ public class EventCell: ASCellNode {
         let cSize = CGSizeMake(constrainedSize.width - 2 * kEventCellMargin, CGFloat.max)
         let titleSize: CGSize = eventTitle.measure(cSize)
         let museumSize: CGSize = museumNode.measure(cSize)
-        return CGSizeMake(constrainedSize.width, titleSize.height + kEventCellMarginIntra + museumSize.height + 2 * kEventCellMargin)
+        let timeSize: CGSize = timeNode.measure(cSize)
+        return CGSizeMake(constrainedSize.width, titleSize.height + museumSize.height + timeSize.height + kEventCellMarginIntra * 2 + kEventCellMargin * 2)
     }
 
     public override func layout() {
@@ -72,8 +101,10 @@ public class EventCell: ASCellNode {
         divider.frame = CGRectMake(0.0, 0.0, calculatedSize.width, pixelHeight)
         let titleSize = eventTitle.calculatedSize
         let museumSize = museumNode.calculatedSize
+        let timeSize = museumNode.calculatedSize
         eventTitle.frame = CGRectMake(kEventCellMargin, kEventCellMargin, titleSize.width, titleSize.height)
         museumNode.frame = CGRectMake(kEventCellMargin, kEventCellMargin + titleSize.height + kEventCellMarginIntra, museumSize.width, museumSize.height)
+        timeNode.frame = CGRectMake(kEventCellMargin, kEventCellMargin + titleSize.height + museumSize.height + kEventCellMarginIntra * 2, timeSize.width, timeSize.height)
     }
 
     func attachmentImageForAge(from fromAge: Int, to toAge: Int) -> UIImage {
