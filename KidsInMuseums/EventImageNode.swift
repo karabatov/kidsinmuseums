@@ -7,20 +7,16 @@
 //
 
 class EventImageNode: ASCellNode, ASMultiplexImageNodeDataSource {
-    let image: KImage
     var imageNode: ASMultiplexImageNode
-    var images: [String]
 
     required init(image: KImage) {
-        self.image = image
-
-        images = [String]()
+        var images = [String]()
         images.append(image.url)
         if let thumbURL = image.thumb?.url {
-            self.images.append(thumbURL)
+            images.append(thumbURL)
         }
         if let thumb2URL = image.thumb2?.url {
-            self.images.append(thumb2URL)
+            images.append(thumb2URL)
         }
 
         imageNode = ASMultiplexImageNode(cache: nil, downloader: ASBasicImageDownloader())
@@ -28,6 +24,7 @@ class EventImageNode: ASCellNode, ASMultiplexImageNodeDataSource {
         imageNode.contentMode = UIViewContentMode.ScaleAspectFill
 
         super.init()
+
         imageNode.dataSource = self
         imageNode.imageIdentifiers = nil
         imageNode.imageIdentifiers = images
