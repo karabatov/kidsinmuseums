@@ -276,7 +276,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         if let event = eventForIndexPath(indexPath) {
-            let eventItemVC = EventItemViewController(event: event)
+            let eventItemVC = EventItemViewController(event: event, frame: view.bounds)
             navigationController?.pushViewController(eventItemVC, animated: true)
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }

@@ -50,6 +50,7 @@
 		D1D4849F1A892E630028C6F4 /* EventMuseumNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D4849E1A892E630028C6F4 /* EventMuseumNode.swift */; };
 		D1D484A11A89361D0028C6F4 /* EventScheduleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484A01A89361D0028C6F4 /* EventScheduleNode.swift */; };
 		D1D484A31A89445A0028C6F4 /* EventDescTitleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484A21A89445A0028C6F4 /* EventDescTitleNode.swift */; };
+		D1D484A51A8949E40028C6F4 /* EventDescriptionNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484A41A8949E40028C6F4 /* EventDescriptionNode.swift */; };
 		D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -126,6 +127,7 @@
 		D1D4849E1A892E630028C6F4 /* EventMuseumNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventMuseumNode.swift; sourceTree = "<group>"; };
 		D1D484A01A89361D0028C6F4 /* EventScheduleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventScheduleNode.swift; sourceTree = "<group>"; };
 		D1D484A21A89445A0028C6F4 /* EventDescTitleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDescTitleNode.swift; sourceTree = "<group>"; };
+		D1D484A41A8949E40028C6F4 /* EventDescriptionNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDescriptionNode.swift; sourceTree = "<group>"; };
 		D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -222,6 +224,7 @@
 				D1D4849E1A892E630028C6F4 /* EventMuseumNode.swift */,
 				D1D484A01A89361D0028C6F4 /* EventScheduleNode.swift */,
 				D1D484A21A89445A0028C6F4 /* EventDescTitleNode.swift */,
+				D1D484A41A8949E40028C6F4 /* EventDescriptionNode.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -469,6 +472,7 @@
 				D1A9E1611A7D01D200E06F02 /* MoreScreen.swift in Sources */,
 				D1D4849D1A892D4E0028C6F4 /* UIColorKIMColor.swift in Sources */,
 				D1A9E1751A8542D900E06F02 /* MuseumAnnotation.swift in Sources */,
+				D1D484A51A8949E40028C6F4 /* EventDescriptionNode.swift in Sources */,
 				D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */,
 				D1D484A31A89445A0028C6F4 /* EventDescTitleNode.swift in Sources */,
 				D1D484971A891E0F0028C6F4 /* EventImageNode.swift in Sources */,

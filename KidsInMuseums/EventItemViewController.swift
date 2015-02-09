@@ -10,13 +10,15 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
     let event: Event
     let listView = ASTableView()
     var numberOfRows = 0
+    var smallFrame: CGRect
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    required init(event: Event) {
+    required init(event: Event, frame b: CGRect) {
         self.event = event
+        smallFrame = b
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -25,14 +27,13 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
         self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | .FlexibleWidth
         self.view.backgroundColor = UIColor.whiteColor()
         self.edgesForExtendedLayout = UIRectEdge.None
-        let b = self.view.bounds
-        listView.frame = b
+        listView.frame = smallFrame
         view.addSubview(listView)
         listView.separatorStyle = UITableViewCellSeparatorStyle.None
         listView.backgroundColor = UIColor.whiteColor()
 
         // Calculate the number of rows
-        numberOfRows += 5 // 6 rows are always present
+        numberOfRows += 6 // 6 rows are always present
         // Here be reviews calculation
 
         listView.asyncDataSource = self
@@ -60,6 +61,9 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
         case 4:
             let descNode = EventDescTitleNode()
             return descNode
+        case 5:
+            let textNode = EventDescriptionNode(description: event.description)
+            return textNode
         default:
             return ASCellNode()
         }
