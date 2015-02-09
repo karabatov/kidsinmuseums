@@ -90,8 +90,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     internal func requestLocationPermissions() {
         let status = CLLocationManager.authorizationStatus()
         if (CLLocationManager.authorizationStatus() == .NotDetermined) {
-            if (CLLocationManager.respondsToSelector("requestWhenInUseAuthorization")) {
-                location?.requestWhenInUseAuthorization()
+            if let loc = location {
+                if loc.respondsToSelector("requestWhenInUseAuthorization") {
+                    loc.requestWhenInUseAuthorization()
+                }
             }
         }
     }
