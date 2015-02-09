@@ -166,6 +166,7 @@ public class Event: Deserializable {
     var shortDescription: String = ""
     var eventTimes: [EventTime]?
     var tags: [String] = [String]()
+    var rating: Double = 0.0
 
     required public init(data: [String : AnyObject]) {
         id <<< data["id"]
@@ -178,6 +179,7 @@ public class Event: Deserializable {
         shortDescription <<< data["short_description"]
         eventTimes <<<<* data["event_times"]
         tags <<<* data["tags"]
+        rating <<< data["avg_rating"]
     }
 
     public func earliestEventTime(afterDate: NSDate) -> EventTime? {
