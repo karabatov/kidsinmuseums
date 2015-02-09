@@ -104,7 +104,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
             listView.frame = b
             self.bgView.measure(a.size)
             self.bgView.frame = a
-            listView.reloadData()
+//            listView.reloadData()
         }
     }
 
@@ -180,9 +180,11 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 return e1.rating > e2.rating
             })
 
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.listView.reloadData()
-            })
+            self.listView.reloadData()
+
+//            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//
+//            })
         })
     }
 
@@ -209,10 +211,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func locationUpdated(notification: NSNotification) {
         if let loc = notification.userInfo?[kKIMLocationUpdatedKey] as? CLLocation {
-            dispatch_async(dispatch_get_main_queue(), {
-                self.location = loc
-                self.listView.reloadRowsAtIndexPaths(self.listView.indexPathsForVisibleRows(), withRowAnimation: UITableViewRowAnimation.Automatic)
-            })
+            self.location = loc
+            self.listView.reloadRowsAtIndexPaths(self.listView.indexPathsForVisibleRows(), withRowAnimation: UITableViewRowAnimation.Automatic)
         }
     }
 
@@ -220,11 +220,15 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch filterMode {
-        case .Date: return eventsByDay[section].count
+        case .Date:
+            if eventsByDay.count > section {
+                return eventsByDay[section].count
+            }
         case .Distance: return eventsByDistance.count
         case .Rating: return eventsByRating.count
         default: return eventItems.count
         }
+        return 0
     }
 
     func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
@@ -236,7 +240,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func tableView(tableView: ASTableView!, nodeForRowAtIndexPath indexPath: NSIndexPath!) -> ASCellNode! {
         var referenceDate = NSDate()
-        if filterMode == .Date {
+        if filterMode == .Date && days.count > indexPath.section {
             referenceDate = days[indexPath.section]
         }
 
@@ -291,7 +295,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         case 2: self.filterMode = .Rating
         default: fatalError("The segment that should not be!")
         }
-        listView.reloadData()
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            self.listView.reloadData()
+        })
     }
 
     // MARK: Helpers
@@ -300,7 +306,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         var event: Event?
         switch filterMode {
         case .Date:
-            event = eventsByDay[indexPath.section][indexPath.row]
+            if eventsByDay.count > indexPath.section {
+                event = eventsByDay[indexPath.section][indexPath.row]
+            }
         case .Distance:
             event = eventsByDistance[indexPath.row]
         case .Rating:
