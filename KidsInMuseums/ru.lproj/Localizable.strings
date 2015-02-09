@@ -25,6 +25,9 @@
 /* Date filter segment */
 "Date" = "По дате";
 
+/* Event screen description subtitle */
+"Description" = "Описание";
+
 /* Distance filter segment */
 "Distance" = "По близости";
 
