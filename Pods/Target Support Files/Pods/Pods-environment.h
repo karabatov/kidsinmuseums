@@ -18,6 +18,12 @@
 #define COCOAPODS_VERSION_MINOR_AsyncDisplayKit_ASDealloc2MainObject 1
 #define COCOAPODS_VERSION_PATCH_AsyncDisplayKit_ASDealloc2MainObject 1
 
+// BDBSpinKitRefreshControl
+#define COCOAPODS_POD_AVAILABLE_BDBSpinKitRefreshControl
+#define COCOAPODS_VERSION_MAJOR_BDBSpinKitRefreshControl 1
+#define COCOAPODS_VERSION_MINOR_BDBSpinKitRefreshControl 0
+#define COCOAPODS_VERSION_PATCH_BDBSpinKitRefreshControl 3
+
 // FontAwesomeKit/Core
 #define COCOAPODS_POD_AVAILABLE_FontAwesomeKit_Core
 #define COCOAPODS_VERSION_MAJOR_FontAwesomeKit_Core 2
@@ -41,4 +47,10 @@
 #define COCOAPODS_VERSION_MAJOR_SDWebImage_Core 3
 #define COCOAPODS_VERSION_MINOR_SDWebImage_Core 7
 #define COCOAPODS_VERSION_PATCH_SDWebImage_Core 1
+
+// SpinKit
+#define COCOAPODS_POD_AVAILABLE_SpinKit
+#define COCOAPODS_VERSION_MAJOR_SpinKit 1
+#define COCOAPODS_VERSION_MINOR_SpinKit 2
+#define COCOAPODS_VERSION_PATCH_SpinKit 0
 

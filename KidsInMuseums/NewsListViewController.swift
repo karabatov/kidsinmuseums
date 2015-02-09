@@ -12,7 +12,7 @@ import UIKit
 class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewDataSource {
     var listView = ASTableView()
     var newsItems: [NewsItem] = [NewsItem]()
-    var refreshControl: UIRefreshControl?
+    var refreshControl: BDBSpinKitRefreshControl?
     var bgView = NoDataView()
 
     // MARK: UIViewController
@@ -63,7 +63,7 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
 
     override func viewDidAppear(animated: Bool) {
         if (refreshControl == nil) {
-            refreshControl = UIRefreshControl()
+            refreshControl = BDBSpinKitRefreshControl(style: RTSpinKitViewStyle.StyleThreeBounce, color: UIColor.whiteColor())
             refreshControl?.backgroundColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
             refreshControl?.tintColor = UIColor.whiteColor()
             refreshControl?.addTarget(self, action: "updateNews", forControlEvents: UIControlEvents.ValueChanged)

@@ -36,7 +36,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     var eventItems: [Event] = [Event]()
     var eventsByDay = [[Event]]()
     var eventsByDistance = [Event]()
-    var refreshControl: UIRefreshControl?
+    var eventsByRating = [Event]()
+    var refreshControl: BDBSpinKitRefreshControl?
     var bgView = NoDataView()
     var location: CLLocation?
     var filterMode = EventFilterMode.Date
@@ -116,8 +117,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     override func viewDidAppear(animated: Bool) {
         if (refreshControl == nil) {
-            refreshControl = UIRefreshControl()
-            refreshControl?.backgroundColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
+            refreshControl = BDBSpinKitRefreshControl(style: RTSpinKitViewStyle.StyleThreeBounce, color: UIColor.whiteColor())
+            let purpleColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
+            refreshControl?.backgroundColor = purpleColor
             refreshControl?.tintColor = UIColor.whiteColor()
             refreshControl?.addTarget(self, action: "updateEvents", forControlEvents: UIControlEvents.ValueChanged)
             listView.addSubview(refreshControl!)
