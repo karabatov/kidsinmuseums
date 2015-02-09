@@ -46,6 +46,9 @@
 /* News controller title */
 "News" = "Новости";
 
+/* Next event introduction text, event details screen */
+"Next event: %@" = "Следующее событие: %@";
+
 /* Message when there is no data in the news table view */
 "No data is currently available. Please pull down to refresh." = "Здесь пока ничего нет. Потяните вниз, чтобы загрузить данные.";
 

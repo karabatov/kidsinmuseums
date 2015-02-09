@@ -12,7 +12,7 @@ class EventMuseumNode: ASCellNode {
     let textNode = ASTextNode()
     let kEventMuseumNodeMarginH: CGFloat = 16.0
     let kEventMuseumNodeMarginV: CGFloat = 6.0
-    let kEventMuseumNodePinFontSize: CGFloat = 12.0
+    let kEventMuseumNodePinFontSize: CGFloat = 14.0
 
     required init(museumId: Int) {
         if let mus = DataModel.sharedInstance.findMuseum(museumId) {

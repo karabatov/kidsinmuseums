@@ -32,7 +32,7 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
         listView.backgroundColor = UIColor.whiteColor()
 
         // Calculate the number of rows
-        numberOfRows += 3 // 6 rows are always present
+        numberOfRows += 4 // 6 rows are always present
         // Here be reviews calculation
 
         listView.asyncDataSource = self
@@ -54,6 +54,9 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
         case 2:
             let museumNode = EventMuseumNode(museumId: event.museumUserId)
             return museumNode
+        case 3:
+            let timeNode = EventScheduleNode(event: event)
+            return timeNode
         default:
             return ASCellNode()
         }
@@ -66,5 +69,9 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return numberOfRows
+    }
+
+    func tableView(tableView: UITableView!, shouldHighlightRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
+        return false
     }
 }
