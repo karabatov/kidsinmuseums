@@ -47,6 +47,7 @@
 		D1D484991A8926870028C6F4 /* NSTextAttachmentAge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484981A8926870028C6F4 /* NSTextAttachmentAge.swift */; };
 		D1D4849B1A89291C0028C6F4 /* EventTitleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D4849A1A89291C0028C6F4 /* EventTitleNode.swift */; };
 		D1D4849D1A892D4E0028C6F4 /* UIColorKIMColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D4849C1A892D4E0028C6F4 /* UIColorKIMColor.swift */; };
+		D1D4849F1A892E630028C6F4 /* EventMuseumNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D4849E1A892E630028C6F4 /* EventMuseumNode.swift */; };
 		D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -120,6 +121,7 @@
 		D1D484981A8926870028C6F4 /* NSTextAttachmentAge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextAttachmentAge.swift; sourceTree = "<group>"; };
 		D1D4849A1A89291C0028C6F4 /* EventTitleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTitleNode.swift; sourceTree = "<group>"; };
 		D1D4849C1A892D4E0028C6F4 /* UIColorKIMColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorKIMColor.swift; sourceTree = "<group>"; };
+		D1D4849E1A892E630028C6F4 /* EventMuseumNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventMuseumNode.swift; sourceTree = "<group>"; };
 		D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -213,6 +215,7 @@
 				D1A9E1741A8542D900E06F02 /* MuseumAnnotation.swift */,
 				D1D484961A891E0F0028C6F4 /* EventImageNode.swift */,
 				D1D4849A1A89291C0028C6F4 /* EventTitleNode.swift */,
+				D1D4849E1A892E630028C6F4 /* EventMuseumNode.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -471,6 +474,7 @@
 				D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */,
 				D155CC741A4B49F50072E183 /* NewsItemViewController.swift in Sources */,
 				D1D4849B1A89291C0028C6F4 /* EventTitleNode.swift in Sources */,
+				D1D4849F1A892E630028C6F4 /* EventMuseumNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
