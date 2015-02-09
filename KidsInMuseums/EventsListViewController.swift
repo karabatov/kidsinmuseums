@@ -174,6 +174,13 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 })
             }
 
+            // Rating
+            self.eventsByRating.removeAll(keepCapacity: false)
+            self.eventsByRating.extend(events)
+            self.eventsByRating.sort({(e1: Event, e2: Event) -> Bool in
+                return e1.rating > e2.rating
+            })
+
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.listView.reloadData()
             })
@@ -187,8 +194,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     func eventItemsUpdated(notification: NSNotification) {
         if DataModel.sharedInstance.dataLoaded() {
             dispatch_async(dispatch_get_main_queue()) {
-                self.refreshControl?.endRefreshing()
                 self.fillAndReload()
+                self.refreshControl?.endRefreshing()
                 self.bgView.hidden = true
             }
         }
@@ -216,6 +223,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         switch filterMode {
         case .Date: return eventsByDay[section].count
         case .Distance: return eventsByDistance.count
+        case .Rating: return eventsByRating.count
         default: return eventItems.count
         }
     }
@@ -236,6 +244,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
             referenceDate = days[indexPath.section]
         case .Distance:
             event = eventsByDistance[indexPath.row]
+        case .Rating:
+            event = eventsByRating[indexPath.row]
         default:
             event = eventItems[indexPath.row]
         }
