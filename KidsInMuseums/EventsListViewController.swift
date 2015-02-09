@@ -236,21 +236,12 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     }
 
     func tableView(tableView: ASTableView!, nodeForRowAtIndexPath indexPath: NSIndexPath!) -> ASCellNode! {
-        var event: Event?
         var referenceDate = NSDate()
-        switch filterMode {
-        case .Date:
-            event = eventsByDay[indexPath.section][indexPath.row]
+        if filterMode == .Date {
             referenceDate = days[indexPath.section]
-        case .Distance:
-            event = eventsByDistance[indexPath.row]
-        case .Rating:
-            event = eventsByRating[indexPath.row]
-        default:
-            event = eventItems[indexPath.row]
         }
 
-        if let evt = event {
+        if let evt = self.eventForIndexPath(indexPath) {
             let node = EventCell(event: evt, filterMode: filterMode, referenceDate: referenceDate, location: location)
             return node
         }
@@ -285,6 +276,11 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     }
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        if let event = eventForIndexPath(indexPath) {
+            let eventItemVC = EventItemViewController(event: event)
+            navigationController?.pushViewController(eventItemVC, animated: true)
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
     }
 
     // MARK: UISegmentedControl
@@ -300,6 +296,21 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     }
 
     // MARK: Helpers
+
+    func eventForIndexPath(indexPath: NSIndexPath) -> Event? {
+        var event: Event?
+        switch filterMode {
+        case .Date:
+            event = eventsByDay[indexPath.section][indexPath.row]
+        case .Distance:
+            event = eventsByDistance[indexPath.row]
+        case .Rating:
+            event = eventsByRating[indexPath.row]
+        default:
+            event = eventItems[indexPath.row]
+        }
+        return event
+    }
 
     func segControlFrame() -> CGRect {
         return CGRectMake(kKIMSegmentedControlMarginH, kKIMSegmentedControlMarginV, UIScreen.mainScreen().bounds.size.width - kKIMSegmentedControlMarginH * 2, kKIMSegmentedControlHeight)
