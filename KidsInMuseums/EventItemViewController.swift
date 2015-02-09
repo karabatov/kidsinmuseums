@@ -32,7 +32,7 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
         listView.backgroundColor = UIColor.whiteColor()
 
         // Calculate the number of rows
-        numberOfRows += 1 // 6 rows are always present
+        numberOfRows += 2 // 6 rows are always present
         // Here be reviews calculation
 
         listView.asyncDataSource = self
@@ -48,6 +48,9 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
                 let imageNode = EventImageNode(image: image)
                 return imageNode
             }
+        case 1:
+            let titleNode = EventTitleNode(name: event.name, ageFrom: event.ageFrom, ageTo: event.ageTo)
+            return titleNode
         default:
             return ASCellNode()
         }
