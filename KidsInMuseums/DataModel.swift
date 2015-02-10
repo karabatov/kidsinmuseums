@@ -169,6 +169,28 @@ public class EventHumanTime: Deserializable {
     }
 }
 
+public class KUser: Deserializable {
+    var id: Int = -1
+    var name: String = ""
+
+    required public init(data: [String : AnyObject]) {
+        id <<< data["id"]
+        name <<< data["name"]
+    }
+}
+
+public class Review: Deserializable {
+    var text: String = ""
+    var user: KUser?
+    var createdAt: NSDate = NSDate(timeIntervalSince1970: 0)
+
+    required public init(data: [String : AnyObject]) {
+        text <<< data["text"]
+        user <<<< data["user"]
+        createdAt <<< (value: data["created_at"], format: kKIMAPIDateFormat)
+    }
+}
+
 public class Event: Deserializable {
     var id: Int = -1
     var name: String = ""
@@ -182,6 +204,7 @@ public class Event: Deserializable {
     var tags: [String] = [String]()
     var rating: Double = 0.0
     var eventHumanTimes: [EventHumanTime]?
+    var reviews: [Review]?
 
     required public init(data: [String : AnyObject]) {
         id <<< data["id"]
@@ -196,6 +219,7 @@ public class Event: Deserializable {
         tags <<<* data["tags"]
         rating <<< data["avg_rating"]
         eventHumanTimes <<<<* data["event_human_times"]
+        reviews <<<<* data["reviews"]
     }
 
     public func earliestEventTime(afterDate: NSDate) -> EventTime? {

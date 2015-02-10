@@ -13,12 +13,12 @@ class EventDescTitleNode: ASCellNode {
     let kEventDescTitleNodeMarginH: CGFloat = 16.0
     let kEventDescTitleNodeMarginV: CGFloat = 6.0
 
-    required override init() {
+    required init(text: String) {
         let textParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote), NSForegroundColorAttributeName: UIColor(red: 74.0/255.0, green: 74.0/255.0, blue: 74.0/255.0, alpha: 1.0)]
         let dividerColor = UIColor(red: 200.0/255.0, green: 199.0/255.0, blue: 204.0/255.0, alpha: 1.0)
         let bgColor = UIColor(red: 247.0/255.0, green: 247.0/255.0, blue: 247.0/255.0, alpha: 1.0)
 
-        let textStr = NSAttributedString(string: NSLocalizedString("Description", comment: "Event screen description subtitle"), attributes: textParams)
+        let textStr = NSAttributedString(string: text, attributes: textParams)
         textNode.attributedString = textStr
 
         dividerTop.backgroundColor = dividerColor

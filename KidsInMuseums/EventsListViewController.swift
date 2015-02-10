@@ -310,9 +310,13 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 event = eventsByDay[indexPath.section][indexPath.row]
             }
         case .Distance:
-            event = eventsByDistance[indexPath.row]
+            if eventsByDistance.count > indexPath.row {
+                event = eventsByDistance[indexPath.row]
+            }
         case .Rating:
-            event = eventsByRating[indexPath.row]
+            if eventsByRating.count > indexPath.row {
+                event = eventsByRating[indexPath.row]
+            }
         default:
             event = eventItems[indexPath.row]
         }

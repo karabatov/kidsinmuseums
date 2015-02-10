@@ -58,6 +58,9 @@
 /* Rating filter segment */
 "Rating" = "По рейтингу";
 
+/* Review section description subtitle */
+"Reviews" = "Отзывы";
+
 /* Search */
 "Search" = "Поиск";
 

@@ -9,6 +9,7 @@
 class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableViewDelegate {
     let event: Event
     let listView = ASTableView()
+    var reviews = [Review]()
     var numberOfRows = 0
     var smallFrame: CGRect
 
@@ -18,6 +19,14 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
 
     required init(event: Event, frame b: CGRect) {
         self.event = event
+        if let reviews = event.reviews {
+            if reviews.count > 0 {
+                self.reviews.extend(reviews)
+                self.reviews.sort({(r1: Review, r2: Review) -> Bool in
+                    return r1.createdAt.compare(r2.createdAt) == NSComparisonResult.OrderedAscending
+                })
+            }
+        }
         smallFrame = b
         super.init(nibName: nil, bundle: nil)
     }
@@ -34,7 +43,10 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
 
         // Calculate the number of rows
         numberOfRows += 6 // 6 rows are always present
-        // Here be reviews calculation
+        if reviews.count > 0 {
+            numberOfRows++
+            numberOfRows += reviews.count
+        }
 
         listView.asyncDataSource = self
         listView.asyncDelegate = self
@@ -59,12 +71,20 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
             let timeNode = EventScheduleNode(event: event)
             return timeNode
         case 4:
-            let descNode = EventDescTitleNode()
+            let descNode = EventDescTitleNode(text: NSLocalizedString("Description", comment: "Event screen description subtitle"))
             return descNode
         case 5:
             let textNode = EventDescriptionNode(description: event.description)
             return textNode
+        case 6:
+            let reviewTitleNode = EventDescTitleNode(text: NSLocalizedString("Reviews", comment: "Review section description subtitle"))
+            return reviewTitleNode
         default:
+            if reviews.count > indexPath.row - 7 {
+                let review = reviews[indexPath.row - 7]
+                let reviewNode = EventReviewNode(review: review)
+                return reviewNode
+            }
             return ASCellNode()
         }
         return ASCellNode()
