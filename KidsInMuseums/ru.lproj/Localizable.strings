@@ -16,6 +16,9 @@
 /* About the project */
 "About the project" = "О проекте";
 
+/* Address, museum info card */
+"Address: " = "Адрес: ";
+
 /* Navbar back button title */
 "Back" = "Назад";
 
@@ -54,6 +57,9 @@
 
 /* Message when there is no data in the news table view */
 "No data is currently available. Please pull down to refresh." = "Здесь пока ничего нет. Потяните вниз, чтобы загрузить данные.";
+
+/* Phone, museum info card */
+"Phone: " = "Телефон: ";
 
 /* Rating filter segment */
 "Rating" = "По рейтингу";
