@@ -83,6 +83,8 @@ public class Museum: Deserializable {
     var longitude: Double = 0
     var previewImage: KImage?
     var shortDescription: String = ""
+    var phone: String = ""
+    var site: String = ""
 
     required public init(data: [String : AnyObject]) {
         id <<< data["id"]
@@ -99,6 +101,8 @@ public class Museum: Deserializable {
         longitude <<< data["longitude"]
         previewImage <<<< data["preview_image"]
         shortDescription <<< data["short_description"]
+        phone <<< data["phone"]
+        site <<< data["site"]
     }
 
     public func coordinate() -> CLLocationCoordinate2D {

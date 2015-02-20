@@ -11,8 +11,9 @@ import MapKit
 
 let kKIMMapPinAnnotationView = "com.yurikarabatov.kKIMMapPinAnnotationView"
 
-class MapViewController: UIViewController, MKMapViewDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDelegate {
     var museums: [Museum] = [Museum]()
+    let calloutView = SMCalloutView.platformCalloutView()
 
     // MARK: UIViewController
 
@@ -30,6 +31,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navbar back button title"), style: .Plain, target: nil, action: nil)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "location"), style: .Plain, target: self, action: "showMyLocation")
         edgesForExtendedLayout = UIRectEdge.None
+
+        calloutView.delegate = self
 
         let mapView = MKMapView()
         mapView.showsUserLocation = true
@@ -109,9 +112,24 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             annView.image = UIImage(named: "marker")
             annView.centerOffset = CGPointMake(0, -annView.image.size.height / 2)
             annView.enabled = true
-            annView.canShowCallout = true
+            annView.canShowCallout = false
             return annView
         }
         return nil
+    }
+
+    func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
+        if let museumAnnotation = view.annotation as? MuseumAnnotation {
+            calloutView.title = museumAnnotation.museum.name
+            calloutView.subtitle = museumAnnotation.museum.directions
+            calloutView.calloutOffset = view.calloutOffset
+            calloutView.constrainedInsets = UIEdgeInsetsMake(32.0, 32.0, 32.0, 32.0)
+
+            calloutView.presentCalloutFromRect(view.bounds, inView: view, constrainedToView: self.view, animated: true)
+        }
+    }
+
+    func mapView(mapView: MKMapView!, didDeselectAnnotationView view: MKAnnotationView!) {
+        calloutView.dismissCalloutAnimated(true)
     }
 }

@@ -7,4 +7,5 @@ pod 'SDWebImage'
 pod 'AsyncDisplayKit'
 pod 'FontAwesomeKit/FontAwesome'
 pod 'BDBSpinKitRefreshControl'
+pod 'SMCalloutView'
 
