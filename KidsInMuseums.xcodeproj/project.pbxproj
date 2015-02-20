@@ -20,7 +20,7 @@
 		D155CC811A4B73A50072E183 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC831A4B73A50072E183 /* InfoPlist.strings */; };
 		D155CC861A4B73A50072E183 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC881A4B73A50072E183 /* Localizable.strings */; };
 		D17476331A9764B700D588A2 /* MuseumInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17476321A9764B700D588A2 /* MuseumInfoView.swift */; };
-		D17476351A9765F200D588A2 /* MuseumTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17476341A9765F200D588A2 /* MuseumTitleView.swift */; };
+		D17476351A9765F200D588A2 /* TextDividerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17476341A9765F200D588A2 /* TextDividerNode.swift */; };
 		D174763A1A976EB600D588A2 /* SMCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = D17476371A976EB600D588A2 /* SMCalloutView.m */; };
 		D174763B1A976EB600D588A2 /* SMClassicCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = D17476391A976EB600D588A2 /* SMClassicCalloutView.m */; };
 		D1A0F7331A710ED400981257 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7321A710ED400981257 /* CoreLocation.framework */; };
@@ -87,7 +87,7 @@
 		D155CC821A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D155CC871A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D17476321A9764B700D588A2 /* MuseumInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumInfoView.swift; sourceTree = "<group>"; };
-		D17476341A9765F200D588A2 /* MuseumTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumTitleView.swift; sourceTree = "<group>"; };
+		D17476341A9765F200D588A2 /* TextDividerNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextDividerNode.swift; sourceTree = "<group>"; };
 		D17476361A976EB600D588A2 /* SMCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCalloutView.h; sourceTree = "<group>"; };
 		D17476371A976EB600D588A2 /* SMCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCalloutView.m; sourceTree = "<group>"; };
 		D17476381A976EB600D588A2 /* SMClassicCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMClassicCalloutView.h; sourceTree = "<group>"; };
@@ -240,7 +240,7 @@
 				D1D484A21A89445A0028C6F4 /* EventDescTitleNode.swift */,
 				D1D484A41A8949E40028C6F4 /* EventDescriptionNode.swift */,
 				D11049391A8A93F400B32316 /* EventReviewNode.swift */,
-				D17476341A9765F200D588A2 /* MuseumTitleView.swift */,
+				D17476341A9765F200D588A2 /* TextDividerNode.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -512,7 +512,7 @@
 				D1D484951A8915560028C6F4 /* EventItemViewController.swift in Sources */,
 				D1A9E16F1A7FABA900E06F02 /* CLLocationHumanReadable.swift in Sources */,
 				D1A9E16A1A7E44A700E06F02 /* EventCell.swift in Sources */,
-				D17476351A9765F200D588A2 /* MuseumTitleView.swift in Sources */,
+				D17476351A9765F200D588A2 /* TextDividerNode.swift in Sources */,
 				D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */,
 				D1D484A11A89361D0028C6F4 /* EventScheduleNode.swift in Sources */,
 				D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */,

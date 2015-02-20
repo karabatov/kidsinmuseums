@@ -14,7 +14,7 @@ let kKIMMapPinAnnotationView = "com.yurikarabatov.kKIMMapPinAnnotationView"
 class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDelegate {
     var museums: [Museum] = [Museum]()
     let calloutView = SMCalloutView.platformCalloutView()
-    let kCalloutMargin: CGFloat = 32.0
+    let kCalloutMargin: CGFloat = 14.0
 
     // MARK: UIViewController
 
