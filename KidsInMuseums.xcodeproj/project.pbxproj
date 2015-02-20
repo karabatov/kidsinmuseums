@@ -23,6 +23,9 @@
 		D17476351A9765F200D588A2 /* TextDividerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17476341A9765F200D588A2 /* TextDividerNode.swift */; };
 		D174763A1A976EB600D588A2 /* SMCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = D17476371A976EB600D588A2 /* SMCalloutView.m */; };
 		D174763B1A976EB600D588A2 /* SMClassicCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = D17476391A976EB600D588A2 /* SMClassicCalloutView.m */; };
+		D17476401A97816900D588A2 /* icon-phone@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D174763E1A97816900D588A2 /* icon-phone@3x.png */; };
+		D17476421A97836800D588A2 /* PhoneDividerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17476411A97836800D588A2 /* PhoneDividerNode.swift */; };
+		D17476441A9784E500D588A2 /* icon-phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D17476431A9784E500D588A2 /* icon-phone@2x.png */; };
 		D1A0F7331A710ED400981257 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7321A710ED400981257 /* CoreLocation.framework */; };
 		D1A0F7431A710F1B00981257 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7421A710F1B00981257 /* QuartzCore.framework */; };
 		D1A0F7451A710F2200981257 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7441A710F2200981257 /* SystemConfiguration.framework */; };
@@ -92,6 +95,9 @@
 		D17476371A976EB600D588A2 /* SMCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCalloutView.m; sourceTree = "<group>"; };
 		D17476381A976EB600D588A2 /* SMClassicCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMClassicCalloutView.h; sourceTree = "<group>"; };
 		D17476391A976EB600D588A2 /* SMClassicCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMClassicCalloutView.m; sourceTree = "<group>"; };
+		D174763E1A97816900D588A2 /* icon-phone@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-phone@3x.png"; sourceTree = "<group>"; };
+		D17476411A97836800D588A2 /* PhoneDividerNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneDividerNode.swift; sourceTree = "<group>"; };
+		D17476431A9784E500D588A2 /* icon-phone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-phone@2x.png"; sourceTree = "<group>"; };
 		D1A0F72E1A710EC100981257 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D1A0F7301A710ECA00981257 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		D1A0F7321A710ED400981257 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -241,6 +247,7 @@
 				D1D484A41A8949E40028C6F4 /* EventDescriptionNode.swift */,
 				D11049391A8A93F400B32316 /* EventReviewNode.swift */,
 				D17476341A9765F200D588A2 /* TextDividerNode.swift */,
+				D17476411A97836800D588A2 /* PhoneDividerNode.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -255,6 +262,8 @@
 				D1A0F7481A7115ED00981257 /* icon-map@2x.png */,
 				D1A9E15C1A7D01A000E06F02 /* icon-more@2x.png */,
 				D1A9E15D1A7D01A000E06F02 /* icon-more@3x.png */,
+				D17476431A9784E500D588A2 /* icon-phone@2x.png */,
+				D174763E1A97816900D588A2 /* icon-phone@3x.png */,
 				D1A0F75E1A72ADC700981257 /* location@2x.png */,
 				D1A0F75C1A72AB2200981257 /* logo@2x.png */,
 				D1A0F74A1A71318E00981257 /* marker@2x.png */,
@@ -429,6 +438,7 @@
 				D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */,
 				D1A0F75D1A72AB2200981257 /* logo@2x.png in Resources */,
 				D1A0F74D1A71318E00981257 /* marker@3x.png in Resources */,
+				D17476401A97816900D588A2 /* icon-phone@3x.png in Resources */,
 				D122D6DD1A697149009D30AB /* icon-news@2x.png in Resources */,
 				D155CC861A4B73A50072E183 /* Localizable.strings in Resources */,
 				D1A0F74C1A71318E00981257 /* marker@2x.png in Resources */,
@@ -440,6 +450,7 @@
 				D1A9E1671A7E3ADC00E06F02 /* icon-events@2x.png in Resources */,
 				D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */,
 				D1A0F7491A7115ED00981257 /* icon-map@2x.png in Resources */,
+				D17476441A9784E500D588A2 /* icon-phone@2x.png in Resources */,
 				D1A9E15F1A7D01A000E06F02 /* icon-more@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -496,6 +507,7 @@
 				D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */,
 				D17476331A9764B700D588A2 /* MuseumInfoView.swift in Sources */,
 				D1A9E1641A7E39CD00E06F02 /* EventsListViewController.swift in Sources */,
+				D17476421A97836800D588A2 /* PhoneDividerNode.swift in Sources */,
 				D10BFF5F1A48E1890098CCC3 /* NoDataView.swift in Sources */,
 				D174763A1A976EB600D588A2 /* SMCalloutView.m in Sources */,
 				D174763B1A976EB600D588A2 /* SMClassicCalloutView.m in Sources */,

@@ -14,6 +14,10 @@ class MuseumInfoView: UIScrollView {
         let zeroHeightSize = CGSizeMake(maxWidth, 0)
         var height: CGFloat = 0.0
 
+        let greyTextParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor(red: 151.0/255.0, green: 151.0/255.0, blue: 151.0/255.0, alpha: 1.0)]
+        let purpleTextParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor.kimColor()]
+        let blackTextParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor.blackColor()]
+
         if !museum.name.isEmpty {
             let titleParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), NSForegroundColorAttributeName: UIColor.blackColor()]
             let titleStr = NSAttributedString(string: museum.name, attributes: titleParams)
@@ -27,20 +31,16 @@ class MuseumInfoView: UIScrollView {
         }
 
         if !museum.address.isEmpty {
-            let addrTitleParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor(red: 151.0/255.0, green: 151.0/255.0, blue: 151.0/255.0, alpha: 1.0)]
-            let addrParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor.kimColor()]
-            let directionsParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor.blackColor()]
-
             var addressStr = NSMutableAttributedString()
 
-            let addrTitleStr = NSAttributedString(string: NSLocalizedString("Address: ", comment: "Address, museum info card"), attributes: addrTitleParams)
+            let addrTitleStr = NSAttributedString(string: NSLocalizedString("Address: ", comment: "Address, museum info card"), attributes: greyTextParams)
             addressStr.appendAttributedString(addrTitleStr)
 
-            let addrAddressStr = NSAttributedString(string: museum.address, attributes: addrParams)
+            let addrAddressStr = NSAttributedString(string: museum.address, attributes: purpleTextParams)
             addressStr.appendAttributedString(addrAddressStr)
 
             if !museum.directions.isEmpty {
-                let dirStr = NSAttributedString(string: "\n\(museum.directions)", attributes: directionsParams)
+                let dirStr = NSAttributedString(string: "\n\(museum.directions)", attributes: blackTextParams)
                 addressStr.appendAttributedString(dirStr)
             }
 
@@ -51,6 +51,24 @@ class MuseumInfoView: UIScrollView {
             self.addSubview(addrNode.view)
 
             height += addrSize.height
+        }
+
+        if !museum.phone.isEmpty {
+            var phoneStr = NSMutableAttributedString()
+
+            let phoneTitleStr = NSAttributedString(string: NSLocalizedString("Phone: ", comment: "Phone, museum info card"), attributes: greyTextParams)
+            phoneStr.appendAttributedString(phoneTitleStr)
+
+            let phoneTextStr = NSAttributedString(string: museum.phone, attributes: blackTextParams)
+            phoneStr.appendAttributedString(phoneTextStr)
+
+            let phoneNode = PhoneDividerNode(attributedText: phoneStr)
+            let phoneSize = phoneNode.measure(zeroHeightSize)
+
+            phoneNode.frame = CGRectMake(0, height, maxWidth, phoneSize.height)
+            self.addSubview(phoneNode.view)
+
+            height += phoneSize.height
         }
 
         self.frame = CGRectMake(0, 0, maxWidth, height)
