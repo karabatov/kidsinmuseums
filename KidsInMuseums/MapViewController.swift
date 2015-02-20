@@ -131,4 +131,30 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
     func mapView(mapView: MKMapView!, didDeselectAnnotationView view: MKAnnotationView!) {
         calloutView.dismissCalloutAnimated(true)
     }
+
+    func calloutView(calloutView: SMCalloutView!, delayForRepositionWithSize offset: CGSize) -> NSTimeInterval {
+        // When the callout is being asked to present in a way where it or its target will be partially offscreen, it asks us
+        // if we'd like to reposition our surface first so the callout is completely visible. Here we scroll the map into view,
+        // but it takes some math because we have to deal in lon/lat instead of the given offset in pixels.
+
+        let mapView = self.view as MKMapView
+
+        var coordinate = mapView.centerCoordinate
+
+        // where's the center coordinate in terms of our view?
+        var center = mapView.convertCoordinate(coordinate, toPointToView:self.view)
+
+        // move it by the requested offset
+        center.x -= offset.width
+        center.y -= offset.height
+
+        // and translate it back into map coordinates
+        coordinate = mapView.convertPoint(center, toCoordinateFromView:self.view);
+
+        // move the map!
+        mapView.setCenterCoordinate(coordinate, animated:true)
+
+        // tell the callout to wait for a while while we scroll (we assume the scroll delay for MKMapView matches UIScrollView)
+        return kSMCalloutViewRepositionDelayForUIScrollView
+    }
 }
