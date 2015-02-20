@@ -14,6 +14,7 @@ let kKIMMapPinAnnotationView = "com.yurikarabatov.kKIMMapPinAnnotationView"
 class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDelegate {
     var museums: [Museum] = [Museum]()
     let calloutView = SMCalloutView.platformCalloutView()
+    let kCalloutMargin: CGFloat = 32.0
 
     // MARK: UIViewController
 
@@ -33,7 +34,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
         edgesForExtendedLayout = UIRectEdge.None
 
         calloutView.delegate = self
-//        calloutView.constrainedInsets = UIEdgeInsetsMake(32.0, 32.0, 32.0, 32.0)
+        calloutView.constrainedInsets = UIEdgeInsetsMake(kCalloutMargin, kCalloutMargin, kCalloutMargin * 3, kCalloutMargin)
 
         let mapView = MKMapView()
         mapView.showsUserLocation = true
@@ -121,9 +122,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
 
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
         if let museumAnnotation = view.annotation as? MuseumAnnotation {
-            let museumInfoView = MuseumInfoView(museum: museumAnnotation.museum, maxWidth: 200.0)
+            let museumInfoView = MuseumInfoView(museum: museumAnnotation.museum, maxWidth: self.view.frame.size.width - kCalloutMargin * 2)
             calloutView.contentView = museumInfoView
-            calloutView.calloutOffset = view.calloutOffset
             calloutView.presentCalloutFromRect(view.bounds, inView: view, constrainedToView: self.view, animated: true)
         }
     }

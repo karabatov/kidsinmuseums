@@ -13,6 +13,6 @@
 #import <AsyncDisplayKit/ASDisplayNode+Subclasses.h>
 #import <FontAwesomeKit/FAKFontAwesome.h>
 #import <BDBSpinKitRefreshControl/BDBSpinKitRefreshControl.h>
-#import <SMCalloutView/SMCalloutView.h>
+#import "SMCalloutView.h"
 
 #endif

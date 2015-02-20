@@ -21,6 +21,8 @@
 		D155CC861A4B73A50072E183 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC881A4B73A50072E183 /* Localizable.strings */; };
 		D17476331A9764B700D588A2 /* MuseumInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17476321A9764B700D588A2 /* MuseumInfoView.swift */; };
 		D17476351A9765F200D588A2 /* MuseumTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17476341A9765F200D588A2 /* MuseumTitleView.swift */; };
+		D174763A1A976EB600D588A2 /* SMCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = D17476371A976EB600D588A2 /* SMCalloutView.m */; };
+		D174763B1A976EB600D588A2 /* SMClassicCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = D17476391A976EB600D588A2 /* SMClassicCalloutView.m */; };
 		D1A0F7331A710ED400981257 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7321A710ED400981257 /* CoreLocation.framework */; };
 		D1A0F7431A710F1B00981257 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7421A710F1B00981257 /* QuartzCore.framework */; };
 		D1A0F7451A710F2200981257 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7441A710F2200981257 /* SystemConfiguration.framework */; };
@@ -86,6 +88,10 @@
 		D155CC871A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D17476321A9764B700D588A2 /* MuseumInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumInfoView.swift; sourceTree = "<group>"; };
 		D17476341A9765F200D588A2 /* MuseumTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumTitleView.swift; sourceTree = "<group>"; };
+		D17476361A976EB600D588A2 /* SMCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCalloutView.h; sourceTree = "<group>"; };
+		D17476371A976EB600D588A2 /* SMCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCalloutView.m; sourceTree = "<group>"; };
+		D17476381A976EB600D588A2 /* SMClassicCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMClassicCalloutView.h; sourceTree = "<group>"; };
+		D17476391A976EB600D588A2 /* SMClassicCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMClassicCalloutView.m; sourceTree = "<group>"; };
 		D1A0F72E1A710EC100981257 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D1A0F7301A710ECA00981257 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		D1A0F7321A710ED400981257 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -201,6 +207,7 @@
 				D1A9E16E1A7FABA900E06F02 /* CLLocationHumanReadable.swift */,
 				D1D484981A8926870028C6F4 /* NSTextAttachmentAge.swift */,
 				D1D4849C1A892D4E0028C6F4 /* UIColorKIMColor.swift */,
+				D174763C1A976EBD00D588A2 /* SMCalloutView */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -254,6 +261,17 @@
 				D1A0F74B1A71318E00981257 /* marker@3x.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		D174763C1A976EBD00D588A2 /* SMCalloutView */ = {
+			isa = PBXGroup;
+			children = (
+				D17476361A976EB600D588A2 /* SMCalloutView.h */,
+				D17476371A976EB600D588A2 /* SMCalloutView.m */,
+				D17476381A976EB600D588A2 /* SMClassicCalloutView.h */,
+				D17476391A976EB600D588A2 /* SMClassicCalloutView.m */,
+			);
+			name = SMCalloutView;
 			sourceTree = "<group>";
 		};
 		D1A9372D1A3F13CE00CE8E9F = {
@@ -479,6 +497,8 @@
 				D17476331A9764B700D588A2 /* MuseumInfoView.swift in Sources */,
 				D1A9E1641A7E39CD00E06F02 /* EventsListViewController.swift in Sources */,
 				D10BFF5F1A48E1890098CCC3 /* NoDataView.swift in Sources */,
+				D174763A1A976EB600D588A2 /* SMCalloutView.m in Sources */,
+				D174763B1A976EB600D588A2 /* SMClassicCalloutView.m in Sources */,
 				D110493A1A8A93F400B32316 /* EventReviewNode.swift in Sources */,
 				D1A9E1611A7D01D200E06F02 /* MoreScreen.swift in Sources */,
 				D1D4849D1A892D4E0028C6F4 /* UIColorKIMColor.swift in Sources */,
