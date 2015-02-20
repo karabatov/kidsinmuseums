@@ -14,7 +14,6 @@ let kKIMMapPinAnnotationView = "com.yurikarabatov.kKIMMapPinAnnotationView"
 class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDelegate {
     var museums: [Museum] = [Museum]()
     let calloutView = SMCalloutView.platformCalloutView()
-//    var mivc: MuseumInfoViewController?
 
     // MARK: UIViewController
 
@@ -122,14 +121,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
 
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
         if let museumAnnotation = view.annotation as? MuseumAnnotation {
-//            if mivc == nil {
-//                calloutView.contentView = mivc?.view
-//            } else {
-//                mivc?.museum = museumAnnotation.museum
-//            }
-
+            let museumInfoView = MuseumInfoView(museum: museumAnnotation.museum, maxWidth: 200.0)
+            calloutView.contentView = museumInfoView
             calloutView.calloutOffset = view.calloutOffset
-            calloutView.frame = CGRectZero
             calloutView.presentCalloutFromRect(view.bounds, inView: view, constrainedToView: self.view, animated: true)
         }
     }

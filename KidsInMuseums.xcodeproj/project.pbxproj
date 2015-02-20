@@ -19,6 +19,8 @@
 		D155CC7C1A4B73A50072E183 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC7E1A4B73A50072E183 /* InfoPlist.strings */; };
 		D155CC811A4B73A50072E183 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC831A4B73A50072E183 /* InfoPlist.strings */; };
 		D155CC861A4B73A50072E183 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC881A4B73A50072E183 /* Localizable.strings */; };
+		D17476331A9764B700D588A2 /* MuseumInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17476321A9764B700D588A2 /* MuseumInfoView.swift */; };
+		D17476351A9765F200D588A2 /* MuseumTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17476341A9765F200D588A2 /* MuseumTitleView.swift */; };
 		D1A0F7331A710ED400981257 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7321A710ED400981257 /* CoreLocation.framework */; };
 		D1A0F7431A710F1B00981257 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7421A710F1B00981257 /* QuartzCore.framework */; };
 		D1A0F7451A710F2200981257 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A0F7441A710F2200981257 /* SystemConfiguration.framework */; };
@@ -82,6 +84,8 @@
 		D155CC7D1A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D155CC821A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D155CC871A4B73A50072E183 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D17476321A9764B700D588A2 /* MuseumInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumInfoView.swift; sourceTree = "<group>"; };
+		D17476341A9765F200D588A2 /* MuseumTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumTitleView.swift; sourceTree = "<group>"; };
 		D1A0F72E1A710EC100981257 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D1A0F7301A710ECA00981257 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		D1A0F7321A710ED400981257 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -210,6 +214,7 @@
 				D1A9E1601A7D01D200E06F02 /* MoreScreen.swift */,
 				D1A9E1631A7E39CD00E06F02 /* EventsListViewController.swift */,
 				D1D484941A8915560028C6F4 /* EventItemViewController.swift */,
+				D17476321A9764B700D588A2 /* MuseumInfoView.swift */,
 				D1169B791A460C4500C025A3 /* Cells */,
 			);
 			name = UI;
@@ -228,6 +233,7 @@
 				D1D484A21A89445A0028C6F4 /* EventDescTitleNode.swift */,
 				D1D484A41A8949E40028C6F4 /* EventDescriptionNode.swift */,
 				D11049391A8A93F400B32316 /* EventReviewNode.swift */,
+				D17476341A9765F200D588A2 /* MuseumTitleView.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -470,6 +476,7 @@
 			files = (
 				D1D484991A8926870028C6F4 /* NSTextAttachmentAge.swift in Sources */,
 				D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */,
+				D17476331A9764B700D588A2 /* MuseumInfoView.swift in Sources */,
 				D1A9E1641A7E39CD00E06F02 /* EventsListViewController.swift in Sources */,
 				D10BFF5F1A48E1890098CCC3 /* NoDataView.swift in Sources */,
 				D110493A1A8A93F400B32316 /* EventReviewNode.swift in Sources */,
@@ -485,6 +492,7 @@
 				D1D484951A8915560028C6F4 /* EventItemViewController.swift in Sources */,
 				D1A9E16F1A7FABA900E06F02 /* CLLocationHumanReadable.swift in Sources */,
 				D1A9E16A1A7E44A700E06F02 /* EventCell.swift in Sources */,
+				D17476351A9765F200D588A2 /* MuseumTitleView.swift in Sources */,
 				D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */,
 				D1D484A11A89361D0028C6F4 /* EventScheduleNode.swift in Sources */,
 				D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */,
