@@ -14,6 +14,7 @@
 		D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B721A45F46E00C025A3 /* JSONHelper.swift */; };
 		D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B751A45F68D00C025A3 /* DataModel.swift */; };
 		D122D6DD1A697149009D30AB /* icon-news@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D122D6DC1A697149009D30AB /* icon-news@2x.png */; };
+		D13700561AA71B8500F70138 /* MuseumEventButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */; };
 		D155CC741A4B49F50072E183 /* NewsItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D155CC731A4B49F50072E183 /* NewsItemViewController.swift */; };
 		D155CC761A4B5EEF0072E183 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D155CC751A4B5EEF0072E183 /* AssetsLibrary.framework */; };
 		D155CC7C1A4B73A50072E183 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D155CC7E1A4B73A50072E183 /* InfoPlist.strings */; };
@@ -82,6 +83,7 @@
 		D1169B721A45F46E00C025A3 /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
 		D1169B751A45F68D00C025A3 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		D122D6DC1A697149009D30AB /* icon-news@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-news@2x.png"; sourceTree = "<group>"; };
+		D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumEventButtonNode.swift; sourceTree = "<group>"; };
 		D13DC70C1A45E08A0036A1F0 /* KidsInMuseums-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KidsInMuseums-Bridging-Header.h"; sourceTree = "<group>"; };
 		D155CC731A4B49F50072E183 /* NewsItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsItemViewController.swift; sourceTree = "<group>"; };
 		D155CC751A4B5EEF0072E183 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -248,6 +250,7 @@
 				D11049391A8A93F400B32316 /* EventReviewNode.swift */,
 				D17476341A9765F200D588A2 /* TextDividerNode.swift */,
 				D17476411A97836800D588A2 /* PhoneDividerNode.swift */,
+				D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -524,6 +527,7 @@
 				D1D484951A8915560028C6F4 /* EventItemViewController.swift in Sources */,
 				D1A9E16F1A7FABA900E06F02 /* CLLocationHumanReadable.swift in Sources */,
 				D1A9E16A1A7E44A700E06F02 /* EventCell.swift in Sources */,
+				D13700561AA71B8500F70138 /* MuseumEventButtonNode.swift in Sources */,
 				D17476351A9765F200D588A2 /* TextDividerNode.swift in Sources */,
 				D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */,
 				D1D484A11A89361D0028C6F4 /* EventScheduleNode.swift in Sources */,

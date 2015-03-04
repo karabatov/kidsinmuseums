@@ -107,6 +107,15 @@ class MuseumInfoView: UIScrollView {
             height += siteSize.height
         }
 
+        let openEventsStr = NSLocalizedString("Events in this museum", comment: "Events in this museum button in map callout")
+        let openEventNode = MuseumEventButtonNode(text: openEventsStr)
+        let openEventSize = openEventNode.measure(zeroHeightSize)
+
+        openEventNode.frame = CGRectMake(0, height, maxWidth, openEventSize.height)
+        self.addSubview(openEventNode.view)
+
+        height += openEventSize.height
+
         self.frame = CGRectMake(0, 0, maxWidth, height)
     }
 
