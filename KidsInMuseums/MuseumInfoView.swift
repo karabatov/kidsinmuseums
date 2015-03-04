@@ -89,6 +89,24 @@ class MuseumInfoView: UIScrollView {
             height += emailSize.height
         }
 
+        if !museum.site.isEmpty {
+            let siteStr = NSMutableAttributedString()
+
+            let siteTitleStr = NSAttributedString(string: NSLocalizedString("Website: ", comment: "Website, museum info card"), attributes: greyTextParams)
+            siteStr.appendAttributedString(siteTitleStr)
+
+            let siteTextStr = NSAttributedString(string: museum.site, attributes: blackTextParams)
+            siteStr.appendAttributedString(siteTextStr)
+
+            let siteNode = TextDividerNode(attributedText: siteStr)
+            let siteSize = siteNode.measure(zeroHeightSize)
+
+            siteNode.frame = CGRectMake(0, height, maxWidth, siteSize.height)
+            self.addSubview(siteNode.view)
+            
+            height += siteSize.height
+        }
+
         self.frame = CGRectMake(0, 0, maxWidth, height)
     }
 
