@@ -71,6 +71,24 @@ class MuseumInfoView: UIScrollView {
             height += phoneSize.height
         }
 
+        if !museum.email.isEmpty {
+            let emailStr = NSMutableAttributedString()
+
+            let emailTitleStr = NSAttributedString(string: NSLocalizedString("Email: ", comment: "Email, museum info card"), attributes: greyTextParams)
+            emailStr.appendAttributedString(emailTitleStr)
+
+            let emailTextStr = NSAttributedString(string: museum.email, attributes: blackTextParams)
+            emailStr.appendAttributedString(emailTextStr)
+
+            let emailNode = TextDividerNode(attributedText: emailStr)
+            let emailSize = emailNode.measure(zeroHeightSize)
+
+            emailNode.frame = CGRectMake(0, height, maxWidth, emailSize.height)
+            self.addSubview(emailNode.view)
+            
+            height += emailSize.height
+        }
+
         self.frame = CGRectMake(0, 0, maxWidth, height)
     }
 
