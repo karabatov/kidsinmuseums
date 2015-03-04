@@ -34,8 +34,14 @@
 /* Distance filter segment */
 "Distance" = "По близости";
 
+/* Email, museum info card */
+"Email: " = "Электронная почта: ";
+
 /* Events controller title */
 "Events" = "Афиша";
+
+/* Events in this museum button in map callout */
+"Events in this museum" = "События в этом музее";
 
 /* Facebook */
 "Facebook" = "Facebook";
@@ -72,6 +78,9 @@
 
 /* Vkontakte */
 "Vkontakte" = "Вконтакте";
+
+/* Website, museum info card */
+"Website: " = "Сайт: ";
 
 /* Event duration if no end time, time only */
 "starts at %@" = "с %@";
