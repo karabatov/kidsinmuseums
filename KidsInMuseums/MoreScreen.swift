@@ -90,4 +90,27 @@ class MoreScreen: UITableViewController {
         default: fatalError("Unknown section")
         }
     }
+
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        switch (indexPath.section) {
+        case 0:
+            switch (indexPath.row) {
+            default: return
+            }
+        case 1:
+            switch (indexPath.row) {
+            case 0:
+                if let url = NSURL(string: "https://www.facebook.com/pages/%D0%A1%D0%B5%D0%BC%D0%B5%D0%B9%D0%BD%D0%BE%D0%B5-%D0%BF%D1%83%D1%82%D0%B5%D1%88%D0%B5%D1%81%D1%82%D0%B2%D0%B8%D0%B5-%D0%92%D1%81%D0%B5%D0%B9-%D1%81%D0%B5%D0%BC%D1%8C%D1%91%D0%B9-%D0%B2-%D0%BC%D1%83%D0%B7%D0%B5%D0%B9/135781816518180") {
+                    UIApplication.sharedApplication().openURL(url)
+                }
+            case 1:
+                if let url = NSURL(string: "http://vk.com/club12415289") {
+                    UIApplication.sharedApplication().openURL(url)
+                }
+            default: return
+            }
+        default: fatalError("Unknown section")
+        }
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
 }
