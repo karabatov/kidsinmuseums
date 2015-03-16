@@ -95,7 +95,7 @@ class MoreScreen: UITableViewController {
         switch (indexPath.section) {
         case 0:
             switch (indexPath.row) {
-            default: return
+            default: break
             }
         case 1:
             switch (indexPath.row) {
@@ -107,7 +107,7 @@ class MoreScreen: UITableViewController {
                 if let url = NSURL(string: "http://vk.com/club12415289") {
                     UIApplication.sharedApplication().openURL(url)
                 }
-            default: return
+            default: break
             }
         default: fatalError("Unknown section")
         }
