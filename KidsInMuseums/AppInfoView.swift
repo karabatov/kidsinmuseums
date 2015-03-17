@@ -34,6 +34,7 @@ class AppInfoView: UIViewController, ASTableViewDataSource, ASTableViewDelegate 
     func tableView(tableView: ASTableView!, nodeForRowAtIndexPath indexPath: NSIndexPath!) -> ASCellNode! {
         switch (indexPath.row) {
         case 0: return AppInfoNode()
+        case 1: return EventDescTitleNode(text: NSLocalizedString("Developer", comment: "About the developer section title"))
         default: fatalError("Invalid row number")
         }
     }
@@ -43,7 +44,7 @@ class AppInfoView: UIViewController, ASTableViewDataSource, ASTableViewDelegate 
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return 2
     }
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
