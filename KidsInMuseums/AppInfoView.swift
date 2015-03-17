@@ -35,6 +35,7 @@ class AppInfoView: UIViewController, ASTableViewDataSource, ASTableViewDelegate 
         switch (indexPath.row) {
         case 0: return AppInfoNode()
         case 1: return EventDescTitleNode(text: NSLocalizedString("Developer", comment: "About the developer section title"))
+        case 2: return DeveloperInfoNode()
         default: fatalError("Invalid row number")
         }
     }
@@ -44,13 +45,18 @@ class AppInfoView: UIViewController, ASTableViewDataSource, ASTableViewDelegate 
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         switch (indexPath.row) {
         case 0:
             if let url = NSURL(string: "mailto:support@golovamedia.ru") {
+                UIApplication.sharedApplication().openURL(url)
+                tableView.deselectRowAtIndexPath(indexPath, animated: false)
+            }
+        case 2:
+            if let url = NSURL(string: "http://www.golovamedia.ru") {
                 UIApplication.sharedApplication().openURL(url)
                 tableView.deselectRowAtIndexPath(indexPath, animated: false)
             }

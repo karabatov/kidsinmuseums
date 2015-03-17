@@ -34,6 +34,9 @@
 /* Event screen description subtitle */
 "Description" = "Описание";
 
+/* About the developer section title */
+"Developer" = "Разработчик";
+
 /* Distance filter segment */
 "Distance" = "По близости";
 
@@ -84,6 +87,9 @@
 
 /* Vkontakte */
 "Vkontakte" = "Вконтакте";
+
+/* About the developer text */
+"We create interest for your cause, turning audience into your clients using websites, apps, experimental projects and media. Our strategies, ideas and technology. Your big goals." = "Создаем интерес к вашему делу, превращаем аудиторию в ваших клиентов. С помощью сайтов, приложений, спецпроектов и медиа. Наши стратегии, идеи и технологии. Ваши большие цели.";
 
 /* Website, museum info card */
 "Website: " = "Сайт: ";

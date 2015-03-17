@@ -65,6 +65,9 @@
 		D1FF584E1AB832E1008DD880 /* AppInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */; };
 		D1FF58511AB8372A008DD880 /* appinfo-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */; };
 		D1FF58521AB8372A008DD880 /* appinfo-logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1FF58501AB8372A008DD880 /* appinfo-logo@3x.png */; };
+		D1FF58541AB85575008DD880 /* DeveloperInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF58531AB85575008DD880 /* DeveloperInfoNode.swift */; };
+		D1FF58571AB855C3008DD880 /* appinfo-dev@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1FF58551AB855C3008DD880 /* appinfo-dev@2x.png */; };
+		D1FF58581AB855C3008DD880 /* appinfo-dev@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1FF58561AB855C3008DD880 /* appinfo-dev@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -157,6 +160,9 @@
 		D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoNode.swift; sourceTree = "<group>"; };
 		D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appinfo-logo@2x.png"; sourceTree = "<group>"; };
 		D1FF58501AB8372A008DD880 /* appinfo-logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appinfo-logo@3x.png"; sourceTree = "<group>"; };
+		D1FF58531AB85575008DD880 /* DeveloperInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeveloperInfoNode.swift; sourceTree = "<group>"; };
+		D1FF58551AB855C3008DD880 /* appinfo-dev@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appinfo-dev@2x.png"; sourceTree = "<group>"; };
+		D1FF58561AB855C3008DD880 /* appinfo-dev@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appinfo-dev@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -261,6 +267,7 @@
 				D17476411A97836800D588A2 /* PhoneDividerNode.swift */,
 				D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */,
 				D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */,
+				D1FF58531AB85575008DD880 /* DeveloperInfoNode.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -268,6 +275,8 @@
 		D122D6D91A696FC6009D30AB /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D1FF58551AB855C3008DD880 /* appinfo-dev@2x.png */,
+				D1FF58561AB855C3008DD880 /* appinfo-dev@3x.png */,
 				D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */,
 				D1FF58501AB8372A008DD880 /* appinfo-logo@3x.png */,
 				D1A0F7581A72AA9900981257 /* Default-huge.png */,
@@ -461,11 +470,13 @@
 				D1A9E15E1A7D01A000E06F02 /* icon-more@2x.png in Resources */,
 				D1A0F7591A72AA9900981257 /* Default-huge.png in Resources */,
 				D155CC7C1A4B73A50072E183 /* InfoPlist.strings in Resources */,
+				D1FF58581AB855C3008DD880 /* appinfo-dev@3x.png in Resources */,
 				D1A0F75F1A72ADC700981257 /* location@2x.png in Resources */,
 				D1A9E1681A7E3ADC00E06F02 /* icon-events@3x.png in Resources */,
 				D1A9E1671A7E3ADC00E06F02 /* icon-events@2x.png in Resources */,
 				D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */,
 				D1A0F7491A7115ED00981257 /* icon-map@2x.png in Resources */,
+				D1FF58571AB855C3008DD880 /* appinfo-dev@2x.png in Resources */,
 				D1FF58511AB8372A008DD880 /* appinfo-logo@2x.png in Resources */,
 				D17476441A9784E500D588A2 /* icon-phone@2x.png in Resources */,
 				D1A9E15F1A7D01A000E06F02 /* icon-more@3x.png in Resources */,
@@ -530,6 +541,7 @@
 				D174763A1A976EB600D588A2 /* SMCalloutView.m in Sources */,
 				D174763B1A976EB600D588A2 /* SMClassicCalloutView.m in Sources */,
 				D110493A1A8A93F400B32316 /* EventReviewNode.swift in Sources */,
+				D1FF58541AB85575008DD880 /* DeveloperInfoNode.swift in Sources */,
 				D1A9E1611A7D01D200E06F02 /* MoreScreen.swift in Sources */,
 				D1D4849D1A892D4E0028C6F4 /* UIColorKIMColor.swift in Sources */,
 				D1A9E1751A8542D900E06F02 /* MuseumAnnotation.swift in Sources */,
