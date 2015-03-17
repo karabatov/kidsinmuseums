@@ -4,6 +4,9 @@
 /* Distance in m format */
 "%0.0f m" = "%0.0f м";
 
+/* Info screen app version */
+"%@ iOS App ver. %@ (%@)\n\n" = "%1$@, версия %2$@ (%3$@)\n\n";
+
 /* Event duration, time only */
 "%@ to %@" = "с %1$@ до %2$@";
 
@@ -75,6 +78,9 @@
 
 /* Search */
 "Search" = "Поиск";
+
+/* Info screen support email */
+"Technical support — support@golovamedia.ru" = "Техническая поддержка — support@golovamedia.ru";
 
 /* Vkontakte */
 "Vkontakte" = "Вконтакте";

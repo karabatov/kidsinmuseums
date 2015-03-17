@@ -61,6 +61,10 @@
 		D1D484A31A89445A0028C6F4 /* EventDescTitleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484A21A89445A0028C6F4 /* EventDescTitleNode.swift */; };
 		D1D484A51A8949E40028C6F4 /* EventDescriptionNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484A41A8949E40028C6F4 /* EventDescriptionNode.swift */; };
 		D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */; };
+		D1FF584C1AB83049008DD880 /* AppInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584B1AB83049008DD880 /* AppInfoView.swift */; };
+		D1FF584E1AB832E1008DD880 /* AppInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */; };
+		D1FF58511AB8372A008DD880 /* appinfo-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */; };
+		D1FF58521AB8372A008DD880 /* appinfo-logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1FF58501AB8372A008DD880 /* appinfo-logo@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -149,6 +153,10 @@
 		D1D484A21A89445A0028C6F4 /* EventDescTitleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDescTitleNode.swift; sourceTree = "<group>"; };
 		D1D484A41A8949E40028C6F4 /* EventDescriptionNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDescriptionNode.swift; sourceTree = "<group>"; };
 		D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
+		D1FF584B1AB83049008DD880 /* AppInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoView.swift; sourceTree = "<group>"; };
+		D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoNode.swift; sourceTree = "<group>"; };
+		D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appinfo-logo@2x.png"; sourceTree = "<group>"; };
+		D1FF58501AB8372A008DD880 /* appinfo-logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appinfo-logo@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +238,7 @@
 				D1A9E1631A7E39CD00E06F02 /* EventsListViewController.swift */,
 				D1D484941A8915560028C6F4 /* EventItemViewController.swift */,
 				D17476321A9764B700D588A2 /* MuseumInfoView.swift */,
+				D1FF584B1AB83049008DD880 /* AppInfoView.swift */,
 				D1169B791A460C4500C025A3 /* Cells */,
 			);
 			name = UI;
@@ -251,6 +260,7 @@
 				D17476341A9765F200D588A2 /* TextDividerNode.swift */,
 				D17476411A97836800D588A2 /* PhoneDividerNode.swift */,
 				D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */,
+				D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -258,6 +268,8 @@
 		D122D6D91A696FC6009D30AB /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */,
+				D1FF58501AB8372A008DD880 /* appinfo-logo@3x.png */,
 				D1A0F7581A72AA9900981257 /* Default-huge.png */,
 				D1A9E1651A7E3ADC00E06F02 /* icon-events@2x.png */,
 				D1A9E1661A7E3ADC00E06F02 /* icon-events@3x.png */,
@@ -442,6 +454,7 @@
 				D1A0F75D1A72AB2200981257 /* logo@2x.png in Resources */,
 				D1A0F74D1A71318E00981257 /* marker@3x.png in Resources */,
 				D17476401A97816900D588A2 /* icon-phone@3x.png in Resources */,
+				D1FF58521AB8372A008DD880 /* appinfo-logo@3x.png in Resources */,
 				D122D6DD1A697149009D30AB /* icon-news@2x.png in Resources */,
 				D155CC861A4B73A50072E183 /* Localizable.strings in Resources */,
 				D1A0F74C1A71318E00981257 /* marker@2x.png in Resources */,
@@ -453,6 +466,7 @@
 				D1A9E1671A7E3ADC00E06F02 /* icon-events@2x.png in Resources */,
 				D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */,
 				D1A0F7491A7115ED00981257 /* icon-map@2x.png in Resources */,
+				D1FF58511AB8372A008DD880 /* appinfo-logo@2x.png in Resources */,
 				D17476441A9784E500D588A2 /* icon-phone@2x.png in Resources */,
 				D1A9E15F1A7D01A000E06F02 /* icon-more@3x.png in Resources */,
 			);
@@ -510,6 +524,7 @@
 				D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */,
 				D17476331A9764B700D588A2 /* MuseumInfoView.swift in Sources */,
 				D1A9E1641A7E39CD00E06F02 /* EventsListViewController.swift in Sources */,
+				D1FF584E1AB832E1008DD880 /* AppInfoNode.swift in Sources */,
 				D17476421A97836800D588A2 /* PhoneDividerNode.swift in Sources */,
 				D10BFF5F1A48E1890098CCC3 /* NoDataView.swift in Sources */,
 				D174763A1A976EB600D588A2 /* SMCalloutView.m in Sources */,
@@ -530,6 +545,7 @@
 				D13700561AA71B8500F70138 /* MuseumEventButtonNode.swift in Sources */,
 				D17476351A9765F200D588A2 /* TextDividerNode.swift in Sources */,
 				D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */,
+				D1FF584C1AB83049008DD880 /* AppInfoView.swift in Sources */,
 				D1D484A11A89361D0028C6F4 /* EventScheduleNode.swift in Sources */,
 				D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */,
 				D155CC741A4B49F50072E183 /* NewsItemViewController.swift in Sources */,

@@ -14,4 +14,8 @@ extension UIColor {
     class func kimOrangeColor() -> UIColor {
         return UIColor(red: 231.0/255.0, green: 121.0/255.0, blue: 43.0/255.0, alpha: 1.0)
     }
+
+    class func kimGrayColor() -> UIColor {
+        return UIColor(red: 151.0/255.0, green: 151.0/255.0, blue: 151.0/255.0, alpha: 1.0)
+    }
 }

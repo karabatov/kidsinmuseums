@@ -95,6 +95,9 @@ class MoreScreen: UITableViewController {
         switch (indexPath.section) {
         case 0:
             switch (indexPath.row) {
+            case 3:
+                let appInfoScreen = AppInfoView(nibName: nil, bundle: nil)
+                self.navigationController?.pushViewController(appInfoScreen, animated: true)
             default: break
             }
         case 1:
@@ -107,6 +110,7 @@ class MoreScreen: UITableViewController {
                 if let url = NSURL(string: "http://vk.com/club12415289") {
                     UIApplication.sharedApplication().openURL(url)
                 }
+
             default: break
             }
         default: fatalError("Unknown section")
