@@ -181,10 +181,6 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
             })
 
             self.listView.reloadData()
-
-//            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//
-//            })
         })
     }
 
@@ -222,7 +218,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         switch filterMode {
         case .Date:
             if eventsByDay.count > section {
-                return eventsByDay[section].count
+                return eventsByDay[section].count > 0 ? eventsByDay[section].count + 1 : 0
             }
         case .Distance: return eventsByDistance.count
         case .Rating: return eventsByRating.count
@@ -247,31 +243,12 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         if let evt = self.eventForIndexPath(indexPath) {
             let node = EventCell(event: evt, filterMode: filterMode, referenceDate: referenceDate, location: location)
             return node
+        } else if days.count > 0 {
+            let text = sectionHeaderFormatter.stringFromDate(days[indexPath.section])
+            let node = EventDescTitleNode(text: text)
+            return node
         }
         return ASCellNode()
-    }
-
-    func tableView(tableView: UITableView!, heightForHeaderInSection section: Int) -> CGFloat {
-        if filterMode == .Date && days.count > section {
-            if sectionHeaderHeight == 0 {
-                let text = sectionHeaderFormatter.stringFromDate(days[section])
-                let attrText = NSAttributedString(string: text, attributes: kKIMSectionHeaderParams)
-                let size = attrText.boundingRectWithSize(CGSizeMake(UIScreen.mainScreen().bounds.width - kKIMSectionHeaderMarginH * 2, CGFloat.max), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
-                sectionHeaderHeight = size.height + kKIMSectionHeaderMarginV * 2
-            }
-            return sectionHeaderHeight
-        }
-        return 0
-    }
-
-    func tableView(tableView: UITableView!, viewForHeaderInSection section: Int) -> UIView! {
-        let header = UITableViewHeaderFooterView()
-        header.contentView.backgroundColor = UIColor.whiteColor()
-        if filterMode == .Date && days.count > section {
-            let text = sectionHeaderFormatter.stringFromDate(days[section])
-            header.textLabel.attributedText = NSAttributedString(string: text, attributes: kKIMSectionHeaderParams)
-        }
-        return header
     }
 
     func tableView(tableView: UITableView!, shouldHighlightRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
@@ -306,8 +283,10 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         var event: Event?
         switch filterMode {
         case .Date:
-            if eventsByDay.count > indexPath.section {
-                event = eventsByDay[indexPath.section][indexPath.row]
+            if eventsByDay.count > indexPath.section && indexPath.row > 0 {
+                if eventsByDay[indexPath.section].count > 0 {
+                    event = eventsByDay[indexPath.section][indexPath.row - 1]
+                }
             }
         case .Distance:
             if eventsByDistance.count > indexPath.row {
