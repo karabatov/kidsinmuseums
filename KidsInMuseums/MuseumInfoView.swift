@@ -14,6 +14,8 @@ class MuseumInfoView: UIScrollView {
         super.init(frame: CGRectZero)
 
         userInteractionEnabled = true
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: "infoViewTapped:")
+        addGestureRecognizer(gestureRecognizer)
 
         let zeroHeightSize = CGSizeMake(maxWidth, 0)
         var height: CGFloat = 0.0
@@ -126,5 +128,9 @@ class MuseumInfoView: UIScrollView {
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc func infoViewTapped(gesture: UIGestureRecognizer) {
+        NSLog("SCROLL VIEW TAPPED WOW")
     }
 }
