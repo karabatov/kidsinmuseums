@@ -7,9 +7,9 @@ PODS:
   - FontAwesomeKit/Core (2.2.0)
   - FontAwesomeKit/FontAwesome (2.2.0):
     - FontAwesomeKit/Core
-  - SDWebImage (3.7.1):
-    - SDWebImage/Core (= 3.7.1)
-  - SDWebImage/Core (3.7.1)
+  - SDWebImage (3.7.2):
+    - SDWebImage/Core (= 3.7.2)
+  - SDWebImage/Core (3.7.2)
   - SpinKit (1.2.0)
 
 DEPENDENCIES:
@@ -19,10 +19,10 @@ DEPENDENCIES:
   - SDWebImage
 
 SPEC CHECKSUMS:
-  AsyncDisplayKit: 897b28140c6c73fbe8d6168f19ce7cbd87c94ee8
-  BDBSpinKitRefreshControl: dd4ac0b7253fccb7d879c1868d70c10ce9e1eebe
-  FontAwesomeKit: 61f0b4f12f1b11b7489bc7d1507a8692547f3857
-  SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
-  SpinKit: 11fa465172473ce3d59a80bf0449020b850e5229
+  AsyncDisplayKit: 2c355970d1aabe00608211d9a50e35b7a5dc0ae4
+  BDBSpinKitRefreshControl: 1af0d79d47b159096dd10f1d2cea7eb0ccdd65ec
+  FontAwesomeKit: 025fd4dd1017fe4e3f8d47b03e024deedbb33cd4
+  SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
+  SpinKit: 65906a8b534a4e14cbfd3f8b0b6c329131faef4a
 
 COCOAPODS: 0.35.0
