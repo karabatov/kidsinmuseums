@@ -21,18 +21,16 @@ class EventScheduleNode: ASCellNode {
         let textParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor.blackColor()]
         var titleStr = NSMutableAttributedString()
 
-        if let humanTimes = event.eventHumanTimes {
-            if humanTimes.count > 0 {
-                if let humanTime = humanTimes.first {
-                    if humanTime.time != "" {
-                        measureHumanTime = true
-                        let timeStr = NSAttributedString(string: humanTime.time, attributes: textParams)
-                        titleStr.appendAttributedString(timeStr)
+        if event.eventHumanTimes.count > 0 {
+            if let humanTime = event.eventHumanTimes.first {
+                if humanTime.time != "" {
+                    measureHumanTime = true
+                    let timeStr = NSAttributedString(string: humanTime.time, attributes: textParams)
+                    titleStr.appendAttributedString(timeStr)
 
-                        if humanTime.comment != "" {
-                            let commentStr = NSAttributedString(string: "\n\(humanTime.comment)", attributes: textParams)
-                            titleStr.appendAttributedString(commentStr)
-                        }
+                    if humanTime.comment != "" {
+                        let commentStr = NSAttributedString(string: "\n\(humanTime.comment)", attributes: textParams)
+                        titleStr.appendAttributedString(commentStr)
                     }
                 }
             }

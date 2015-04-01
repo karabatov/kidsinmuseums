@@ -11,7 +11,6 @@
 		D10BFF5F1A48E1890098CCC3 /* NoDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10BFF5E1A48E1890098CCC3 /* NoDataView.swift */; };
 		D110493A1A8A93F400B32316 /* EventReviewNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11049391A8A93F400B32316 /* EventReviewNode.swift */; };
 		D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */; };
-		D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B721A45F46E00C025A3 /* JSONHelper.swift */; };
 		D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B751A45F68D00C025A3 /* DataModel.swift */; };
 		D122D6DD1A697149009D30AB /* icon-news@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D122D6DC1A697149009D30AB /* icon-news@2x.png */; };
 		D13700561AA71B8500F70138 /* MuseumEventButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */; };
@@ -88,7 +87,6 @@
 		D10BFF5E1A48E1890098CCC3 /* NoDataView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoDataView.swift; sourceTree = "<group>"; };
 		D11049391A8A93F400B32316 /* EventReviewNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventReviewNode.swift; sourceTree = "<group>"; };
 		D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsListViewController.swift; sourceTree = "<group>"; };
-		D1169B721A45F46E00C025A3 /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
 		D1169B751A45F68D00C025A3 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		D122D6DC1A697149009D30AB /* icon-news@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-news@2x.png"; sourceTree = "<group>"; };
 		D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumEventButtonNode.swift; sourceTree = "<group>"; };
@@ -227,7 +225,6 @@
 			isa = PBXGroup;
 			children = (
 				D1F522DD1ACC3D430098862D /* SwiftyJSON.swift */,
-				D1169B721A45F46E00C025A3 /* JSONHelper.swift */,
 				D10BFF5E1A48E1890098CCC3 /* NoDataView.swift */,
 				D1A9E16E1A7FABA900E06F02 /* CLLocationHumanReadable.swift */,
 				D1D484981A8926870028C6F4 /* NSTextAttachmentAge.swift */,
@@ -535,7 +532,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1D484991A8926870028C6F4 /* NSTextAttachmentAge.swift in Sources */,
-				D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */,
 				D17476331A9764B700D588A2 /* MuseumInfoView.swift in Sources */,
 				D1F522DE1ACC3D430098862D /* SwiftyJSON.swift in Sources */,
 				D1A9E1641A7E39CD00E06F02 /* EventsListViewController.swift in Sources */,

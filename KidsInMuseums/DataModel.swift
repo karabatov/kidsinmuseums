@@ -119,13 +119,22 @@ public class Museum {
     }
 }
 
-public class EventTime: Deserializable {
+public class EventTime {
     var id: Int = -1
     var eventId: Int = -1
     var timeFrom: NSDate = NSDate(timeIntervalSince1970: 0)
     var comment: String = ""
     var durationHours: Int = -1
     var durationMinutes: Int = -30
+
+    required public init(data: JSON) {
+        id = data["id"].intValue
+        eventId = data["event_id"].intValue
+        timeFrom = DataModel.sharedInstance.dateFromString(data["time_from"].string)
+        comment = data["comment"].stringValue
+        durationHours = data["duration_hours"].intValue
+        durationMinutes = data["duration_minutes"].intValue
+    }
 
     public func timeString() -> String {
         var timeFormat = NSDateFormatter.dateFormatFromTemplate("jm", options: 0, locale: NSLocale.currentLocale())
@@ -157,54 +166,47 @@ public class EventTime: Deserializable {
             return String(format: NSLocalizedString("%@, %@", comment: "Full event date string"), dateString(), timeString())
         }
     }
-
-    required public init(data: [String : AnyObject]) {
-        id <<< data["id"]
-        eventId <<< data["event_id"]
-        timeFrom <<< (value: data["time_from"], format: kKIMAPIDateFormat)
-        comment <<< data["comment"]
-        durationHours <<< data["duration_hours"]
-        durationMinutes <<< data["duration_minutes"]
-    }
 }
 
-public class EventHumanTime: Deserializable {
+public class EventHumanTime {
     var id: Int = -1
     var eventId: Int = -1
     var time: String = ""
     var comment: String = ""
 
-    required public init(data: [String : AnyObject]) {
-        id <<< data["id"]
-        eventId <<< data["event_id"]
-        time <<< data["time"]
-        comment <<< data["comment"]
+    required public init(data: JSON) {
+        id = data["id"].intValue
+        eventId = data["event_id"].intValue
+        time = data["time"].stringValue
+        comment = data["comment"].stringValue
     }
 }
 
-public class KUser: Deserializable {
+public class KUser {
     var id: Int = -1
     var name: String = ""
 
-    required public init(data: [String : AnyObject]) {
-        id <<< data["id"]
-        name <<< data["name"]
+    required public init(data: JSON) {
+        id = data["id"].intValue
+        name = data["name"].stringValue
     }
 }
 
-public class Review: Deserializable {
+public class Review {
     var text: String = ""
     var user: KUser?
     var createdAt: NSDate = NSDate(timeIntervalSince1970: 0)
 
-    required public init(data: [String : AnyObject]) {
-        text <<< data["text"]
-        user <<<< data["user"]
-        createdAt <<< (value: data["created_at"], format: kKIMAPIDateFormat)
+    required public init(data: JSON) {
+        text = data["text"].stringValue
+        if let userName = data["user"]["name"].string {
+            user = KUser(data: data["user"])
+        }
+        createdAt = DataModel.sharedInstance.dateFromString(data["created_at"].string)
     }
 }
 
-public class Event: Deserializable {
+public class Event {
     var id: Int = -1
     var name: String = ""
     var museumUserId: Int = -1
@@ -213,39 +215,74 @@ public class Event: Deserializable {
     var description: String = ""
     var previewImage: KImage?
     var shortDescription: String = ""
-    var eventTimes: [EventTime]?
+    var eventTimes = [EventTime]()
     var tags: [String] = [String]()
     var rating: Double = 0.0
-    var eventHumanTimes: [EventHumanTime]?
-    var reviews: [Review]?
+    var eventHumanTimes = [EventHumanTime]()
+    var reviews = [Review]()
 
-    required public init(data: [String : AnyObject]) {
-        id <<< data["id"]
-        name <<< data["name"]
-        museumUserId <<< data["museum_user_id"]
-        ageFrom <<< data["age_from"]
-        ageTo <<< data["age_to"]
-        description <<< data["description"]
-//        previewImage <<<< data["preview_image"]
-        shortDescription <<< data["short_description"]
-        eventTimes <<<<* data["event_times"]
-        tags <<<* data["tags"]
-        rating <<< data["avg_rating"]
-        eventHumanTimes <<<<* data["event_human_times"]
-        reviews <<<<* data["reviews"]
+    required public init(data: JSON) {
+        if let idInt = data["id"].int {
+            id = idInt
+        }
+        if let nameStr = data["name"].string {
+            name = nameStr
+        }
+        if let muInt = data["museum_user_id"].int {
+            museumUserId = muInt
+        }
+        if let ageFromInt = data["age_from"].int {
+            ageFrom = ageFromInt
+        }
+        if let ageToInt = data["age_to"].int {
+            ageTo = ageToInt
+        }
+        if let descriptionStr = data["description"].string {
+            description = descriptionStr
+        }
+        if let imageURL = data["preview_image"]["url"].string {
+            previewImage = KImage(data: data["preview_image"])
+        }
+        if let shortDescriptionStr = data["short_description"].string {
+            shortDescription = shortDescriptionStr
+        }
+        for (index: String, subJson: JSON) in data["event_times"] {
+            if let eventTimeFromStr = subJson["time_from"].string {
+                let eventTime = EventTime(data: subJson)
+                eventTimes.append(eventTime)
+            }
+        }
+        for (index: String, subJson: JSON) in data["tags"] {
+            if let tag = subJson.string {
+                tags.append(tag)
+            }
+        }
+        if let ratingDbl = data["avg_rating"].double {
+            rating = ratingDbl
+        }
+        for (index: String, subJson: JSON) in data["event_human_times"] {
+            if let ehtTime = subJson["time"].string {
+                let eventHumanTime = EventHumanTime(data: subJson)
+                eventHumanTimes.append(eventHumanTime)
+            }
+        }
+        for (index: String, subJson: JSON) in data["reviews"] {
+            if let reviewText = subJson["text"].string {
+                let review = Review(data: subJson)
+                reviews.append(review)
+            }
+        }
     }
 
     public func earliestEventTime(afterDate: NSDate) -> EventTime? {
         var evT: EventTime?
-        if let eventTimes = self.eventTimes {
-            for eventTime in eventTimes {
-                if evT == nil && eventTime.timeFrom.compare(afterDate) == NSComparisonResult.OrderedDescending {
-                    evT = eventTime
-                    continue
-                }
-                if eventTime.timeFrom.compare(afterDate) == NSComparisonResult.OrderedDescending && eventTime.timeFrom.compare(evT!.timeFrom) == NSComparisonResult.OrderedAscending {
-                    evT = eventTime
-                }
+        for eventTime in eventTimes {
+            if evT == nil && eventTime.timeFrom.compare(afterDate) == NSComparisonResult.OrderedDescending {
+                evT = eventTime
+                continue
+            }
+            if eventTime.timeFrom.compare(afterDate) == NSComparisonResult.OrderedDescending && eventTime.timeFrom.compare(evT!.timeFrom) == NSComparisonResult.OrderedAscending {
+                evT = eventTime
             }
         }
         return evT
@@ -253,14 +290,12 @@ public class Event: Deserializable {
 
     public func futureDays(afterDate: NSDate) -> [NSDate] {
         var futureDays = [NSDate]()
-        if let eventTimes = self.eventTimes {
-            for eventTime in eventTimes {
-                if eventTime.timeFrom.compare(afterDate) == NSComparisonResult.OrderedDescending {
-                    let cal = NSCalendar.currentCalendar()
-                    let comps = cal.components(.DayCalendarUnit | .MonthCalendarUnit | .YearCalendarUnit, fromDate: eventTime.timeFrom)
-                    if let day = cal.dateFromComponents(comps) {
-                        futureDays.append(day)
-                    }
+        for eventTime in eventTimes {
+            if eventTime.timeFrom.compare(afterDate) == NSComparisonResult.OrderedDescending {
+                let cal = NSCalendar.currentCalendar()
+                let comps = cal.components(.DayCalendarUnit | .MonthCalendarUnit | .YearCalendarUnit, fromDate: eventTime.timeFrom)
+                if let day = cal.dateFromComponents(comps) {
+                    futureDays.append(day)
                 }
             }
         }
@@ -437,11 +472,9 @@ public class DataModel {
     }
 
     internal func futureEventsFilter(event: Event) -> Bool {
-        if let eventTimes = event.eventTimes {
-            for eventTime in eventTimes {
-                if eventTime.timeFrom.compare(NSDate()) == NSComparisonResult.OrderedDescending {
-                    return true
-                }
+        for eventTime in event.eventTimes {
+            if eventTime.timeFrom.compare(NSDate()) == NSComparisonResult.OrderedDescending {
+                return true
             }
         }
         return false
@@ -465,10 +498,14 @@ public class DataModel {
 
     internal func eventsWithData(data: NSData) -> [Event] {
         var events = [Event]()
-        if let pdata: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) {
-            events <<<<* pdata
-            events = events.filter(self.futureEventsFilter)
+        let json = JSON(data: data)
+        for (index: String, subJson: JSON) in json {
+            if let eventName = subJson["name"].string {
+                let event = Event(data: subJson)
+                events.append(event)
+            }
         }
+        events = events.filter(self.futureEventsFilter)
         return events
     }
 

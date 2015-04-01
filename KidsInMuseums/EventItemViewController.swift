@@ -19,13 +19,11 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
 
     required init(event: Event, frame b: CGRect) {
         self.event = event
-        if let reviews = event.reviews {
-            if reviews.count > 0 {
-                self.reviews.extend(reviews)
-                self.reviews.sort({(r1: Review, r2: Review) -> Bool in
-                    return r1.createdAt.compare(r2.createdAt) == NSComparisonResult.OrderedAscending
-                })
-            }
+        if reviews.count > 0 {
+            self.reviews.extend(reviews)
+            self.reviews.sort({(r1: Review, r2: Review) -> Bool in
+                return r1.createdAt.compare(r2.createdAt) == NSComparisonResult.OrderedAscending
+            })
         }
         smallFrame = b
         super.init(nibName: nil, bundle: nil)
