@@ -284,7 +284,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         switch filterMode {
         case .Date:
             if eventsByDay.count > indexPath.section && indexPath.row > 0 {
-                if eventsByDay[indexPath.section].count > 0 {
+                if eventsByDay[indexPath.section].count >= indexPath.row - 1 {
                     event = eventsByDay[indexPath.section][indexPath.row - 1]
                 }
             }

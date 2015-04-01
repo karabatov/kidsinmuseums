@@ -7,9 +7,13 @@
 //
 
 class MuseumInfoView: UIScrollView {
+    let ownMuseum: Museum
 
     required init(museum: Museum, maxWidth: CGFloat) {
+        ownMuseum = museum
         super.init(frame: CGRectZero)
+
+        userInteractionEnabled = true
 
         let zeroHeightSize = CGSizeMake(maxWidth, 0)
         var height: CGFloat = 0.0
@@ -95,7 +99,8 @@ class MuseumInfoView: UIScrollView {
             let siteTitleStr = NSAttributedString(string: NSLocalizedString("Website: ", comment: "Website, museum info card"), attributes: greyTextParams)
             siteStr.appendAttributedString(siteTitleStr)
 
-            let siteTextStr = NSAttributedString(string: museum.site, attributes: blackTextParams)
+            let siteTextStr = NSMutableAttributedString(string: museum.site, attributes: blackTextParams)
+            siteTextStr.addAttribute(NSLinkAttributeName, value: museum.site, range: NSMakeRange(0, siteTextStr.length))
             siteStr.appendAttributedString(siteTextStr)
 
             let siteNode = TextDividerNode(attributedText: siteStr)

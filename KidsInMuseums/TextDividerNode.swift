@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Golova Media. All rights reserved.
 //
 
-class TextDividerNode: ASDisplayNode {
+class TextDividerNode: ASControlNode, ASTextNodeDelegate {
     let textView = ASTextNode()
     let divider = ASDisplayNode()
     let kTextDividerNodeMarginV: CGFloat = 8.0
@@ -19,6 +19,7 @@ class TextDividerNode: ASDisplayNode {
         divider.backgroundColor = divColor
 
         textView.attributedString = attributedText
+        textView.delegate = self
 
         addSubnode(textView)
         addSubnode(divider)
@@ -39,5 +40,13 @@ class TextDividerNode: ASDisplayNode {
 
         let pixelSize: CGFloat = 1.0 / UIScreen.mainScreen().scale
         divider.frame = CGRectMake(0, calculatedSize.height - pixelSize, calculatedSize.width, pixelSize)
+    }
+
+    // MARK: ASTextNodeDelegate
+
+    func textNode(textNode: ASTextNode!, tappedLinkAttribute attribute: String!, value: AnyObject!, atPoint point: CGPoint, textRange: NSRange) {
+        if let url = NSURL(string: attribute) {
+            UIApplication.sharedApplication().openURL(url)
+        }
     }
 }
