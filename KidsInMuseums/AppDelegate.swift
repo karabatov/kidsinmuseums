@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             setupLocationService(newWantsLocation)
         }
     }
+    internal var lastLocationUpdate = NSDate(timeIntervalSince1970: 0)
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         DataModel.sharedInstance // Trigger update
@@ -118,9 +119,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
 
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        if let lastLocation = locations.last as? CLLocation {
-            let userInfo = [kKIMLocationUpdatedKey: lastLocation]
-            NSNotificationCenter.defaultCenter().postNotificationName(kKIMLocationUpdated, object: self, userInfo:userInfo)
+        if NSDate().timeIntervalSinceDate(lastLocationUpdate) > 3 * 60 {
+            if let lastLocation = locations.last as? CLLocation {
+                let userInfo = [kKIMLocationUpdatedKey: lastLocation]
+                NSNotificationCenter.defaultCenter().postNotificationName(kKIMLocationUpdated, object: self, userInfo:userInfo)
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 
 public class NewsItemViewController: UIViewController, ASMultiplexImageNodeDataSource, ASMultiplexImageNodeDelegate {
     var newsItem: NewsItem
-    var scrollView: ASDisplayNode
+    var scrollView: ASScrollNode
     var dateLabel: ASTextNode
     var newsImage: ASMultiplexImageNode
     var newsText: ASTextNode
@@ -19,7 +19,7 @@ public class NewsItemViewController: UIViewController, ASMultiplexImageNodeDataS
     required public init(newsItem: NewsItem, frame b: CGRect) {
         self.newsItem = newsItem
 
-        scrollView = ASDisplayNode(viewClass: UIScrollView.self)
+        scrollView = ASScrollNode()
         scrollView.backgroundColor = UIColor.whiteColor()
 
         dateLabel = ASTextNode()

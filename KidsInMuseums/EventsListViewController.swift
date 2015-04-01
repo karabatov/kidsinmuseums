@@ -104,16 +104,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
             listView.frame = b
             self.bgView.measure(a.size)
             self.bgView.frame = a
-//            listView.reloadData()
         }
     }
-
-//    override func viewWillAppear(animated: Bool) {
-//        if DataModel.sharedInstance.dataLoaded() {
-//            self.fillAndReload()
-//            bgView.hidden = true
-//        }
-//    }
 
     override func viewDidAppear(animated: Bool) {
         if (refreshControl == nil) {
@@ -129,15 +121,17 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         delegate.wantsLocation = true
     }
 
-    override func viewWillDisappear(animated: Bool) {
-        let delegate = UIApplication.sharedApplication().delegate as AppDelegate
-        delegate.wantsLocation = false
-    }
+//    override func viewWillDisappear(animated: Bool) {
+//        let delegate = UIApplication.sharedApplication().delegate as AppDelegate
+//        delegate.wantsLocation = false
+//    }
 
     // MARK: Data
 
     func fillAndReload() {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            let oldSections = self.numberOfSectionsInTableView(self.listView)
+
             let events = DataModel.sharedInstance.events
 
             // Date
@@ -180,7 +174,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 return e1.rating > e2.rating
             })
 
-            self.listView.reloadData()
+            let newSections = self.numberOfSectionsInTableView(self.listView)
+            self.smoothReload(oldSections, newSections: newSections)
         })
     }
 
@@ -190,8 +185,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func eventItemsUpdated(notification: NSNotification) {
         if DataModel.sharedInstance.dataLoaded() {
+            self.fillAndReload()
             dispatch_async(dispatch_get_main_queue()) {
-                self.fillAndReload()
                 self.refreshControl?.endRefreshing()
                 self.bgView.hidden = true
             }
@@ -208,7 +203,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     func locationUpdated(notification: NSNotification) {
         if let loc = notification.userInfo?[kKIMLocationUpdatedKey] as? CLLocation {
             self.location = loc
-            self.listView.reloadRowsAtIndexPaths(self.listView.indexPathsForVisibleRows(), withRowAnimation: UITableViewRowAnimation.Automatic)
+            let sections = self.numberOfSectionsInTableView(self.listView)
+            self.smoothReload(sections, newSections: sections)
         }
     }
 
@@ -266,6 +262,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     // MARK: UISegmentedControl
 
     func controlValueChanged(sender: UISegmentedControl) {
+        let oldSections = self.numberOfSectionsInTableView(self.listView)
         switch sender.selectedSegmentIndex {
         case 0: self.filterMode = .Date
         case 1: self.filterMode = .Distance
@@ -273,7 +270,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         default: fatalError("The segment that should not be!")
         }
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-            self.listView.reloadData()
+            let newSections = self.numberOfSectionsInTableView(self.listView)
+            self.smoothReload(oldSections, newSections: newSections)
         })
     }
 
@@ -284,7 +282,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         switch filterMode {
         case .Date:
             if eventsByDay.count > indexPath.section && indexPath.row > 0 {
-                if eventsByDay[indexPath.section].count >= indexPath.row - 1 {
+                if eventsByDay[indexPath.section].count >= indexPath.row {
                     event = eventsByDay[indexPath.section][indexPath.row - 1]
                 }
             }
@@ -304,5 +302,30 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func segControlFrame() -> CGRect {
         return CGRectMake(kKIMSegmentedControlMarginH, kKIMSegmentedControlMarginV, UIScreen.mainScreen().bounds.size.width - kKIMSegmentedControlMarginH * 2, kKIMSegmentedControlHeight)
+    }
+
+    func smoothReload(oldSections: Int, newSections: Int) {
+        self.listView.beginUpdates()
+        let oldIdxSet = NSMutableIndexSet()
+        if oldSections > 0 {
+            oldIdxSet.addIndex(0)
+        }
+        if oldSections > 1 {
+            for index in 1..<oldSections {
+                oldIdxSet.addIndex(index)
+            }
+        }
+        self.listView.deleteSections(oldIdxSet, withRowAnimation: UITableViewRowAnimation.Fade)
+        let newIdxSet = NSMutableIndexSet()
+        if newSections > 0 {
+            newIdxSet.addIndex(0)
+        }
+        if newSections > 1 {
+            for index in 1..<newSections {
+                newIdxSet.addIndex(index)
+            }
+        }
+        self.listView.insertSections(newIdxSet, withRowAnimation: UITableViewRowAnimation.Fade)
+        self.listView.endUpdates()
     }
 }
