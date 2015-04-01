@@ -61,6 +61,7 @@
 		D1D484A31A89445A0028C6F4 /* EventDescTitleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484A21A89445A0028C6F4 /* EventDescTitleNode.swift */; };
 		D1D484A51A8949E40028C6F4 /* EventDescriptionNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484A41A8949E40028C6F4 /* EventDescriptionNode.swift */; };
 		D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */; };
+		D1F522DE1ACC3D430098862D /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F522DD1ACC3D430098862D /* SwiftyJSON.swift */; };
 		D1FF584C1AB83049008DD880 /* AppInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584B1AB83049008DD880 /* AppInfoView.swift */; };
 		D1FF584E1AB832E1008DD880 /* AppInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */; };
 		D1FF58511AB8372A008DD880 /* appinfo-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */; };
@@ -156,6 +157,7 @@
 		D1D484A21A89445A0028C6F4 /* EventDescTitleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDescTitleNode.swift; sourceTree = "<group>"; };
 		D1D484A41A8949E40028C6F4 /* EventDescriptionNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDescriptionNode.swift; sourceTree = "<group>"; };
 		D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
+		D1F522DD1ACC3D430098862D /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		D1FF584B1AB83049008DD880 /* AppInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoView.swift; sourceTree = "<group>"; };
 		D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoNode.swift; sourceTree = "<group>"; };
 		D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appinfo-logo@2x.png"; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 		D1169B711A45F45600C025A3 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				D1F522DD1ACC3D430098862D /* SwiftyJSON.swift */,
 				D1169B721A45F46E00C025A3 /* JSONHelper.swift */,
 				D10BFF5E1A48E1890098CCC3 /* NoDataView.swift */,
 				D1A9E16E1A7FABA900E06F02 /* CLLocationHumanReadable.swift */,
@@ -534,6 +537,7 @@
 				D1D484991A8926870028C6F4 /* NSTextAttachmentAge.swift in Sources */,
 				D1169B731A45F46E00C025A3 /* JSONHelper.swift in Sources */,
 				D17476331A9764B700D588A2 /* MuseumInfoView.swift in Sources */,
+				D1F522DE1ACC3D430098862D /* SwiftyJSON.swift in Sources */,
 				D1A9E1641A7E39CD00E06F02 /* EventsListViewController.swift in Sources */,
 				D1FF584E1AB832E1008DD880 /* AppInfoNode.swift in Sources */,
 				D17476421A97836800D588A2 /* PhoneDividerNode.swift in Sources */,

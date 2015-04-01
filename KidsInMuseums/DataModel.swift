@@ -26,22 +26,27 @@ let kKIMDataStorageKeyNews = "kKIMDataStorageKeyNews"
 let kKIMDataStorageKeyMuseums = "kKIMDataStorageKeyMuseums"
 let kKIMDataStorageKeyEvents = "kKIMDataStorageKeyEvents"
 
-public class KImage: Deserializable {
+public class KImage {
     var url: String = ""
     var big: KImage?
     var thumb: KImage?
     var thumb2: KImage?
 
-    required public init(data: [String : AnyObject]) {
-        url <<< data["url"]
-        url = kKIMAPIServerURL + url;
-        big <<<< data["big"]
-        thumb <<<< data["thumb"]
-        thumb2 <<<< data["thumb2"]
+    required public init(data: JSON) {
+        url = kKIMAPIServerURL + data["url"].stringValue
+        if let bigURL = data["big"]["url"].string {
+            big = KImage(data: data["big"])
+        }
+        if let thumbURL = data["thumb"]["url"].string {
+            thumb = KImage(data: data["thumb"])
+        }
+        if let thumb2URL = data["thumb2"]["url"].string {
+            thumb2 = KImage(data: data["thumb2"])
+        }
     }
 }
 
-public class NewsItem: Deserializable {
+public class NewsItem {
     var id: Int = -1
     var title: String = ""
     var image: KImage?
@@ -50,14 +55,16 @@ public class NewsItem: Deserializable {
     var createdAt: NSDate = NSDate(timeIntervalSince1970: 0)
     var updatedAt: NSDate = NSDate(timeIntervalSince1970: 0)
 
-    required public init(data: [String : AnyObject]) {
-        id <<< data["id"]
-        title <<< data["title"]
-        image <<<< data["image"]
-        description <<< data["description"]
-        text <<< data["text"]
-        createdAt <<< (value: data["created_at"], format: kKIMAPIDateFormat)
-        updatedAt <<< (value: data["updated_at"], format: kKIMAPIDateFormat)
+    required public init(jsonData: JSON) {
+        id = jsonData["id"].intValue
+        title = jsonData["title"].stringValue
+        if let imageURL = jsonData["image"]["url"].string {
+            image = KImage(data: jsonData["image"])
+        }
+        description = jsonData["description"].stringValue
+        text = jsonData["text"].stringValue
+        createdAt = DataModel.sharedInstance.dateFromString(jsonData["created_at"].string)
+        updatedAt = DataModel.sharedInstance.dateFromString(jsonData["updated_at"].string)
     }
 
     public func formattedDate() -> String {
@@ -68,7 +75,7 @@ public class NewsItem: Deserializable {
     }
 }
 
-public class Museum: Deserializable {
+public class Museum {
     var id: Int = -1
     var email: String = ""
     var showcaseId: Int = -1
@@ -86,23 +93,25 @@ public class Museum: Deserializable {
     var phone: String = ""
     var site: String = ""
 
-    required public init(data: [String : AnyObject]) {
-        id <<< data["id"]
-        email <<< data["email"]
-        showcaseId <<< data["showcase_id"]
-        name <<< data["name"]
-        contacts <<< data["contacts"]
-        address <<< data["address"]
-        directions <<< data["directions"]
-        openingHours <<< data["opening_hours"]
-        fares <<< data["fares"]
-        description <<< data["description"]
-        latitude <<< data["latitude"]
-        longitude <<< data["longitude"]
-        previewImage <<<< data["preview_image"]
-        shortDescription <<< data["short_description"]
-        phone <<< data["phone"]
-        site <<< data["site"]
+    required public init(data: JSON) {
+        id = data["id"].intValue
+        email = data["email"].stringValue
+        showcaseId = data["showcase_id"].intValue
+        name = data["name"].stringValue
+        contacts = data["contacts"].stringValue
+        address = data["address"].stringValue
+        directions = data["directions"].stringValue
+        openingHours = data["opening_hours"].stringValue
+        fares = data["fares"].stringValue
+        description = data["description"].stringValue
+        latitude = data["latitude"].doubleValue
+        longitude = data["longitude"].doubleValue
+        if let imageURL = data["preview_image"]["url"].string {
+            previewImage = KImage(data: data["preview_image"])
+        }
+        shortDescription = data["short_description"].stringValue
+        phone = data["phone"].stringValue
+        site = data["site"].stringValue
     }
 
     public func coordinate() -> CLLocationCoordinate2D {
@@ -217,7 +226,7 @@ public class Event: Deserializable {
         ageFrom <<< data["age_from"]
         ageTo <<< data["age_to"]
         description <<< data["description"]
-        previewImage <<<< data["preview_image"]
+//        previewImage <<<< data["preview_image"]
         shortDescription <<< data["short_description"]
         eventTimes <<<<* data["event_times"]
         tags <<<* data["tags"]
@@ -298,7 +307,10 @@ public class DataModel {
     public var museums : [Museum] = [Museum]()
     public var events : [Event] = [Event]()
 
+    private let inDateFormatter = NSDateFormatter()
+
     required public init() {
+        inDateFormatter.dateFormat = kKIMAPIDateFormat
         loadFromCache()
     }
 
@@ -313,6 +325,15 @@ public class DataModel {
             return true
         }
         return false
+    }
+
+    public func dateFromString(dateString: String?) -> NSDate {
+        if let dateStringGiven = dateString {
+            if let date = inDateFormatter.dateFromString(dateStringGiven) {
+                return date
+            }
+        }
+        return NSDate(timeIntervalSince1970: 0)
     }
 
     public func updateNews() {
@@ -428,15 +449,17 @@ public class DataModel {
 
     internal func newsWithData(data: NSData) -> [NewsItem] {
         var news = [NewsItem]()
-        if let pdata: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) {
-            news <<<<* pdata
-            news = news.sorted({ (obj1: NewsItem, obj2: NewsItem) -> Bool in
-                if (obj1.updatedAt.compare(obj2.updatedAt) == NSComparisonResult.OrderedAscending) {
-                    return false
-                }
-                return true
-            })
+        let json = JSON(data: data)
+        for (index: String, subJson: JSON) in json {
+            let newsItem = NewsItem(jsonData: subJson)
+            news.append(newsItem)
         }
+        news = news.sorted({ (obj1: NewsItem, obj2: NewsItem) -> Bool in
+            if (obj1.updatedAt.compare(obj2.updatedAt) == NSComparisonResult.OrderedAscending) {
+                return false
+            }
+            return true
+        })
         return news
     }
 
@@ -451,8 +474,10 @@ public class DataModel {
 
     internal func museumsWithData(data: NSData) -> [Museum] {
         var museums = [Museum]()
-        if let pdata: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) {
-            museums <<<<* pdata
+        let json = JSON(data: data)
+        for (index: String, subJson: JSON) in json {
+            let museum = Museum(data: subJson)
+            museums.append(museum)
         }
         return museums
     }
