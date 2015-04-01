@@ -128,12 +128,22 @@ public class EventTime {
     var durationMinutes: Int = -30
 
     required public init(data: JSON) {
-        id = data["id"].intValue
-        eventId = data["event_id"].intValue
+        if let idInt = data["id"].int {
+            id = idInt
+        }
+        if let eventIdInt = data["event_id"].int {
+            eventId = eventIdInt
+        }
         timeFrom = DataModel.sharedInstance.dateFromString(data["time_from"].string)
-        comment = data["comment"].stringValue
-        durationHours = data["duration_hours"].intValue
-        durationMinutes = data["duration_minutes"].intValue
+        if let commentStr = data["comment"].string {
+            comment = commentStr
+        }
+        if let durationHoursInt = data["duration_hours"].int {
+            durationHours = durationHoursInt
+        }
+        if let durationMinutesInt = data["duration_minutes"].int {
+            durationMinutes = durationMinutesInt
+        }
     }
 
     public func timeString() -> String {
