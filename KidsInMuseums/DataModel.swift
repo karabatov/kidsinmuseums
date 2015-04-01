@@ -32,16 +32,18 @@ public class KImage {
     var thumb: KImage?
     var thumb2: KImage?
 
-    required public init(data: JSON) {
-        url = kKIMAPIServerURL + data["url"].stringValue
-        if let bigURL = data["big"]["url"].string {
-            big = KImage(data: data["big"])
+    required public init(data: NSDictionary) {
+        if let urlString = data["url"] as? String {
+            url = kKIMAPIServerURL + urlString
         }
-        if let thumbURL = data["thumb"]["url"].string {
-            thumb = KImage(data: data["thumb"])
+        if let bigDic = data["big"] as? NSDictionary {
+            big = KImage(data: bigDic)
         }
-        if let thumb2URL = data["thumb2"]["url"].string {
-            thumb2 = KImage(data: data["thumb2"])
+        if let thumbDic = data["thumb"] as? NSDictionary {
+            thumb = KImage(data: thumbDic)
+        }
+        if let thumb2Dic = data["thumb2"] as? NSDictionary {
+            thumb2 = KImage(data: thumb2Dic)
         }
     }
 }
@@ -55,16 +57,24 @@ public class NewsItem {
     var createdAt: NSDate = NSDate(timeIntervalSince1970: 0)
     var updatedAt: NSDate = NSDate(timeIntervalSince1970: 0)
 
-    required public init(jsonData: JSON) {
-        id = jsonData["id"].intValue
-        title = jsonData["title"].stringValue
-        if let imageURL = jsonData["image"]["url"].string {
-            image = KImage(data: jsonData["image"])
+    required public init(data: NSDictionary) {
+        if let idInt = data["id"] as? Int {
+            id = idInt
         }
-        description = jsonData["description"].stringValue
-        text = jsonData["text"].stringValue
-        createdAt = DataModel.sharedInstance.dateFromString(jsonData["created_at"].string)
-        updatedAt = DataModel.sharedInstance.dateFromString(jsonData["updated_at"].string)
+        if let titleStr = data["title"] as? String {
+            title = titleStr
+        }
+        if let imageDic = data["image"] as? NSDictionary {
+            image = KImage(data: imageDic)
+        }
+        if let descStr = data["description"] as? String {
+            description = descStr
+        }
+        if let textStr = data["text"] as? String {
+            text = textStr
+        }
+        createdAt = DataModel.sharedInstance.dateFromString(data["created_at"] as? String)
+        updatedAt = DataModel.sharedInstance.dateFromString(data["updated_at"] as? String)
     }
 
     public func formattedDate() -> String {
@@ -93,25 +103,55 @@ public class Museum {
     var phone: String = ""
     var site: String = ""
 
-    required public init(data: JSON) {
-        id = data["id"].intValue
-        email = data["email"].stringValue
-        showcaseId = data["showcase_id"].intValue
-        name = data["name"].stringValue
-        contacts = data["contacts"].stringValue
-        address = data["address"].stringValue
-        directions = data["directions"].stringValue
-        openingHours = data["opening_hours"].stringValue
-        fares = data["fares"].stringValue
-        description = data["description"].stringValue
-        latitude = data["latitude"].doubleValue
-        longitude = data["longitude"].doubleValue
-        if let imageURL = data["preview_image"]["url"].string {
-            previewImage = KImage(data: data["preview_image"])
+    required public init(data: NSDictionary) {
+        if let idInt = data["id"] as? Int {
+            id = idInt
         }
-        shortDescription = data["short_description"].stringValue
-        phone = data["phone"].stringValue
-        site = data["site"].stringValue
+        if let emailStr = data["email"] as? String {
+            email = emailStr
+        }
+        if let showcaseIdInt = data["showcase_id"] as? Int {
+            showcaseId = showcaseIdInt
+        }
+        if let nameStr = data["name"] as? String {
+            name = nameStr
+        }
+        if let contactsStr = data["contacts"] as? String {
+            contacts = contactsStr
+        }
+        if let addressStr = data["address"] as? String {
+            address = addressStr
+        }
+        if let directionsStr = data["directions"] as? String {
+            directions = directionsStr
+        }
+        if let openingHoursStr = data["opening_hours"] as? String {
+            openingHours = openingHoursStr
+        }
+        if let faresStr = data["fares"] as? String {
+            fares = faresStr
+        }
+        if let descriptionStr = data["description"] as? String {
+            description = descriptionStr
+        }
+        if let latitudeDbl = data["latitude"] as? Double {
+            latitude = latitudeDbl
+        }
+        if let longitudeDbl = data["longitude"] as? Double {
+            longitude = longitudeDbl
+        }
+        if let imageDic = data["preview_image"] as? NSDictionary {
+            previewImage = KImage(data: imageDic)
+        }
+        if let shortDescriptionStr = data["short_description"] as? String {
+            shortDescription = shortDescriptionStr
+        }
+        if let phoneStr = data["phone"] as? String {
+            phone = phoneStr
+        }
+        if let siteStr = data["site"] as? String {
+            site = siteStr
+        }
     }
 
     public func coordinate() -> CLLocationCoordinate2D {
@@ -127,21 +167,18 @@ public class EventTime {
     var durationHours: Int = -1
     var durationMinutes: Int = -30
 
-    required public init(data: JSON) {
-        if let idInt = data["id"].int {
+    required public init(data: NSDictionary) {
+        if let idInt = data["id"] as? Int {
             id = idInt
         }
-        if let eventIdInt = data["event_id"].int {
+        if let eventIdInt = data["event_id"] as? Int {
             eventId = eventIdInt
         }
-        timeFrom = DataModel.sharedInstance.dateFromString(data["time_from"].string)
-        if let commentStr = data["comment"].string {
-            comment = commentStr
-        }
-        if let durationHoursInt = data["duration_hours"].int {
+        timeFrom = DataModel.sharedInstance.dateFromString(data["time_from"] as? String)
+        if let durationHoursInt = data["duration_hours"] as? Int {
             durationHours = durationHoursInt
         }
-        if let durationMinutesInt = data["duration_minutes"].int {
+        if let durationMinutesInt = data["duration_minutes"] as? Int {
             durationMinutes = durationMinutesInt
         }
     }
@@ -184,11 +221,19 @@ public class EventHumanTime {
     var time: String = ""
     var comment: String = ""
 
-    required public init(data: JSON) {
-        id = data["id"].intValue
-        eventId = data["event_id"].intValue
-        time = data["time"].stringValue
-        comment = data["comment"].stringValue
+    required public init(data: NSDictionary) {
+        if let idInt = data["id"] as? Int {
+            id = idInt
+        }
+        if let eventIdInt = data["event_id"] as? Int {
+            eventId = eventIdInt
+        }
+        if let timeStr = data["time"] as? String {
+            time = timeStr
+        }
+        if let commentStr = data["comment"] as? String {
+            comment = commentStr
+        }
     }
 }
 
@@ -196,9 +241,13 @@ public class KUser {
     var id: Int = -1
     var name: String = ""
 
-    required public init(data: JSON) {
-        id = data["id"].intValue
-        name = data["name"].stringValue
+    required public init(data: NSDictionary) {
+        if let idInt = data["id"] as? Int {
+            id = idInt
+        }
+        if let nameStr = data["name"] as? String {
+            name = nameStr
+        }
     }
 }
 
@@ -207,12 +256,14 @@ public class Review {
     var user: KUser?
     var createdAt: NSDate = NSDate(timeIntervalSince1970: 0)
 
-    required public init(data: JSON) {
-        text = data["text"].stringValue
-        if let userName = data["user"]["name"].string {
-            user = KUser(data: data["user"])
+    required public init(data: NSDictionary) {
+        if let textStr = data["text"] as? String {
+            text = textStr
         }
-        createdAt = DataModel.sharedInstance.dateFromString(data["created_at"].string)
+        if let userDic = data["user"] as? NSDictionary {
+            user = KUser(data: userDic)
+        }
+        createdAt = DataModel.sharedInstance.dateFromString(data["created_at"] as? String)
     }
 }
 
@@ -231,55 +282,63 @@ public class Event {
     var eventHumanTimes = [EventHumanTime]()
     var reviews = [Review]()
 
-    required public init(data: JSON) {
-        if let idInt = data["id"].int {
+    required public init(data: NSDictionary) {
+        if let idInt = data["id"] as? Int {
             id = idInt
         }
-        if let nameStr = data["name"].string {
+        if let nameStr = data["name"] as? String {
             name = nameStr
         }
-        if let muInt = data["museum_user_id"].int {
+        if let muInt = data["museum_user_id"] as? Int {
             museumUserId = muInt
         }
-        if let ageFromInt = data["age_from"].int {
+        if let ageFromInt = data["age_from"] as? Int {
             ageFrom = ageFromInt
         }
-        if let ageToInt = data["age_to"].int {
+        if let ageToInt = data["age_to"] as? Int {
             ageTo = ageToInt
         }
-        if let descriptionStr = data["description"].string {
+        if let descriptionStr = data["description"] as? String {
             description = descriptionStr
         }
-        if let imageURL = data["preview_image"]["url"].string {
-            previewImage = KImage(data: data["preview_image"])
+        if let imageDic = data["preview_image"] as? NSDictionary {
+            previewImage = KImage(data: imageDic)
         }
-        if let shortDescriptionStr = data["short_description"].string {
+        if let shortDescriptionStr = data["short_description"] as? String {
             shortDescription = shortDescriptionStr
         }
-        for (index: String, subJson: JSON) in data["event_times"] {
-            if let eventTimeFromStr = subJson["time_from"].string {
-                let eventTime = EventTime(data: subJson)
-                eventTimes.append(eventTime)
+        if let eventTimesArray = data["event_times"] as? NSArray {
+            for eventTimeObject in eventTimesArray {
+                if let eventTimeDic = eventTimeObject as? NSDictionary {
+                    let eventTime = EventTime(data: eventTimeDic)
+                    eventTimes.append(eventTime)
+                }
             }
         }
-        for (index: String, subJson: JSON) in data["tags"] {
-            if let tag = subJson.string {
-                tags.append(tag)
+        if let tagsArray = data["tags"] as? NSArray {
+            for tagObject in tagsArray {
+                if let tagStr = tagObject as? String {
+                    tags.append(tagStr)
+                }
             }
         }
-        if let ratingDbl = data["avg_rating"].double {
+        if let ratingDbl = data["avg_rating"] as? Double {
             rating = ratingDbl
         }
-        for (index: String, subJson: JSON) in data["event_human_times"] {
-            if let ehtTime = subJson["time"].string {
-                let eventHumanTime = EventHumanTime(data: subJson)
-                eventHumanTimes.append(eventHumanTime)
+        if let eventTimesArray = data["event_human_times"] as? NSArray {
+            for eventTimeObject in eventTimesArray {
+                if let eventTimeDic = eventTimeObject as? NSDictionary {
+                    let eventHumanTime = EventHumanTime(data: eventTimeDic)
+                    eventHumanTimes.append(eventHumanTime)
+                }
             }
         }
-        for (index: String, subJson: JSON) in data["reviews"] {
-            if let reviewText = subJson["text"].string {
-                let review = Review(data: subJson)
-                reviews.append(review)
+        if let reviewsArray = data["reviews"] as? NSArray {
+            for reviewObject in reviewsArray {
+                if let reviewDic = reviewObject as? NSDictionary {
+                    let review = Review(data: reviewDic)
+                    reviews.append(review)
+                }
             }
         }
     }
@@ -481,21 +540,16 @@ public class DataModel {
         return nil
     }
 
-    internal func futureEventsFilter(event: Event) -> Bool {
-        for eventTime in event.eventTimes {
-            if eventTime.timeFrom.compare(NSDate()) == NSComparisonResult.OrderedDescending {
-                return true
-            }
-        }
-        return false
-    }
-
     internal func newsWithData(data: NSData) -> [NewsItem] {
         var news = [NewsItem]()
-        let json = JSON(data: data)
-        for (index: String, subJson: JSON) in json {
-            let newsItem = NewsItem(jsonData: subJson)
-            news.append(newsItem)
+        let jsonObject: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+        if let jsonArray = jsonObject as? NSArray {
+            for newsObject: AnyObject in jsonArray {
+                if let newsItemDic = newsObject as? NSDictionary {
+                    let newsItem = NewsItem(data: newsItemDic)
+                    news.append(newsItem)
+                }
+            }
         }
         news = news.sorted({ (obj1: NewsItem, obj2: NewsItem) -> Bool in
             if (obj1.updatedAt.compare(obj2.updatedAt) == NSComparisonResult.OrderedAscending) {
@@ -508,23 +562,42 @@ public class DataModel {
 
     internal func eventsWithData(data: NSData) -> [Event] {
         var events = [Event]()
-        let json = JSON(data: data)
-        for (index: String, subJson: JSON) in json {
-            if let eventName = subJson["name"].string {
-                let event = Event(data: subJson)
-                events.append(event)
+        let jsonObject: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+        if let jsonArray = jsonObject as? NSArray {
+            for eventObject: AnyObject in jsonArray {
+                if let eventDic = eventObject as? NSDictionary {
+                    var shouldCreateEvent = false
+                    if let eventTimesArray = eventDic["event_times"] as? NSArray {
+                        for eventTimeObject in eventTimesArray {
+                            if let eventTimeDic = eventTimeObject as? NSDictionary {
+                                let date = DataModel.sharedInstance.dateFromString(eventTimeDic["time_from"] as? String)
+                                if date.compare(NSDate()) == NSComparisonResult.OrderedDescending {
+                                    shouldCreateEvent = true
+                                    break
+                                }
+                            }
+                        }
+                    }
+                    if shouldCreateEvent {
+                        let event = Event(data: eventDic)
+                        events.append(event)
+                    }
+                }
             }
         }
-        events = events.filter(self.futureEventsFilter)
         return events
     }
 
     internal func museumsWithData(data: NSData) -> [Museum] {
         var museums = [Museum]()
-        let json = JSON(data: data)
-        for (index: String, subJson: JSON) in json {
-            let museum = Museum(data: subJson)
-            museums.append(museum)
+        let jsonObject: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+        if let jsonArray = jsonObject as? NSArray {
+            for museumObject: AnyObject in jsonArray {
+                if let museumDic = museumObject as? NSDictionary {
+                    let museum = Museum(data: museumDic)
+                    museums.append(museum)
+                }
+            }
         }
         return museums
     }
