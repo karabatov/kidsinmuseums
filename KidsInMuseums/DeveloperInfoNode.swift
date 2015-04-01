@@ -16,7 +16,7 @@ class DeveloperInfoNode: ASCellNode {
 
         devLogo.image = UIImage(named: "appinfo-dev")
 
-        let devStr = NSLocalizedString("We create interest for your cause, turning audience into your clients using websites, apps, experimental projects and media. Our strategies, ideas and technology. Your big goals.", comment: "About the developer text")
+        let devStr = NSLocalizedString("Our strategies, ideas and technology. Your big goals.", comment: "About the developer text")
         let textParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)]
         let devTextStr = NSAttributedString(string: devStr, attributes: textParams)
         devText.attributedString = devTextStr
