@@ -1,4 +1,10 @@
-//  Copyright 2004-present Facebook. All Rights Reserved.
+/* Copyright (c) 2014-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
 
 #import "ASAssert.h"
 #import "ASMultidimensionalArrayUtils.h"
@@ -71,6 +77,8 @@ void ASInsertElementsIntoMultidimensionalArrayAtIndexPaths(NSMutableArray *mutab
     [arr insertObjects:[elements subarrayWithRange:NSMakeRange(idx - indexSet.count, indexSet.count)]
              atIndexes:indexSet];
   });
+
+  ASDisplayNodeCAssert(curIdx == indexPaths.count, @"Indexpath is out of range !");
 }
 
 void ASDeleteElementsInMultidimensionalArrayAtIndexPaths(NSMutableArray *mutableArray, NSArray *indexPaths) {
@@ -84,6 +92,8 @@ void ASDeleteElementsInMultidimensionalArrayAtIndexPaths(NSMutableArray *mutable
   ASRecursivelyUpdateMultidimensionalArrayAtIndexPaths(mutableArray, indexPaths, curIdx, indexPath, [indexPaths[0] length], ^(NSMutableArray *arr, NSIndexSet *indexSet, NSUInteger idx) {
     [arr removeObjectsAtIndexes:indexSet];
   });
+
+  ASDisplayNodeCAssert(curIdx == indexPaths.count, @"Indexpath is out of range !");
 }
 
 NSArray *ASFindElementsInMultidimensionalArrayAtIndexPaths(NSMutableArray *mutableArray, NSArray *indexPaths) {
@@ -98,6 +108,8 @@ NSArray *ASFindElementsInMultidimensionalArrayAtIndexPaths(NSMutableArray *mutab
   ASRecursivelyUpdateMultidimensionalArrayAtIndexPaths(mutableArray, indexPaths, curIdx, indexPath, [indexPaths[0] length], ^(NSMutableArray *arr, NSIndexSet *indexSet, NSUInteger idx) {
     [deletedElements addObjectsFromArray:[arr objectsAtIndexes:indexSet]];
   });
+
+  ASDisplayNodeCAssert(curIdx == indexPaths.count, @"Indexpath is out of range !");
 
   return deletedElements;
 }

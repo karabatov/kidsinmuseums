@@ -90,7 +90,8 @@ void ASDisplayNodePerformBlockOnMainThread(void (^block)())
   // Subclasses should never override these
   ASDisplayNodeAssert(!ASDisplayNodeSubclassOverridesSelector(self, @selector(calculatedSize)), @"Subclass %@ must not override calculatedSize method", NSStringFromClass(self));
   ASDisplayNodeAssert(!ASDisplayNodeSubclassOverridesSelector(self, @selector(measure:)), @"Subclass %@ must not override measure method", NSStringFromClass(self));
-  ASDisplayNodeAssert(!ASDisplayNodeSubclassOverridesSelector(self, @selector(recursivelyReclaimMemory)), @"Subclass %@ must not override recursivelyReclaimMemory method", NSStringFromClass(self));
+  ASDisplayNodeAssert(!ASDisplayNodeSubclassOverridesSelector(self, @selector(recursivelyClearRendering)), @"Subclass %@ must not override recursivelyClearRendering method", NSStringFromClass(self));
+  ASDisplayNodeAssert(!ASDisplayNodeSubclassOverridesSelector(self, @selector(recursivelyClearRemoteData)), @"Subclass %@ must not override recursivelyClearRemoteData method", NSStringFromClass(self));
 }
 
 + (BOOL)layerBackedNodesEnabled
@@ -123,8 +124,6 @@ void ASDisplayNodePerformBlockOnMainThread(void (^block)())
   _flags.implementsDrawRect = ([[self class] respondsToSelector:@selector(drawRect:withParameters:isCancelled:isRasterizing:)] ? 1 : 0);
   _flags.implementsImageDisplay = ([[self class] respondsToSelector:@selector(displayWithParameters:isCancelled:)] ? 1 : 0);
   _flags.implementsDrawParameters = ([self respondsToSelector:@selector(drawParametersForAsyncLayer:)] ? 1 : 0);
-
-  _fadeAnimationDuration = 0.1;
 
   ASDisplayNodeMethodOverrides overrides = ASDisplayNodeMethodOverrideNone;
   if (ASDisplayNodeSubclassOverridesSelector([self class], @selector(touchesBegan:withEvent:))) {
@@ -181,6 +180,35 @@ void ASDisplayNodePerformBlockOnMainThread(void (^block)())
   return self;
 }
 
+- (id)initWithViewBlock:(ASDisplayNodeViewBlock)viewBlock
+{
+  if (!(self = [super init]))
+    return nil;
+
+  ASDisplayNodeAssertNotNil(viewBlock, @"should initialize with a valid block that returns a UIView");
+
+  [self _initializeInstance];
+  _viewBlock = viewBlock;
+  _flags.synchronous = YES;
+
+  return self;
+}
+
+- (id)initWithLayerBlock:(ASDisplayNodeLayerBlock)layerBlock
+{
+  if (!(self = [super init]))
+    return nil;
+
+  ASDisplayNodeAssertNotNil(layerBlock, @"should initialize with a valid block that returns a CALayer");
+
+  [self _initializeInstance];
+  _layerBlock = layerBlock;
+  _flags.synchronous = YES;
+  _flags.layerBacked = YES;
+
+  return self;
+}
+
 - (void)dealloc
 {
   ASDisplayNodeAssertMainThread();
@@ -210,13 +238,6 @@ void ASDisplayNodePerformBlockOnMainThread(void (^block)())
   _displaySentinel = nil;
 
   _pendingDisplayNodes = nil;
-}
-
-#pragma mark - UIResponder overrides
-
-- (UIResponder *)nextResponder
-{
-  return self.view.superview;
 }
 
 #pragma mark - Core
@@ -249,6 +270,48 @@ void ASDisplayNodePerformBlockOnMainThread(void (^block)())
 
 }
 
+- (UIView *)_viewToLoad
+{
+  UIView *view;
+  ASDN::MutexLocker l(_propertyLock);
+
+  if (_viewBlock) {
+    view = _viewBlock();
+    ASDisplayNodeAssertNotNil(view, @"View block returned nil");
+    ASDisplayNodeAssert(![view isKindOfClass:[_ASDisplayView class]], @"View block should return a synchronously displayed view");
+    _viewBlock = nil;
+    _viewClass = [view class];
+  } else {
+    if (!_viewClass) {
+      _viewClass = [self.class viewClass];
+    }
+    view = [[_viewClass alloc] init];
+  }
+
+  return view;
+}
+
+- (CALayer *)_layerToLoad
+{
+  CALayer *layer;
+  ASDN::MutexLocker l(_propertyLock);
+
+  if (_layerBlock) {
+    layer = _layerBlock();
+    ASDisplayNodeAssertNotNil(layer, @"Layer block returned nil");
+    ASDisplayNodeAssert(![layer isKindOfClass:[_ASDisplayLayer class]], @"Layer block should return a synchronously displayed layer");
+    _layerBlock = nil;
+    _layerClass = [layer class];
+  } else {
+    if (!_layerClass) {
+      _layerClass = [self.class layerClass];
+    }
+    layer = [[_layerClass alloc] init];
+  }
+
+  return layer;
+}
+
 - (void)_loadViewOrLayerIsLayerBacked:(BOOL)isLayerBacked
 {
   ASDN::MutexLocker l(_propertyLock);
@@ -263,18 +326,11 @@ void ASDisplayNodePerformBlockOnMainThread(void (^block)())
 
   if (isLayerBacked) {
     TIME_SCOPED(_debugTimeToCreateView);
-    if (!_layerClass) {
-      _layerClass = [self.class layerClass];
-    }
-
-    _layer = [[_layerClass alloc] init];
+    _layer = [self _layerToLoad];
     _layer.delegate = self;
   } else {
     TIME_SCOPED(_debugTimeToCreateView);
-    if (!_viewClass) {
-      _viewClass = [self.class viewClass];
-    }
-    _view = [[_viewClass alloc] init];
+    _view = [self _viewToLoad];
     _view.asyncdisplaykit_node = self;
     _layer = _view.layer;
   }
@@ -363,6 +419,9 @@ void ASDisplayNodePerformBlockOnMainThread(void (^block)())
 
   ASDN::MutexLocker l(_propertyLock);
   ASDisplayNodeAssert(!_view && !_layer, @"Cannot change isLayerBacked after layer or view has loaded");
+  ASDisplayNodeAssert(!_viewBlock && !_layerBlock, @"Cannot change isLayerBacked when a layer or view block is provided");
+  ASDisplayNodeAssert(!_viewClass && !_layerClass, @"Cannot change isLayerBacked when a layer or view class is provided");
+
   if (isLayerBacked != _flags.layerBacked && !_view && !_layer) {
     _flags.layerBacked = isLayerBacked;
   }
@@ -378,8 +437,13 @@ void ASDisplayNodePerformBlockOnMainThread(void (^block)())
 
 - (CGSize)measure:(CGSize)constrainedSize
 {
-  ASDisplayNodeAssertThreadAffinity(self);
   ASDN::MutexLocker l(_propertyLock);
+  return [self __measure:constrainedSize];
+}
+
+- (CGSize)__measure:(CGSize)constrainedSize
+{
+  ASDisplayNodeAssertThreadAffinity(self);
 
   if (![self __shouldSize])
     return CGSizeZero;
@@ -399,7 +463,7 @@ void ASDisplayNodePerformBlockOnMainThread(void (^block)())
 
   // we generate placeholders at measure: time so that a node is guaranteed to have a placeholder ready to go
   // also if a node has no size, it should not have a placeholder
-  if (self.placeholderEnabled && [self displaysAsynchronously] && _size.width > 0.0 && _size.height > 0.0) {
+  if (self.placeholderEnabled && [self _displaysAsynchronously] && _size.width > 0.0 && _size.height > 0.0) {
     if (!_placeholderImage) {
       _placeholderImage = [self placeholderImage];
     }
@@ -414,8 +478,17 @@ void ASDisplayNodePerformBlockOnMainThread(void (^block)())
 
 - (BOOL)displaysAsynchronously
 {
-  ASDisplayNodeAssertThreadAffinity(self);
   ASDN::MutexLocker l(_propertyLock);
+  return [self _displaysAsynchronously];
+}
+
+/**
+ * Core implementation of -displaysAsynchronously. 
+ * Must be called with _propertyLock held.
+ */
+- (BOOL)_displaysAsynchronously
+{
+  ASDisplayNodeAssertThreadAffinity(self);
   if (self.isSynchronous) {
     return NO;
   } else {
@@ -1161,10 +1234,10 @@ static NSInteger incrementIfFound(NSInteger i) {
         [self _tearDownPlaceholderLayer];
       };
 
-      if (self.placeholderFadesOut) {
+      if (_placeholderFadeDuration > 0.0) {
         [CATransaction begin];
         [CATransaction setCompletionBlock:cleanupBlock];
-        [CATransaction setAnimationDuration:_fadeAnimationDuration];
+        [CATransaction setAnimationDuration:_placeholderFadeDuration];
         _placeholderLayer.opacity = 0.0;
         [CATransaction commit];
       } else {
@@ -1256,18 +1329,44 @@ static NSInteger incrementIfFound(NSInteger i) {
   [self __exitedHierarchy];
 }
 
-- (void)reclaimMemory
+- (void)clearRendering
 {
   self.layer.contents = nil;
   _placeholderLayer.contents = nil;
 }
 
-- (void)recursivelyReclaimMemory
+- (void)recursivelyClearRendering
 {
   for (ASDisplayNode *subnode in self.subnodes) {
-    [subnode recursivelyReclaimMemory];
+    [subnode recursivelyClearRendering];
   }
-  [self reclaimMemory];
+  [self clearRendering];
+}
+
+- (void)fetchRemoteData
+{
+  // subclass override
+}
+
+- (void)recursivelyFetchRemoteData
+{
+  for (ASDisplayNode *subnode in self.subnodes) {
+    [subnode recursivelyFetchRemoteData];
+  }
+  [self fetchRemoteData];
+}
+
+- (void)clearRemoteData
+{
+  // subclass override
+}
+
+- (void)recursivelyClearRemoteData
+{
+  for (ASDisplayNode *subnode in self.subnodes) {
+    [subnode recursivelyClearRemoteData];
+  }
+  [self clearRemoteData];
 }
 
 - (void)layout
@@ -1325,22 +1424,22 @@ static NSInteger incrementIfFound(NSInteger i) {
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    // subclass hook
+  // subclass hook
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    // subclass hook
+  // subclass hook
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    // subclass hook
+  // subclass hook
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    // subclass hook
+  // subclass hook
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
@@ -1387,6 +1486,7 @@ static NSInteger incrementIfFound(NSInteger i) {
     return CGRectContainsPoint(UIEdgeInsetsInsetRect(self.bounds, slop), point);
   }
 }
+
 
 #pragma mark - Pending View State
 - (_ASPendingState *)pendingViewState
@@ -1616,6 +1716,10 @@ static void _recursivelySetDisplaySuspended(ASDisplayNode *node, CALayer *layer,
     notableTargetDesc = [NSString stringWithFormat:@" [%@]", _viewClass];
   } else if (_layerClass) { // Nonstandard layer class unloaded
     notableTargetDesc = [NSString stringWithFormat:@" [%@]", _layerClass];
+  } else if (_viewBlock) { // Nonstandard lazy view unloaded
+    notableTargetDesc = @" [block]";
+  } else if (_layerBlock) { // Nonstandard lazy layer unloaded
+    notableTargetDesc = @" [block]";
   }
   if (self.name) {
     return [NSString stringWithFormat:@"<%@ %p name = %@%@>", self.class, self, self.name, notableTargetDesc];
@@ -1672,4 +1776,52 @@ static const char *ASDisplayNodeAssociatedNodeKey = "ASAssociatedNode";
 
 @implementation CALayer (ASDisplayNodeInternal)
 @dynamic asyncdisplaykit_node;
+@end
+
+
+@implementation UIView (AsyncDisplayKit)
+
+- (void)addSubnode:(ASDisplayNode *)node
+{
+  if (node.layerBacked) {
+    [self.layer addSublayer:node.layer];
+  } else {
+    [self addSubview:node.view];
+  }
+}
+
+@end
+
+@implementation CALayer (AsyncDisplayKit)
+
+- (void)addSubnode:(ASDisplayNode *)node
+{
+  [self addSublayer:node.layer];
+}
+
+@end
+
+
+@implementation ASDisplayNode (Deprecated)
+
+- (void)setPlaceholderFadesOut:(BOOL)placeholderFadesOut
+{
+  self.placeholderFadeDuration = placeholderFadesOut ? 0.1 : 0.0;
+}
+
+- (BOOL)placeholderFadesOut
+{
+  return self.placeholderFadeDuration > 0.0;
+}
+
+- (void)reclaimMemory
+{
+  [self clearRendering];
+}
+
+- (void)recursivelyReclaimMemory
+{
+  [self recursivelyClearRendering];
+}
+
 @end

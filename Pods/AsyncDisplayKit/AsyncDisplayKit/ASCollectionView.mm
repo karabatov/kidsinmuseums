@@ -13,6 +13,9 @@
 #import "ASRangeController.h"
 #import "ASDataController.h"
 #import "ASDisplayNodeInternal.h"
+#import "ASBatchFetching.h"
+
+const static NSUInteger kASCollectionViewAnimationNone = 0;
 
 
 #pragma mark -
@@ -36,7 +39,10 @@ static BOOL _isInterceptedSelector(SEL sel)
           
           // used for ASRangeController visibility updates
           sel == @selector(collectionView:willDisplayCell:forItemAtIndexPath:) ||
-          sel == @selector(collectionView:didEndDisplayingCell:forItemAtIndexPath:)
+          sel == @selector(collectionView:didEndDisplayingCell:forItemAtIndexPath:) ||
+
+          // used for batch fetching API
+          sel == @selector(scrollViewWillEndDragging:withVelocity:targetContentOffset:)
           );
 }
 
@@ -60,7 +66,7 @@ static BOOL _isInterceptedSelector(SEL sel)
   if (!self) {
     return nil;
   }
-  
+
   ASDisplayNodeAssert(target, @"target must not be nil");
   ASDisplayNodeAssert(interceptor, @"interceptor must not be nil");
   
@@ -97,7 +103,16 @@ static BOOL _isInterceptedSelector(SEL sel)
   ASDataController *_dataController;
   ASRangeController *_rangeController;
   ASFlowLayoutController *_layoutController;
+
+  BOOL _performingBatchUpdates;
+  NSMutableArray *_batchUpdateBlocks;
+
+  BOOL _asyncDataFetchingEnabled;
+
+  ASBatchContext *_batchContext;
 }
+
+@property (atomic, assign) BOOL asyncDataSourceLocked;
 
 @end
 
@@ -107,6 +122,11 @@ static BOOL _isInterceptedSelector(SEL sel)
 #pragma mark Lifecycle.
 
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout
+{
+  return [self initWithFrame:frame collectionViewLayout:layout asyncDataFetching:NO];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout asyncDataFetching:(BOOL)asyncDataFetchingEnabled
 {
   if (!(self = [super initWithFrame:frame collectionViewLayout:layout]))
     return nil;
@@ -120,10 +140,20 @@ static BOOL _isInterceptedSelector(SEL sel)
   _rangeController.delegate = self;
   _rangeController.layoutController = _layoutController;
 
-  _dataController = [[ASDataController alloc] init];
+  _dataController = [[ASDataController alloc] initWithAsyncDataFetching:asyncDataFetchingEnabled];
   _dataController.delegate = _rangeController;
   _dataController.dataSource = self;
-  
+
+  _batchContext = [[ASBatchContext alloc] init];
+
+  _leadingScreensForBatching = 1.0;
+
+  _asyncDataFetchingEnabled = asyncDataFetchingEnabled;
+  _asyncDataSourceLocked = NO;
+
+  _performingBatchUpdates = NO;
+  _batchUpdateBlocks = [NSMutableArray array];
+
   [self registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"_ASCollectionViewCell"];
   
   return self;
@@ -134,10 +164,11 @@ static BOOL _isInterceptedSelector(SEL sel)
 
 - (void)reloadData
 {
+  ASDisplayNodeAssert(self.asyncDelegate, @"ASCollectionView's asyncDelegate property must be set.");
   ASDisplayNodePerformBlockOnMainThread(^{
     [super reloadData];
   });
-  [_dataController reloadData];
+  [_dataController reloadDataWithAnimationOption:kASCollectionViewAnimationNone];
 }
 
 - (void)setDataSource:(id<UICollectionViewDataSource>)dataSource
@@ -183,14 +214,24 @@ static BOOL _isInterceptedSelector(SEL sel)
   }
 }
 
+- (void)setTuningParameters:(ASRangeTuningParameters)tuningParameters forRangeType:(ASLayoutRangeType)rangeType
+{
+  [_layoutController setTuningParameters:tuningParameters forRangeType:rangeType];
+}
+
+- (ASRangeTuningParameters)tuningParametersForRangeType:(ASLayoutRangeType)rangeType
+{
+  return [_layoutController tuningParametersForRangeType:rangeType];
+}
+
 - (ASRangeTuningParameters)rangeTuningParameters
 {
-  return _layoutController.tuningParameters;
+  return [self tuningParametersForRangeType:ASLayoutRangeTypeRender];
 }
 
 - (void)setRangeTuningParameters:(ASRangeTuningParameters)tuningParameters
 {
-  _layoutController.tuningParameters = tuningParameters;
+  [self setTuningParameters:tuningParameters forRangeType:ASLayoutRangeTypeRender];
 }
 
 - (CGSize)calculatedSizeForNodeAtIndexPath:(NSIndexPath *)indexPath
@@ -198,48 +239,72 @@ static BOOL _isInterceptedSelector(SEL sel)
   return [[_dataController nodeAtIndexPath:indexPath] calculatedSize];
 }
 
+- (NSArray *)visibleNodes
+{
+  NSArray *indexPaths = [self indexPathsForVisibleItems];
+  NSMutableArray *visibleNodes = [[NSMutableArray alloc] init];
+
+  [indexPaths enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    ASCellNode *visibleNode = [self nodeForItemAtIndexPath:obj];
+    [visibleNodes addObject:visibleNode];
+  }];
+
+  return visibleNodes;
+}
+
 #pragma mark Assertions.
+
+- (void)performBatchUpdates:(void (^)())updates completion:(void (^)(BOOL))completion
+{
+  [_dataController beginUpdates];
+  updates();
+  [_dataController endUpdatesWithCompletion:completion];
+}
 
 - (void)insertSections:(NSIndexSet *)sections
 {
-  [_dataController insertSections:sections];
+  [_dataController insertSections:sections withAnimationOption:kASCollectionViewAnimationNone];
 }
 
 - (void)deleteSections:(NSIndexSet *)sections
 {
-  [_dataController deleteSections:sections];
+  [_dataController deleteSections:sections withAnimationOption:kASCollectionViewAnimationNone];
 }
 
 - (void)reloadSections:(NSIndexSet *)sections
 {
-  [_dataController reloadSections:sections];
+  [_dataController reloadSections:sections withAnimationOption:kASCollectionViewAnimationNone];
 }
 
 - (void)moveSection:(NSInteger)section toSection:(NSInteger)newSection
 {
-  [_dataController moveSection:section toSection:newSection];
+  [_dataController moveSection:section toSection:newSection withAnimationOption:kASCollectionViewAnimationNone];
 }
 
 - (void)insertItemsAtIndexPaths:(NSArray *)indexPaths
 {
-  [_dataController insertRowsAtIndexPaths:indexPaths];
+  [_dataController insertRowsAtIndexPaths:indexPaths withAnimationOption:kASCollectionViewAnimationNone];
 }
 
 - (void)deleteItemsAtIndexPaths:(NSArray *)indexPaths
 {
-  [_dataController deleteRowsAtIndexPaths:indexPaths];
+  [_dataController deleteRowsAtIndexPaths:indexPaths withAnimationOption:kASCollectionViewAnimationNone];
 }
 
 - (void)reloadItemsAtIndexPaths:(NSArray *)indexPaths
 {
-  [_dataController reloadRowsAtIndexPaths:indexPaths];
+  [_dataController reloadRowsAtIndexPaths:indexPaths withAnimationOption:kASCollectionViewAnimationNone];
 }
 
 - (void)moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath
 {
-  [_dataController moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
+  [_dataController moveRowAtIndexPath:indexPath toIndexPath:newIndexPath withAnimationOption:kASCollectionViewAnimationNone];
 }
 
+- (ASCellNode *)nodeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+  return [_dataController nodeAtIndexPath:indexPath];
+}
 
 #pragma mark -
 #pragma mark Intercepted selectors.
@@ -312,6 +377,46 @@ static BOOL _isInterceptedSelector(SEL sel)
 }
 
 
+#pragma mark -
+#pragma mark Batch Fetching
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+  [self handleBatchFetchScrollingToOffset:*targetContentOffset];
+
+  if ([_asyncDelegate respondsToSelector:@selector(scrollViewWillEndDragging:withVelocity:targetContentOffset:)]) {
+    [_asyncDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+  }
+}
+
+- (BOOL)shouldBatchFetch
+{
+  // if the delegate does not respond to this method, there is no point in starting to fetch
+  BOOL canFetch = [_asyncDelegate respondsToSelector:@selector(collectionView:willBeginBatchFetchWithContext:)];
+  if (canFetch && [_asyncDelegate respondsToSelector:@selector(shouldBatchFetchForCollectionView:)]) {
+    return [_asyncDelegate shouldBatchFetchForCollectionView:self];
+  } else {
+    return canFetch;
+  }
+}
+
+- (void)handleBatchFetchScrollingToOffset:(CGPoint)targetOffset
+{
+  ASDisplayNodeAssert(_batchContext != nil, @"Batch context should exist");
+
+  if (![self shouldBatchFetch]) {
+    return;
+  }
+
+  if (ASDisplayShouldFetchBatchForContext(_batchContext, [self scrollDirection], self.bounds, self.contentSize, targetOffset, _leadingScreensForBatching)) {
+    [_batchContext beginBatchFetching];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+      [_asyncDelegate collectionView:self willBeginBatchFetchWithContext:_batchContext];
+    });
+  }
+}
+
+
 #pragma mark - ASDataControllerSource
 
 - (ASCellNode *)dataController:(ASDataController *)dataController nodeAtIndexPath:(NSIndexPath *)indexPath
@@ -347,8 +452,50 @@ static BOOL _isInterceptedSelector(SEL sel)
   }
 }
 
+- (void)dataControllerLockDataSource
+{
+  ASDisplayNodeAssert(!self.asyncDataSourceLocked, @"The data source has already been locked");
+
+  self.asyncDataSourceLocked = YES;
+  if ([_asyncDataSource respondsToSelector:@selector(collectionViewLockDataSource:)]) {
+    [_asyncDataSource collectionViewLockDataSource:self];
+  }
+}
+
+- (void)dataControllerUnlockDataSource
+{
+  ASDisplayNodeAssert(self.asyncDataSourceLocked, @"The data source has already been unlocked");
+
+  self.asyncDataSourceLocked = NO;
+  if ([_asyncDataSource respondsToSelector:@selector(collectionViewUnlockDataSource:)]) {
+    [_asyncDataSource collectionViewUnlockDataSource:self];
+  }
+}
+
 #pragma mark -
 #pragma mark ASRangeControllerDelegate.
+
+- (void)rangeControllerBeginUpdates:(ASRangeController *)rangeController {
+  ASDisplayNodeAssertMainThread();
+  _performingBatchUpdates = YES;
+}
+
+- (void)rangeControllerEndUpdates:(ASRangeController *)rangeController completion:(void (^)(BOOL))completion {
+  ASDisplayNodeAssertMainThread();
+
+  [super performBatchUpdates:^{
+    [_batchUpdateBlocks enumerateObjectsUsingBlock:^(dispatch_block_t block, NSUInteger idx, BOOL *stop) {
+      block();
+    }];
+  } completion:^(BOOL finished) {
+    if (completion) {
+      completion(finished);
+    }
+  }];
+
+  [_batchUpdateBlocks removeAllObjects];
+  _performingBatchUpdates = NO;
+}
 
 - (NSArray *)rangeControllerVisibleNodeIndexPaths:(ASRangeController *)rangeController
 {
@@ -367,36 +514,63 @@ static BOOL _isInterceptedSelector(SEL sel)
   return [_dataController nodesAtIndexPaths:indexPaths];
 }
 
-- (void)rangeController:(ASRangeController *)rangeController didInsertNodesAtIndexPaths:(NSArray *)indexPaths
+- (void)rangeController:(ASRangeController *)rangeController didInsertNodesAtIndexPaths:(NSArray *)indexPaths withAnimationOption:(ASDataControllerAnimationOptions)animationOption
 {
   ASDisplayNodeAssertMainThread();
-  [UIView performWithoutAnimation:^{
-    [super insertItemsAtIndexPaths:indexPaths];
-  }];
+  if (_performingBatchUpdates) {
+    [_batchUpdateBlocks addObject:^{
+      [super insertItemsAtIndexPaths:indexPaths];
+    }];
+  } else {
+    [UIView performWithoutAnimation:^{
+      [super insertItemsAtIndexPaths:indexPaths];
+    }];
+  }
 }
 
-- (void)rangeController:(ASRangeController *)rangeController didDeleteNodesAtIndexPaths:(NSArray *)indexPaths
+- (void)rangeController:(ASRangeController *)rangeController didDeleteNodesAtIndexPaths:(NSArray *)indexPaths withAnimationOption:(ASDataControllerAnimationOptions)animationOption
 {
   ASDisplayNodeAssertMainThread();
-  [UIView performWithoutAnimation:^{
-    [super deleteItemsAtIndexPaths:indexPaths];
-  }];
+
+  if (_performingBatchUpdates) {
+    [_batchUpdateBlocks addObject:^{
+      [super deleteItemsAtIndexPaths:indexPaths];
+    }];
+  } else {
+    [UIView performWithoutAnimation:^{
+      [super deleteItemsAtIndexPaths:indexPaths];
+    }];
+  }
 }
 
-- (void)rangeController:(ASRangeController *)rangeController didInsertSectionsAtIndexSet:(NSIndexSet *)indexSet
+- (void)rangeController:(ASRangeController *)rangeController didInsertSectionsAtIndexSet:(NSIndexSet *)indexSet withAnimationOption:(ASDataControllerAnimationOptions)animationOption
 {
   ASDisplayNodeAssertMainThread();
-  [UIView performWithoutAnimation:^{
-    [super insertSections:indexSet];
-  }];
+
+  if (_performingBatchUpdates) {
+    [_batchUpdateBlocks addObject:^{
+      [super insertSections:indexSet];
+    }];
+  } else {
+    [UIView performWithoutAnimation:^{
+      [super insertSections:indexSet];
+    }];
+  }
 }
 
-- (void)rangeController:(ASRangeController *)rangeController didDeleteSectionsAtIndexSet:(NSIndexSet *)indexSet
+- (void)rangeController:(ASRangeController *)rangeController didDeleteSectionsAtIndexSet:(NSIndexSet *)indexSet withAnimationOption:(ASDataControllerAnimationOptions)animationOption
 {
   ASDisplayNodeAssertMainThread();
-  [UIView performWithoutAnimation:^{
-    [super deleteSections:indexSet];
-  }];
+
+  if (_performingBatchUpdates) {
+    [_batchUpdateBlocks addObject:^{
+      [super deleteSections:indexSet];
+    }];
+  } else {
+    [UIView performWithoutAnimation:^{
+      [super deleteSections:indexSet];
+    }];
+  }
 }
 
 @end

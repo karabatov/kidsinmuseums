@@ -4,7 +4,7 @@ platform :ios, '7.0'
 link_with 'KidsInMuseums'
 
 pod 'SDWebImage'
-pod 'AsyncDisplayKit'
+pod 'AsyncDisplayKit', :head
 pod 'FontAwesomeKit/FontAwesome'
 pod 'BDBSpinKitRefreshControl'
 

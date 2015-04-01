@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-#import "_ASAsyncTransactionContainer.h"
-#import "ASBaseDefines.h"
-#import "ASDealloc2MainObject.h"
+#import <AsyncDisplayKit/_ASAsyncTransactionContainer.h>
+#import <AsyncDisplayKit/ASBaseDefines.h>
+#import <AsyncDisplayKit/ASDealloc2MainObject.h>
 
+
+typedef UIView *(^ASDisplayNodeViewBlock)();
+typedef CALayer *(^ASDisplayNodeLayerBlock)();
 
 /**
  * An `ASDisplayNode` is an abstraction over `UIView` and `CALayer` that allows you to perform calculations about a view
@@ -43,31 +46,22 @@
  */
 - (id)init;
 
-/** 
- * @abstract Alternative initializer with a view class.
- *
- * @param viewClass Any UIView subclass, such as UIScrollView.
- *
- * @return An ASDisplayNode instance whose view will be of class viewClass.
- *
- * @discussion If viewClass is not a subclass of _ASDisplayView, it will still render synchronously and -layout and 
- * touch handling methods on the node will not be called.
- * The view instance will be created with alloc/init.
- */
-- (id)initWithViewClass:(Class)viewClass;
 
-/** 
- * @abstract Alternative initializer with a layer class.
+/**
+ * @abstract Alternative initializer with a block to create the backing view.
  *
- * @param layerClass Any CALayer subclass, such as CATransformLayer.
- *
- * @return An ASDisplayNode instance whose layer will be of class layerClass.
- *
- * @discussion If layerClass is not a subclass of _ASDisplayLayer, it will still render synchronously and -layout on the
- * node will not be called.
- * The layer instance will be created with alloc/init.
+ * @return An ASDisplayNode instance that loads its view with the given block that is guaranteed to run on the main
+ * queue. The view will render synchronously and -layout and touch handling methods on the node will not be called.
  */
-- (id)initWithLayerClass:(Class)layerClass;
+- (id)initWithViewBlock:(ASDisplayNodeViewBlock)viewBlock;
+
+/**
+ * @abstract Alternative initializer with a block to create the backing layer.
+ *
+ * @return An ASDisplayNode instance that loads its layer with the given block that is guaranteed to run on the main
+ * queue. The layer will render synchronously and -layout and touch handling methods on the node will not be called.
+ */
+- (id)initWithLayerBlock:(ASDisplayNodeLayerBlock)viewBlock;
 
 
 /** @name Properties */
@@ -245,8 +239,8 @@
 /** 
  * @abstract Whether this node's view performs asynchronous rendering.
  *
- * @return Defaults to YES, except for synchronous views (ie, those created with -initWithViewClass: /
- * -initWithLayerClass:), which are always NO.
+ * @return Defaults to YES, except for synchronous views (ie, those created with -initWithViewBlock: /
+ * -initWithLayerBlock:), which are always NO.
  *
  * @discussion If this flag is set, then the node will participate in the current asyncdisplaykit_async_transaction and 
  * do its rendering on the displayQueue instead of the main thread.
@@ -318,7 +312,7 @@
 - (void)recursivelySetDisplaySuspended:(BOOL)flag;
 
 /**
- * @abstract Calls -reclaimMemory on the receiver and its subnode hierarchy.
+ * @abstract Calls -clearRendering on the receiver and its subnode hierarchy.
  *
  * @discussion Clears backing stores and other memory-intensive intermediates.
  * If the node is removed from a visible hierarchy and then re-added, it will automatically trigger a new asynchronous display,
@@ -328,7 +322,27 @@
  * @see displaySuspended and setNeedsDisplay
  */
 
-- (void)recursivelyReclaimMemory;
+- (void)recursivelyClearRendering;
+
+/**
+ * @abstract Calls -clearRemoteData on the receiver and its subnode hierarchy.
+ *
+ * @discussion Clears any memory-intensive fetched content.
+ * This method is used to notify the node that it should purge any content that is both expensive to fetch and to
+ * retain in memory.
+ *
+ * @see clearRemoteData and fetchRemoteData
+ */
+- (void)recursivelyClearRemoteData;
+
+/**
+ * @abstract Calls -fetchRemoteData on the receiver and its subnode hierarchy.
+ *
+ * @discussion Fetches content from remote sources for the current node and all subnodes.
+ *
+ * @see fetchRemoteData and clearRemoteData
+ */
+- (void)recursivelyFetchRemoteData;
 
 /**
  * @abstract Toggle displaying a placeholder over the node that covers content until the node and all subnodes are
@@ -339,11 +353,11 @@
 @property (nonatomic, assign) BOOL placeholderEnabled;
 
 /**
- * @abstract Toggle to fade-out the placeholder when a node's contents are finished displaying.
+ * @abstract Set the time it takes to fade out the placeholder when a node's contents are finished displaying.
  *
- * @discussion Defaults to NO.
+ * @discussion Defaults to 0 seconds.
  */
-@property (nonatomic, assign) BOOL placeholderFadesOut;
+@property (nonatomic, assign) NSTimeInterval placeholderFadeDuration;
 
 
 /** @name Hit Testing */
@@ -526,4 +540,28 @@
  See: -(void)asyncdisplaykit_asyncTransactionContainerStateDidChange in ASDisplayNodeSubclass.h
  */
 @interface ASDisplayNode (ASDisplayNodeAsyncTransactionContainer) <ASDisplayNodeAsyncTransactionContainer>
+@end
+
+
+@interface UIView (AsyncDisplayKit)
+/**
+ * Convenience method, equivalent to [view addSubview:node.view] or [view.layer addSublayer:node.layer] if layer-backed.
+ */
+- (void)addSubnode:(ASDisplayNode *)node;
+@end
+
+
+@interface CALayer (AsyncDisplayKit)
+/**
+ * Convenience method, equivalent to [layer addSublayer:node.layer].
+ */
+- (void)addSubnode:(ASDisplayNode *)node;
+@end
+
+@interface ASDisplayNode (Deprecated)
+
+- (void)reclaimMemory ASDISPLAYNODE_DEPRECATED;
+- (void)recursivelyReclaimMemory ASDISPLAYNODE_DEPRECATED;
+@property (nonatomic, assign) BOOL placeholderFadesOut ASDISPLAYNODE_DEPRECATED;
+
 @end

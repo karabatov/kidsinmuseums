@@ -1,7 +1,7 @@
 PODS:
-  - AsyncDisplayKit (1.1.1):
-    - AsyncDisplayKit/ASDealloc2MainObject (= 1.1.1)
-  - AsyncDisplayKit/ASDealloc2MainObject (1.1.1)
+  - AsyncDisplayKit (HEAD based on 1.1.1):
+    - AsyncDisplayKit/ASDealloc2MainObject (= HEAD based on 1.1.1)
+  - AsyncDisplayKit/ASDealloc2MainObject (HEAD based on 1.1.1)
   - BDBSpinKitRefreshControl (1.0.3):
     - SpinKit (~> 1.0)
   - FontAwesomeKit/Core (2.2.0)
@@ -13,7 +13,7 @@ PODS:
   - SpinKit (1.2.0)
 
 DEPENDENCIES:
-  - AsyncDisplayKit
+  - AsyncDisplayKit (HEAD)
   - BDBSpinKitRefreshControl
   - FontAwesomeKit/FontAwesome
   - SDWebImage

@@ -8,20 +8,6 @@
 
 #import <AsyncDisplayKit/ASControlNode.h>
 
-/**
- * Image tints.
- */
-typedef NS_ENUM(NSUInteger, ASImageNodeTint) {
-  /**
-   * No tint.
-   */
-  ASImageNodeTintNormal = 0,
-
-  /**
-   * Display the image in greyscale.
-   */
-  ASImageNodeTintGreyscale,
-};
 
 /**
  * Image modification block.  Use to transform an image before display.
@@ -47,11 +33,6 @@ typedef UIImage *(^asimagenode_modification_block_t)(UIImage *image);
  * course.
  */
 @property (atomic, retain) UIImage *image;
-
-/**
- * @abstract Simple way to tint the image.
- */
-@property (nonatomic, assign) ASImageNodeTint tint;
 
 /**
  @abstract The placeholder color.
@@ -136,5 +117,17 @@ ASDISPLAYNODE_EXTERN_C_BEGIN
  * @returns An ASImageNode image modification block.
  */
 asimagenode_modification_block_t ASImageNodeRoundBorderModificationBlock(CGFloat borderWidth, UIColor *borderColor);
+
+/**
+ * @abstract Image modification block that applies a tint color à la UIImage configured with
+ * renderingMode set to UIImageRenderingModeAlwaysTemplate.
+ *
+ * @param tintColor The color to tint the image.
+ *
+ * @see <imageModificationBlock>
+ *
+ * @returns An ASImageNode image modification block.
+ */
+asimagenode_modification_block_t ASImageNodeTintColorModificationBlock(UIColor *color);
 
 ASDISPLAYNODE_EXTERN_C_END

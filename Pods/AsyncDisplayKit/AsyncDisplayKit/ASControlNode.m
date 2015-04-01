@@ -50,9 +50,6 @@
 @property (nonatomic, readwrite, assign, getter=isTracking) BOOL tracking;
 @property (nonatomic, readwrite, assign, getter=isTouchInside) BOOL touchInside;
 
-//! @abstract Indicates whether the receiver is interested in receiving touches.
-- (BOOL)_isInterestedInTouches;
-
 /**
   @abstract Returns a key to be used in _controlEventDispatchTable that identifies the control event.
   @param controlEvent A control event.
@@ -91,7 +88,7 @@ void _ASEnumerateControlEventsIncludedInMaskWithBlock(ASControlNodeEvent mask, v
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
   // If we're not interested in touches, we have nothing to do.
-  if (![self _isInterestedInTouches])
+  if (!self.enabled)
     return;
 
   ASControlNodeEvent controlEventMask = 0;
@@ -127,7 +124,7 @@ void _ASEnumerateControlEventsIncludedInMaskWithBlock(ASControlNodeEvent mask, v
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
   // If we're not interested in touches, we have nothing to do.
-  if (![self _isInterestedInTouches])
+  if (!self.enabled)
     return;
 
   NSParameterAssert([touches count] == 1);
@@ -153,7 +150,7 @@ void _ASEnumerateControlEventsIncludedInMaskWithBlock(ASControlNodeEvent mask, v
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
   // If we're not interested in touches, we have nothing to do.
-  if (![self _isInterestedInTouches])
+  if (!self.enabled)
     return;
 
   // We're no longer tracking and there is no touch to be inside.
@@ -172,7 +169,7 @@ void _ASEnumerateControlEventsIncludedInMaskWithBlock(ASControlNodeEvent mask, v
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
   // If we're not interested in touches, we have nothing to do.
-  if (![self _isInterestedInTouches])
+  if (!self.enabled)
     return;
 
   NSParameterAssert([touches count] == 1);
@@ -198,8 +195,11 @@ void _ASEnumerateControlEventsIncludedInMaskWithBlock(ASControlNodeEvent mask, v
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
   // If we're interested in touches, this is a tap (the only gesture we care about) and passed -hitTest for us, then no, you may not begin. Sir.
-  if ([self _isInterestedInTouches] && [gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])
-    return NO;
+  if (self.enabled && [gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]] && gestureRecognizer.view != self.view) {
+    UITapGestureRecognizer *tapRecognizer = (UITapGestureRecognizer *)gestureRecognizer;
+    // Allow double-tap gestures
+    return tapRecognizer.numberOfTapsRequired != 1;
+  }
 
   // Otherwise, go ahead. :]
   return YES;
@@ -226,7 +226,7 @@ void _ASEnumerateControlEventsIncludedInMaskWithBlock(ASControlNodeEvent mask, v
       if (!eventDispatchTable)
       {
         // Create the dispatch table for this event.
-        eventDispatchTable = [NSMapTable weakToStrongObjectsMapTable];
+        eventDispatchTable = [NSMapTable strongToStrongObjectsMapTable];
         [_controlEventDispatchTable setObject:eventDispatchTable forKey:eventKey];
       }
 
@@ -347,24 +347,24 @@ void _ASEnumerateControlEventsIncludedInMaskWithBlock(ASControlNodeEvent mask, v
         for (NSString *actionMessage in targetActions)
         {
           SEL action = NSSelectorFromString(actionMessage);
+          id responder = target;
 
-          // Hand off to UIApplication to send the action message.
-          // This also handles sending to the first responder is target is nil.
-          if (target == [NSNull null])
-            [[UIApplication sharedApplication] sendAction:action to:nil from:self forEvent:event];
-          else
-            [[UIApplication sharedApplication] sendAction:action to:target from:self forEvent:event];
+          // NSNull means that a nil target was set, so start at self and travel the responder chain
+          if (responder == [NSNull null]) {
+            // if the target cannot perform the action, travel the responder chain to try to find something that does
+            responder = [self.view targetForAction:action withSender:self];
+          }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+          [responder performSelector:action withObject:self withObject:event];
+#pragma clang diagnostic pop
         }
       }
     });
 }
 
 #pragma mark - Convenience
-- (BOOL)_isInterestedInTouches
-{
-  // We're only interested in touches if we're enabled and we've got targets to talk to.
-  return self.enabled && ([_controlEventDispatchTable count] > 0);
-}
 
 id<NSCopying> _ASControlNodeEventKeyForControlEvent(ASControlNodeEvent controlEvent)
 {
