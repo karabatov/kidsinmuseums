@@ -40,7 +40,7 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
         listView.backgroundColor = UIColor.whiteColor()
 
         // Calculate the number of rows
-        numberOfRows += 6 // 6 rows are always present
+        numberOfRows += 7 // 7 rows are always present
         if reviews.count > 0 {
             numberOfRows++
             numberOfRows += reviews.count
@@ -75,11 +75,14 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
             let textNode = EventDescriptionNode(description: event.description)
             return textNode
         case 6:
+            let tagNode = TagCloudNode(tags: event.tags)
+            return tagNode
+        case 7:
             let reviewTitleNode = EventDescTitleNode(text: NSLocalizedString("Reviews", comment: "Review section description subtitle"))
             return reviewTitleNode
         default:
-            if reviews.count > indexPath.row - 7 {
-                let review = reviews[indexPath.row - 7]
+            if reviews.count > indexPath.row - 8 {
+                let review = reviews[indexPath.row - 8]
                 let reviewNode = EventReviewNode(review: review)
                 return reviewNode
             }
