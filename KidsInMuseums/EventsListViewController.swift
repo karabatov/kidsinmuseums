@@ -45,6 +45,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     var days = [NSDate]()
     var sectionHeaderFormatter = NSDateFormatter()
     var sectionHeaderHeight: CGFloat = 0
+    let serialQ = dispatch_queue_create("com.golovamedia.KiM.serialQ", DISPATCH_QUEUE_SERIAL)
 
     // MARK: UIViewController
 
@@ -116,20 +117,18 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
             listView.addSubview(refreshControl!)
             listView.sendSubviewToBack(refreshControl!)
         }
-        let delegate = UIApplication.sharedApplication().delegate as AppDelegate
-        delegate.requestLocationPermissions()
-        delegate.wantsLocation = true
+        var dispatch_token: dispatch_once_t = 0
+        dispatch_once(&dispatch_token) {
+            let delegate = UIApplication.sharedApplication().delegate as AppDelegate
+            delegate.requestLocationPermissions()
+            delegate.wantsLocation = true
+        }
     }
-
-//    override func viewWillDisappear(animated: Bool) {
-//        let delegate = UIApplication.sharedApplication().delegate as AppDelegate
-//        delegate.wantsLocation = false
-//    }
 
     // MARK: Data
 
     func fillAndReload() {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+        dispatch_async(serialQ) {
             let oldSections = self.numberOfSectionsInTableView(self.listView)
 
             let events = DataModel.sharedInstance.events
@@ -176,7 +175,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
             let newSections = self.numberOfSectionsInTableView(self.listView)
             self.smoothReload(oldSections, newSections: newSections)
-        })
+        }
     }
 
     func updateEvents() {
@@ -203,8 +202,10 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     func locationUpdated(notification: NSNotification) {
         if let loc = notification.userInfo?[kKIMLocationUpdatedKey] as? CLLocation {
             self.location = loc
-            let sections = self.numberOfSectionsInTableView(self.listView)
-            self.smoothReload(sections, newSections: sections)
+            dispatch_async(serialQ) {
+                let sections = self.numberOfSectionsInTableView(self.listView)
+                self.smoothReload(sections, newSections: sections)
+            }
         }
     }
 
@@ -262,17 +263,17 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     // MARK: UISegmentedControl
 
     func controlValueChanged(sender: UISegmentedControl) {
-        let oldSections = self.numberOfSectionsInTableView(self.listView)
-        switch sender.selectedSegmentIndex {
-        case 0: self.filterMode = .Date
-        case 1: self.filterMode = .Distance
-        case 2: self.filterMode = .Rating
-        default: fatalError("The segment that should not be!")
-        }
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+        dispatch_async(serialQ) {
+            let oldSections = self.numberOfSectionsInTableView(self.listView)
+            switch sender.selectedSegmentIndex {
+            case 0: self.filterMode = .Date
+            case 1: self.filterMode = .Distance
+            case 2: self.filterMode = .Rating
+            default: fatalError("The segment that should not be!")
+            }
             let newSections = self.numberOfSectionsInTableView(self.listView)
             self.smoothReload(oldSections, newSections: newSections)
-        })
+        }
     }
 
     // MARK: Helpers
