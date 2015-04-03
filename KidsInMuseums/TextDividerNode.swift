@@ -20,6 +20,7 @@ class TextDividerNode: ASControlNode, ASTextNodeDelegate {
 
         textView.attributedString = attributedText
         textView.delegate = self
+        textView.userInteractionEnabled = true
 
         addSubnode(textView)
         addSubnode(divider)

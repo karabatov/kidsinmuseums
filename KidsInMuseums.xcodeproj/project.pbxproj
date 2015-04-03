@@ -13,6 +13,7 @@
 		D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */; };
 		D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B751A45F68D00C025A3 /* DataModel.swift */; };
 		D11DCFFE1ACDAB7E00307D32 /* TagCloudNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DCFFD1ACDAB7E00307D32 /* TagCloudNode.swift */; };
+		D11DD0001ACEA56000307D32 /* TagButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DCFFF1ACEA56000307D32 /* TagButtonNode.swift */; };
 		D122D6DD1A697149009D30AB /* icon-news@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D122D6DC1A697149009D30AB /* icon-news@2x.png */; };
 		D13700561AA71B8500F70138 /* MuseumEventButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */; };
 		D155CC741A4B49F50072E183 /* NewsItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D155CC731A4B49F50072E183 /* NewsItemViewController.swift */; };
@@ -89,6 +90,7 @@
 		D1169B6F1A45EFEC00C025A3 /* NewsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsListViewController.swift; sourceTree = "<group>"; };
 		D1169B751A45F68D00C025A3 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		D11DCFFD1ACDAB7E00307D32 /* TagCloudNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCloudNode.swift; sourceTree = "<group>"; };
+		D11DCFFF1ACEA56000307D32 /* TagButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagButtonNode.swift; sourceTree = "<group>"; };
 		D122D6DC1A697149009D30AB /* icon-news@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-news@2x.png"; sourceTree = "<group>"; };
 		D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumEventButtonNode.swift; sourceTree = "<group>"; };
 		D13DC70C1A45E08A0036A1F0 /* KidsInMuseums-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KidsInMuseums-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 				D1D484A21A89445A0028C6F4 /* EventDescTitleNode.swift */,
 				D1D484A41A8949E40028C6F4 /* EventDescriptionNode.swift */,
 				D11DCFFD1ACDAB7E00307D32 /* TagCloudNode.swift */,
+				D11DCFFF1ACEA56000307D32 /* TagButtonNode.swift */,
 				D11049391A8A93F400B32316 /* EventReviewNode.swift */,
 				D17476341A9765F200D588A2 /* TextDividerNode.swift */,
 				D17476411A97836800D588A2 /* PhoneDividerNode.swift */,
@@ -549,6 +552,7 @@
 				D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */,
 				D1D484A31A89445A0028C6F4 /* EventDescTitleNode.swift in Sources */,
 				D1D484971A891E0F0028C6F4 /* EventImageNode.swift in Sources */,
+				D11DD0001ACEA56000307D32 /* TagButtonNode.swift in Sources */,
 				D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */,
 				D1A9E1731A8536DD00E06F02 /* MapViewController.swift in Sources */,
 				D1D484951A8915560028C6F4 /* EventItemViewController.swift in Sources */,
