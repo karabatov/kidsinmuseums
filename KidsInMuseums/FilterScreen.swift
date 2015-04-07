@@ -18,11 +18,11 @@ class FilterScreen: UIViewController {
     var filterButtonV: CGFloat = 0.0
 
     override required init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        let tagText = NSLocalizedString("By tags", comment: "Filter by tags")
-        let museumText = NSLocalizedString("By museums", comment: "Filter by museums")
+        let tagText = NSLocalizedString("Tags", comment: "Filter by tags")
+        let museumText = NSLocalizedString("Museums", comment: "Filter by museums")
 
         tagButton = FilterButton(text: tagText)
-        tagButton.highlighted = true
+        tagButton.selected = true
         museumButton = FilterButton(text: museumText)
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -30,6 +30,8 @@ class FilterScreen: UIViewController {
         title = NSLocalizedString("Filter", comment: "Filter screen title")
         view.opaque = true
         view.backgroundColor = UIColor.whiteColor()
+        tagButton.addTarget(self, action: "filterButtonTapped:", forControlEvents: ASControlNodeEvent.TouchUpInside)
+        museumButton.addTarget(self, action: "filterButtonTapped:", forControlEvents: ASControlNodeEvent.TouchUpInside)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -48,5 +50,15 @@ class FilterScreen: UIViewController {
                 self.museumButton.frame = CGRectMake(halfWidth, 0, halfWidth, self.filterButtonV)
             })
         })
+    }
+
+    func filterButtonTapped(sender: FilterButton) {
+        switch sender {
+        case tagButton:
+            museumButton.selected = !tagButton.selected
+        case museumButton:
+            tagButton.selected = !museumButton.selected
+        default: NSLog("UGH")
+        }
     }
 }

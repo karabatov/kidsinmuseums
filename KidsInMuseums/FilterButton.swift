@@ -9,27 +9,43 @@
 class FilterButton: ASControlNode {
     let textNode = ASTextNode()
     let marginH: CGFloat = 16.0
-    let marginV: CGFloat = 8.0
-    let bgColorEnabled = UIColor.kimOrangeColor()
-    let bgColorDisabled = UIColor.kimColor()
+    let marginV: CGFloat = 12.0
+    let bgColorHighlighted = UIColor.kimOrangeColor()
+    let bgColorInactive = UIColor.kimColor()
+    var selected: Bool = false {
+        didSet {
+            updateBackgroundColor()
+        }
+    }
 
     required init(text: String) {
         super.init()
         let textParams = [ NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), NSForegroundColorAttributeName: UIColor.whiteColor() ]
         textNode.attributedString = NSAttributedString(string: text, attributes: textParams)
         addSubnode(textNode)
-
-        backgroundColor = bgColorDisabled
+        updateBackgroundColor()
     }
 
     override func beginTrackingWithTouch(touch: UITouch!, withEvent touchEvent: UIEvent!) -> Bool {
-        NSLog("begin tracking")
+        updateBackgroundColor()
         return true
     }
 
+    override func cancelTrackingWithEvent(touchEvent: UIEvent!) {
+        super.cancelTrackingWithEvent(touchEvent)
+        updateBackgroundColor()
+    }
+
     override func endTrackingWithTouch(touch: UITouch!, withEvent touchEvent: UIEvent!) {
-        NSLog("end tracking")
         super.endTrackingWithTouch(touch, withEvent: touchEvent)
+        updateBackgroundColor()
+    }
+
+    override func sendActionsForControlEvents(controlEvents: ASControlNodeEvent, withEvent touchEvent: UIEvent!) {
+        if controlEvents == .TouchUpInside {
+            selected = !selected
+        }
+        super.sendActionsForControlEvents(controlEvents, withEvent: touchEvent)
     }
 
     override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {
@@ -40,5 +56,13 @@ class FilterButton: ASControlNode {
     override func layout() {
         let textSize = textNode.calculatedSize
         textNode.frame = CGRectMake((calculatedSize.width - textSize.width) / 2.0, marginV, textSize.width, textSize.height)
+    }
+
+    func updateBackgroundColor() {
+        if !selected {
+            backgroundColor = highlighted ? bgColorHighlighted : bgColorInactive
+        } else {
+            backgroundColor = highlighted ? bgColorInactive : bgColorHighlighted
+        }
     }
 }
