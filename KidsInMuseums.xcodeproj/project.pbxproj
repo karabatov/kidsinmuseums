@@ -18,6 +18,8 @@
 		D11DD0041AD3F4D100307D32 /* FilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DD0031AD3F4D100307D32 /* FilterButton.swift */; };
 		D11DD0071AD405E400307D32 /* icon-filter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D11DD0051AD405E400307D32 /* icon-filter@2x.png */; };
 		D11DD0081AD405E400307D32 /* icon-filter@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D11DD0061AD405E400307D32 /* icon-filter@3x.png */; };
+		D11DD00B1AD465D900307D32 /* icon-clear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D11DD0091AD465D900307D32 /* icon-clear@2x.png */; };
+		D11DD00C1AD465D900307D32 /* icon-clear@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D11DD00A1AD465D900307D32 /* icon-clear@3x.png */; };
 		D122D6DD1A697149009D30AB /* icon-news@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D122D6DC1A697149009D30AB /* icon-news@2x.png */; };
 		D13700561AA71B8500F70138 /* MuseumEventButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */; };
 		D155CC741A4B49F50072E183 /* NewsItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D155CC731A4B49F50072E183 /* NewsItemViewController.swift */; };
@@ -99,6 +101,8 @@
 		D11DD0031AD3F4D100307D32 /* FilterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
 		D11DD0051AD405E400307D32 /* icon-filter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-filter@2x.png"; sourceTree = "<group>"; };
 		D11DD0061AD405E400307D32 /* icon-filter@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-filter@3x.png"; sourceTree = "<group>"; };
+		D11DD0091AD465D900307D32 /* icon-clear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-clear@2x.png"; sourceTree = "<group>"; };
+		D11DD00A1AD465D900307D32 /* icon-clear@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-clear@3x.png"; sourceTree = "<group>"; };
 		D122D6DC1A697149009D30AB /* icon-news@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-news@2x.png"; sourceTree = "<group>"; };
 		D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumEventButtonNode.swift; sourceTree = "<group>"; };
 		D13DC70C1A45E08A0036A1F0 /* KidsInMuseums-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KidsInMuseums-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -293,6 +297,8 @@
 				D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */,
 				D1FF58501AB8372A008DD880 /* appinfo-logo@3x.png */,
 				D1A0F7581A72AA9900981257 /* Default-huge.png */,
+				D11DD0091AD465D900307D32 /* icon-clear@2x.png */,
+				D11DD00A1AD465D900307D32 /* icon-clear@3x.png */,
 				D1A9E1651A7E3ADC00E06F02 /* icon-events@2x.png */,
 				D1A9E1661A7E3ADC00E06F02 /* icon-events@3x.png */,
 				D11DD0051AD405E400307D32 /* icon-filter@2x.png */,
@@ -477,6 +483,7 @@
 				D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */,
 				D1A0F75D1A72AB2200981257 /* logo@2x.png in Resources */,
 				D1A0F74D1A71318E00981257 /* marker@3x.png in Resources */,
+				D11DD00B1AD465D900307D32 /* icon-clear@2x.png in Resources */,
 				D11DD0081AD405E400307D32 /* icon-filter@3x.png in Resources */,
 				D17476401A97816900D588A2 /* icon-phone@3x.png in Resources */,
 				D1FF58521AB8372A008DD880 /* appinfo-logo@3x.png in Resources */,
@@ -496,6 +503,7 @@
 				D1FF58571AB855C3008DD880 /* appinfo-dev@2x.png in Resources */,
 				D1FF58511AB8372A008DD880 /* appinfo-logo@2x.png in Resources */,
 				D17476441A9784E500D588A2 /* icon-phone@2x.png in Resources */,
+				D11DD00C1AD465D900307D32 /* icon-clear@3x.png in Resources */,
 				D1A9E15F1A7D01A000E06F02 /* icon-more@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

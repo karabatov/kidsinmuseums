@@ -33,6 +33,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         tagButton.addTarget(self, action: "filterButtonTapped:", forControlEvents: ASControlNodeEvent.TouchUpInside)
         museumButton.addTarget(self, action: "filterButtonTapped:", forControlEvents: ASControlNodeEvent.TouchUpInside)
 
+        listTags.separatorStyle = UITableViewCellSeparatorStyle.None
         listTags.asyncDataSource = self
         listTags.asyncDelegate = self
     }
@@ -55,6 +56,15 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
                 self.listTags.frame = CGRectMake(0, self.filterButtonV, UIScreen.mainScreen().applicationFrame.size.width, UIScreen.mainScreen().applicationFrame.size.height - self.filterButtonV)
             })
         })
+
+        if let clearButton: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton {
+            clearButton.setTitle(NSLocalizedString(" Clear", comment: "Clear button title"), forState: UIControlState.Normal)
+            clearButton.setImage(UIImage(named: "icon-clear"), forState: UIControlState.Normal)
+            clearButton.addTarget(self, action: "clearButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+            clearButton.sizeToFit()
+            let leftBarItem = UIBarButtonItem(customView: clearButton)
+            navigationItem.leftBarButtonItem = leftBarItem
+        }
     }
 
     func filterButtonTapped(sender: FilterButton) {
@@ -105,5 +115,9 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     }
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    }
+
+    func clearButtonTapped(sender: UIButton) {
+        NSLog("Clear button tapped")
     }
 }
