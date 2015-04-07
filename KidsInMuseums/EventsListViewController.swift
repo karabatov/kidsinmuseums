@@ -131,7 +131,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func fillAndReload() {
         dispatch_async(serialQ) {
-            let oldSections = self.numberOfSectionsInTableView(self.listView)
+            let oldRows = self.tableView(self.listView, numberOfRowsInSection: 0)
 
             let events = DataModel.sharedInstance.events
 
@@ -180,8 +180,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 return e1.rating > e2.rating
             })
 
-            let newSections = self.numberOfSectionsInTableView(self.listView)
-            self.smoothReload(oldSections, newSections: newSections)
+            let newRows = self.tableView(self.listView, numberOfRowsInSection: 0)
+            self.smoothReload(oldRows, newRows: newRows)
         }
     }
 
@@ -210,8 +210,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         if let loc = notification.userInfo?[kKIMLocationUpdatedKey] as? CLLocation {
             self.location = loc
             dispatch_async(serialQ) {
-                let sections = self.numberOfSectionsInTableView(self.listView)
-                self.smoothReload(sections, newSections: sections)
+                let rows = self.tableView(self.listView, numberOfRowsInSection: 0)
+                self.smoothReload(rows, newRows: rows)
             }
         }
     }
@@ -265,15 +265,15 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func controlValueChanged(sender: UISegmentedControl) {
         dispatch_async(serialQ) {
-            let oldSections = self.numberOfSectionsInTableView(self.listView)
+            let oldRows = self.tableView(self.listView, numberOfRowsInSection: 0)
             switch sender.selectedSegmentIndex {
             case 0: self.filterMode = .Date
             case 1: self.filterMode = .Distance
             case 2: self.filterMode = .Rating
             default: fatalError("The segment that should not be!")
             }
-            let newSections = self.numberOfSectionsInTableView(self.listView)
-            self.smoothReload(oldSections, newSections: newSections)
+            let newRows = self.tableView(self.listView, numberOfRowsInSection: 0)
+            self.smoothReload(oldRows, newRows: newRows)
         }
     }
 
@@ -304,28 +304,28 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         return CGRectMake(kKIMSegmentedControlMarginH, kKIMSegmentedControlMarginV, UIScreen.mainScreen().bounds.size.width - kKIMSegmentedControlMarginH * 2, kKIMSegmentedControlHeight)
     }
 
-    func smoothReload(oldSections: Int, newSections: Int) {
+    func smoothReload(oldRows: Int, newRows: Int) {
         self.listView.beginUpdates()
-        let oldIdxSet = NSMutableIndexSet()
-        if oldSections > 0 {
-            oldIdxSet.addIndex(0)
+        var oldIdxSet = [NSIndexPath]()
+        if oldRows > 0 {
+            oldIdxSet.append(NSIndexPath(forRow: 0, inSection: 0))
         }
-        if oldSections > 1 {
-            for index in 1..<oldSections {
-                oldIdxSet.addIndex(index)
+        if oldRows > 1 {
+            for index in 1..<oldRows {
+                oldIdxSet.append(NSIndexPath(forRow: index, inSection: 0))
             }
         }
-        self.listView.deleteSections(oldIdxSet, withRowAnimation: UITableViewRowAnimation.Fade)
-        let newIdxSet = NSMutableIndexSet()
-        if newSections > 0 {
-            newIdxSet.addIndex(0)
+        self.listView.deleteRowsAtIndexPaths(oldIdxSet, withRowAnimation: UITableViewRowAnimation.Fade)
+        var newIdxSet = [NSIndexPath]()
+        if newRows > 0 {
+            newIdxSet.append(NSIndexPath(forRow: 0, inSection: 0))
         }
-        if newSections > 1 {
-            for index in 1..<newSections {
-                newIdxSet.addIndex(index)
+        if newRows > 1 {
+            for index in 1..<newRows {
+                newIdxSet.append(NSIndexPath(forRow: index, inSection: 0))
             }
         }
-        self.listView.insertSections(newIdxSet, withRowAnimation: UITableViewRowAnimation.Fade)
+        self.listView.insertRowsAtIndexPaths(newIdxSet, withRowAnimation: UITableViewRowAnimation.Fade)
         self.listView.endUpdates()
     }
 }
