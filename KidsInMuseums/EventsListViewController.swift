@@ -34,7 +34,10 @@ public func removeDuplicates<C: ExtensibleCollectionType where C.Generator.Eleme
 }
 
 class EventsListViewController: UIViewController, ASTableViewDataSource, ASTableViewDelegate {
-    var listView = ASTableView()
+    let listDay = ASTableView()
+    let listRating = ASTableView()
+    let listDistance = ASTableView()
+    var listViews = [ASTableView]()
     var eventItems: [Event] = [Event]()
     var eventsByDay = [Event]()
     var eventsByDistance = [Event]()
@@ -62,6 +65,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     }
 
     override func viewDidLoad() {
+        listViews.append(listDay)
+        listViews.append(listRating)
+        listViews.append(listDistance)
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navbar back button title"), style: .Plain, target: nil, action: nil)
         self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | .FlexibleWidth
         self.view.backgroundColor = UIColor.whiteColor()
@@ -75,11 +81,14 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 self.view.sendSubviewToBack(self.bgView.view)
             })
         })
-        self.view.addSubview(listView)
-        listView.separatorStyle = UITableViewCellSeparatorStyle.None;
-        listView.backgroundColor = UIColor.clearColor()
-        listView.asyncDelegate = self
-        listView.asyncDataSource = self
+        for listView in listViews {
+            self.view.addSubview(listView)
+            listView.separatorStyle = UITableViewCellSeparatorStyle.None;
+            listView.backgroundColor = UIColor.clearColor()
+            listView.asyncDelegate = self
+            listView.asyncDataSource = self
+        }
+        self.view.bringSubviewToFront(listDay)
         var segItems = [String]()
         segItems.append(NSLocalizedString("Date", comment: "Date filter segment"))
         segItems.append(NSLocalizedString("Distance", comment: "Distance filter segment"))
@@ -103,11 +112,13 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         let sf = self.segControlFrame()
         let vDiff: CGFloat = sf.size.height + kKIMSegmentedControlMarginV * 2
         let b = CGRectMake(0, vDiff, a.size.width, a.size.height - vDiff)
-        if (listView.frame != b) {
-            listView.frame = b
-            self.bgView.measure(a.size)
-            self.bgView.frame = a
+        for listView in listViews {
+            if (listView.frame != b) {
+                listView.frame = b
+            }
         }
+        self.bgView.measure(a.size)
+        self.bgView.frame = a
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -116,8 +127,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
             refreshControl?.backgroundColor = UIColor.kimColor()
             refreshControl?.tintColor = UIColor.whiteColor()
             refreshControl?.addTarget(self, action: "updateEvents", forControlEvents: UIControlEvents.ValueChanged)
-            listView.addSubview(refreshControl!)
-            listView.sendSubviewToBack(refreshControl!)
+            self.listDay.addSubview(refreshControl!)
+            self.listDay.sendSubviewToBack(refreshControl!)
         }
         var dispatch_token: dispatch_once_t = 0
         dispatch_once(&dispatch_token) {
@@ -131,7 +142,11 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func fillAndReload() {
         dispatch_async(serialQ) {
-            let oldRows = self.tableView(self.listView, numberOfRowsInSection: 0)
+            var oldRowsDict = [ASTableView: Int]()
+            for listView in self.listViews {
+                let oldRows = self.tableView(listView, numberOfRowsInSection: 0)
+                oldRowsDict[listView] = oldRows
+            }
 
             let events = DataModel.sharedInstance.events
 
@@ -180,8 +195,12 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 return e1.rating > e2.rating
             })
 
-            let newRows = self.tableView(self.listView, numberOfRowsInSection: 0)
-            self.smoothReload(oldRows, newRows: newRows)
+            for listView in self.listViews {
+                let newRows = self.tableView(listView, numberOfRowsInSection: 0)
+                if let oldRows = oldRowsDict[listView] {
+                    self.smoothReload(listView, oldRows: oldRows, newRows: newRows)
+                }
+            }
         }
     }
 
@@ -210,8 +229,10 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         if let loc = notification.userInfo?[kKIMLocationUpdatedKey] as? CLLocation {
             self.location = loc
             dispatch_async(serialQ) {
-                let rows = self.tableView(self.listView, numberOfRowsInSection: 0)
-                self.smoothReload(rows, newRows: rows)
+                for listView in self.listViews {
+                    let rows = self.tableView(listView, numberOfRowsInSection: 0)
+                    self.smoothReload(listView, oldRows: rows, newRows: rows)
+                }
             }
         }
     }
@@ -219,10 +240,10 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     // MARK: ASTableView
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch filterMode {
-        case .Date: return eventsByDay.count
-        case .Distance: return eventsByDistance.count
-        case .Rating: return eventsByRating.count
+        switch tableView {
+        case listDay: return eventsByDay.count
+        case listDistance: return eventsByDistance.count
+        case listRating: return eventsByRating.count
         default: return eventItems.count
         }
     }
@@ -237,7 +258,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
             referenceDate = days[indexPath.section]
         }
 
-        if let evt = self.eventForIndexPath(indexPath) {
+        if let evt = self.eventForIndexPath(tableView, indexPath: indexPath) {
             if evt.id != kKIMEventSectionId {
                 let node = EventCell(event: evt, filterMode: filterMode, referenceDate: referenceDate, location: location)
                 return node
@@ -254,7 +275,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     }
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
-        if let event = eventForIndexPath(indexPath) {
+        if let event = eventForIndexPath(tableView, indexPath: indexPath) {
             let eventItemVC = EventItemViewController(event: event, frame: view.bounds)
             navigationController?.pushViewController(eventItemVC, animated: true)
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -264,33 +285,41 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     // MARK: UISegmentedControl
 
     func controlValueChanged(sender: UISegmentedControl) {
-        dispatch_async(serialQ) {
-            let oldRows = self.tableView(self.listView, numberOfRowsInSection: 0)
+        dispatch_async(dispatch_get_main_queue()) {
             switch sender.selectedSegmentIndex {
-            case 0: self.filterMode = .Date
-            case 1: self.filterMode = .Distance
+            case 0:
+                self.filterMode = .Date
+                self.listDay.hidden = false
+                self.listRating.hidden = true
+                self.listDistance.hidden = true
+            case 1:
+                self.filterMode = .Distance
+                self.listDay.hidden = true
+                self.listRating.hidden = true
+                self.listDistance.hidden = false
             case 2: self.filterMode = .Rating
+                self.listDay.hidden = true
+                self.listRating.hidden = false
+                self.listDistance.hidden = true
             default: fatalError("The segment that should not be!")
             }
-            let newRows = self.tableView(self.listView, numberOfRowsInSection: 0)
-            self.smoothReload(oldRows, newRows: newRows)
         }
     }
 
     // MARK: Helpers
 
-    func eventForIndexPath(indexPath: NSIndexPath) -> Event? {
+    func eventForIndexPath(listView: UITableView, indexPath: NSIndexPath) -> Event? {
         var event: Event?
-        switch filterMode {
-        case .Date:
+        switch listView {
+        case listDay:
             if eventsByDay.count > indexPath.row {
                 event = eventsByDay[indexPath.row]
             }
-        case .Distance:
+        case listDistance:
             if eventsByDistance.count > indexPath.row {
                 event = eventsByDistance[indexPath.row]
             }
-        case .Rating:
+        case listRating:
             if eventsByRating.count > indexPath.row {
                 event = eventsByRating[indexPath.row]
             }
@@ -304,8 +333,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         return CGRectMake(kKIMSegmentedControlMarginH, kKIMSegmentedControlMarginV, UIScreen.mainScreen().bounds.size.width - kKIMSegmentedControlMarginH * 2, kKIMSegmentedControlHeight)
     }
 
-    func smoothReload(oldRows: Int, newRows: Int) {
-        self.listView.beginUpdates()
+    func smoothReload(listView: ASTableView, oldRows: Int, newRows: Int) {
+        listView.beginUpdates()
         var oldIdxSet = [NSIndexPath]()
         if oldRows > 0 {
             oldIdxSet.append(NSIndexPath(forRow: 0, inSection: 0))
@@ -315,7 +344,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 oldIdxSet.append(NSIndexPath(forRow: index, inSection: 0))
             }
         }
-        self.listView.deleteRowsAtIndexPaths(oldIdxSet, withRowAnimation: UITableViewRowAnimation.Fade)
+        listView.deleteRowsAtIndexPaths(oldIdxSet, withRowAnimation: UITableViewRowAnimation.Fade)
         var newIdxSet = [NSIndexPath]()
         if newRows > 0 {
             newIdxSet.append(NSIndexPath(forRow: 0, inSection: 0))
@@ -325,7 +354,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 newIdxSet.append(NSIndexPath(forRow: index, inSection: 0))
             }
         }
-        self.listView.insertRowsAtIndexPaths(newIdxSet, withRowAnimation: UITableViewRowAnimation.Fade)
-        self.listView.endUpdates()
+        listView.insertRowsAtIndexPaths(newIdxSet, withRowAnimation: UITableViewRowAnimation.Fade)
+        listView.endUpdates()
     }
 }
