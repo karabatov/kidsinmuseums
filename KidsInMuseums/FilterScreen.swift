@@ -65,6 +65,8 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
             let leftBarItem = UIBarButtonItem(customView: clearButton)
             navigationItem.leftBarButtonItem = leftBarItem
         }
+        let rightBarItem = UIBarButtonItem(title: NSLocalizedString("Apply", comment: "Apply filter button title"), style: UIBarButtonItemStyle.Plain, target: self, action: "applyButtonTapped:")
+        navigationItem.rightBarButtonItem = rightBarItem
     }
 
     func filterButtonTapped(sender: FilterButton) {
@@ -119,5 +121,12 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
 
     func clearButtonTapped(sender: UIButton) {
         NSLog("Clear button tapped")
+    }
+
+    func applyButtonTapped(sender: UIButton) {
+        NSLog("Apply button tapped")
+        self.presentingViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
+            //
+        })
     }
 }
