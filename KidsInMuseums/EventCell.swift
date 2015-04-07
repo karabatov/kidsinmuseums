@@ -29,6 +29,8 @@ public class EventCell: ASCellNode {
         divider = ASDisplayNode()
         super.init()
 
+        shouldRasterizeDescendants = true
+
         let caption1Font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
         let timeFontSize = caption1Font.pointSize - 2
         let headingParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), NSForegroundColorAttributeName: UIColor.blackColor()]

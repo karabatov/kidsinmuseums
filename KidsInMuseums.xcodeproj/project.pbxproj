@@ -14,6 +14,10 @@
 		D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1169B751A45F68D00C025A3 /* DataModel.swift */; };
 		D11DCFFE1ACDAB7E00307D32 /* TagCloudNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DCFFD1ACDAB7E00307D32 /* TagCloudNode.swift */; };
 		D11DD0001ACEA56000307D32 /* TagButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DCFFF1ACEA56000307D32 /* TagButtonNode.swift */; };
+		D11DD0021AD3F11800307D32 /* FilterScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DD0011AD3F11800307D32 /* FilterScreen.swift */; };
+		D11DD0041AD3F4D100307D32 /* FilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DD0031AD3F4D100307D32 /* FilterButton.swift */; };
+		D11DD0071AD405E400307D32 /* icon-filter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D11DD0051AD405E400307D32 /* icon-filter@2x.png */; };
+		D11DD0081AD405E400307D32 /* icon-filter@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D11DD0061AD405E400307D32 /* icon-filter@3x.png */; };
 		D122D6DD1A697149009D30AB /* icon-news@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D122D6DC1A697149009D30AB /* icon-news@2x.png */; };
 		D13700561AA71B8500F70138 /* MuseumEventButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */; };
 		D155CC741A4B49F50072E183 /* NewsItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D155CC731A4B49F50072E183 /* NewsItemViewController.swift */; };
@@ -91,6 +95,10 @@
 		D1169B751A45F68D00C025A3 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		D11DCFFD1ACDAB7E00307D32 /* TagCloudNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCloudNode.swift; sourceTree = "<group>"; };
 		D11DCFFF1ACEA56000307D32 /* TagButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagButtonNode.swift; sourceTree = "<group>"; };
+		D11DD0011AD3F11800307D32 /* FilterScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterScreen.swift; sourceTree = "<group>"; };
+		D11DD0031AD3F4D100307D32 /* FilterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
+		D11DD0051AD405E400307D32 /* icon-filter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-filter@2x.png"; sourceTree = "<group>"; };
+		D11DD0061AD405E400307D32 /* icon-filter@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-filter@3x.png"; sourceTree = "<group>"; };
 		D122D6DC1A697149009D30AB /* icon-news@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-news@2x.png"; sourceTree = "<group>"; };
 		D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumEventButtonNode.swift; sourceTree = "<group>"; };
 		D13DC70C1A45E08A0036A1F0 /* KidsInMuseums-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KidsInMuseums-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -246,6 +254,8 @@
 				D1D484941A8915560028C6F4 /* EventItemViewController.swift */,
 				D17476321A9764B700D588A2 /* MuseumInfoView.swift */,
 				D1FF584B1AB83049008DD880 /* AppInfoView.swift */,
+				D11DD0011AD3F11800307D32 /* FilterScreen.swift */,
+				D11DD0031AD3F4D100307D32 /* FilterButton.swift */,
 				D1169B791A460C4500C025A3 /* Cells */,
 			);
 			name = UI;
@@ -285,6 +295,8 @@
 				D1A0F7581A72AA9900981257 /* Default-huge.png */,
 				D1A9E1651A7E3ADC00E06F02 /* icon-events@2x.png */,
 				D1A9E1661A7E3ADC00E06F02 /* icon-events@3x.png */,
+				D11DD0051AD405E400307D32 /* icon-filter@2x.png */,
+				D11DD0061AD405E400307D32 /* icon-filter@3x.png */,
 				D122D6DC1A697149009D30AB /* icon-news@2x.png */,
 				D1A0F7481A7115ED00981257 /* icon-map@2x.png */,
 				D1A9E15C1A7D01A000E06F02 /* icon-more@2x.png */,
@@ -465,6 +477,7 @@
 				D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */,
 				D1A0F75D1A72AB2200981257 /* logo@2x.png in Resources */,
 				D1A0F74D1A71318E00981257 /* marker@3x.png in Resources */,
+				D11DD0081AD405E400307D32 /* icon-filter@3x.png in Resources */,
 				D17476401A97816900D588A2 /* icon-phone@3x.png in Resources */,
 				D1FF58521AB8372A008DD880 /* appinfo-logo@3x.png in Resources */,
 				D122D6DD1A697149009D30AB /* icon-news@2x.png in Resources */,
@@ -477,6 +490,7 @@
 				D1A0F75F1A72ADC700981257 /* location@2x.png in Resources */,
 				D1A9E1681A7E3ADC00E06F02 /* icon-events@3x.png in Resources */,
 				D1A9E1671A7E3ADC00E06F02 /* icon-events@2x.png in Resources */,
+				D11DD0071AD405E400307D32 /* icon-filter@2x.png in Resources */,
 				D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */,
 				D1A0F7491A7115ED00981257 /* icon-map@2x.png in Resources */,
 				D1FF58571AB855C3008DD880 /* appinfo-dev@2x.png in Resources */,
@@ -543,6 +557,7 @@
 				D11DCFFE1ACDAB7E00307D32 /* TagCloudNode.swift in Sources */,
 				D174763A1A976EB600D588A2 /* SMCalloutView.m in Sources */,
 				D174763B1A976EB600D588A2 /* SMClassicCalloutView.m in Sources */,
+				D11DD0021AD3F11800307D32 /* FilterScreen.swift in Sources */,
 				D110493A1A8A93F400B32316 /* EventReviewNode.swift in Sources */,
 				D1FF58541AB85575008DD880 /* DeveloperInfoNode.swift in Sources */,
 				D1A9E1611A7D01D200E06F02 /* MoreScreen.swift in Sources */,
@@ -560,6 +575,7 @@
 				D1A9E16A1A7E44A700E06F02 /* EventCell.swift in Sources */,
 				D13700561AA71B8500F70138 /* MuseumEventButtonNode.swift in Sources */,
 				D17476351A9765F200D588A2 /* TextDividerNode.swift in Sources */,
+				D11DD0041AD3F4D100307D32 /* FilterButton.swift in Sources */,
 				D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */,
 				D1FF584C1AB83049008DD880 /* AppInfoView.swift in Sources */,
 				D1D484A11A89361D0028C6F4 /* EventScheduleNode.swift in Sources */,

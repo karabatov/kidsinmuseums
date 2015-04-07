@@ -68,6 +68,14 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         listViews.append(listDay)
         listViews.append(listRating)
         listViews.append(listDistance)
+        if let filterButton: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton {
+            filterButton.setTitle(NSLocalizedString(" Filter", comment: "Filter button title"), forState: UIControlState.Normal)
+            filterButton.setImage(UIImage(named: "icon-filter"), forState: UIControlState.Normal)
+            filterButton.addTarget(self, action: "filterButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+            filterButton.sizeToFit()
+            let leftBarItem = UIBarButtonItem(customView: filterButton)
+            navigationItem.leftBarButtonItem = leftBarItem
+        }
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navbar back button title"), style: .Plain, target: nil, action: nil)
         self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | .FlexibleWidth
         self.view.backgroundColor = UIColor.whiteColor()
@@ -356,5 +364,14 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         }
         listView.insertRowsAtIndexPaths(newIdxSet, withRowAnimation: UITableViewRowAnimation.Fade)
         listView.endUpdates()
+    }
+
+    func filterButtonTapped(sender: UIButton) {
+        let filterView = FilterScreen(nibName: nil, bundle: nil)
+        let navi = UINavigationController(rootViewController: filterView)
+        navi.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
+        presentViewController(navi, animated: true) { () -> Void in
+            //
+        }
     }
 }
