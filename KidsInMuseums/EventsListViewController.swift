@@ -19,6 +19,8 @@ let kKIMSectionHeaderParams = [NSFontAttributeName: UIFont.preferredFontForTextS
 let kKIMSectionHeaderMarginH: CGFloat = 8.0
 let kKIMSectionHeaderMarginV: CGFloat = 6.0
 
+let kKIMEventSectionId = -1337
+
 public func removeDuplicates<C: ExtensibleCollectionType where C.Generator.Element : Equatable>(aCollection: C) -> C {
     var container = C()
 
@@ -34,7 +36,7 @@ public func removeDuplicates<C: ExtensibleCollectionType where C.Generator.Eleme
 class EventsListViewController: UIViewController, ASTableViewDataSource, ASTableViewDelegate {
     var listView = ASTableView()
     var eventItems: [Event] = [Event]()
-    var eventsByDay = [[Event]]()
+    var eventsByDay = [Event]()
     var eventsByDistance = [Event]()
     var eventsByRating = [Event]()
     var refreshControl: BDBSpinKitRefreshControl?
@@ -154,7 +156,12 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                     let d2 = e2.earliestEventTime(day)!.timeFrom
                     return d1.compare(d2) == NSComparisonResult.OrderedAscending
                 })
-                self.eventsByDay.append(evts)
+                if evts.count > 0 {
+                    let sectTitle = self.sectionHeaderFormatter.stringFromDate(day)
+                    let sectionEvt = Event(id: kKIMEventSectionId, name: sectTitle)
+                    self.eventsByDay.append(sectionEvt)
+                    self.eventsByDay.extend(evts)
+                }
             }
 
             // Distance 
@@ -213,22 +220,15 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch filterMode {
-        case .Date:
-            if eventsByDay.count > section {
-                return eventsByDay[section].count > 0 ? eventsByDay[section].count + 1 : 0
-            }
+        case .Date: return eventsByDay.count
         case .Distance: return eventsByDistance.count
         case .Rating: return eventsByRating.count
         default: return eventItems.count
         }
-        return 0
     }
 
     func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
-        switch filterMode {
-        case .Date: return days.count
-        default: return 1
-        }
+        return 1
     }
 
     func tableView(tableView: ASTableView!, nodeForRowAtIndexPath indexPath: NSIndexPath!) -> ASCellNode! {
@@ -238,12 +238,13 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         }
 
         if let evt = self.eventForIndexPath(indexPath) {
-            let node = EventCell(event: evt, filterMode: filterMode, referenceDate: referenceDate, location: location)
-            return node
-        } else if days.count > 0 {
-            let text = sectionHeaderFormatter.stringFromDate(days[indexPath.section])
-            let node = EventDescTitleNode(text: text)
-            return node
+            if evt.id != kKIMEventSectionId {
+                let node = EventCell(event: evt, filterMode: filterMode, referenceDate: referenceDate, location: location)
+                return node
+            } else {
+                let node = EventDescTitleNode(text: evt.name)
+                return node
+            }
         }
         return ASCellNode()
     }
@@ -282,10 +283,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         var event: Event?
         switch filterMode {
         case .Date:
-            if eventsByDay.count > indexPath.section && indexPath.row > 0 {
-                if eventsByDay[indexPath.section].count >= indexPath.row {
-                    event = eventsByDay[indexPath.section][indexPath.row - 1]
-                }
+            if eventsByDay.count > indexPath.row {
+                event = eventsByDay[indexPath.row]
             }
         case .Distance:
             if eventsByDistance.count > indexPath.row {

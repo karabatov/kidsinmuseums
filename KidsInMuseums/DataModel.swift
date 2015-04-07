@@ -282,6 +282,11 @@ public class Event {
     var eventHumanTimes = [EventHumanTime]()
     var reviews = [Review]()
 
+    public init(id: Int, name: String) {
+        self.id = id
+        self.name = name
+    }
+
     required public init(data: NSDictionary) {
         if let idInt = data["id"] as? Int {
             id = idInt
