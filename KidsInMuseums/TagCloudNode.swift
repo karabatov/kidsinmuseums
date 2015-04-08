@@ -14,14 +14,18 @@ class TagCloudNode: ASCellNode {
     var origins = [CGPoint]()
     let marginH: CGFloat = 8.0
     let marginV: CGFloat = 8.0
+    var selectedTags = [String]()
 
     required init(tags: [String]) {
 //        self.tags = tags
         self.tags = [ "квест", "история", "дом-музей", "беседа", "бал", "игровое занятие", "фильм", "поэзия", "мастер-класс", "выставка", "очень длинное название тега, воу воу воу", "my head is shaped like a frisbee twice its normal size" ]
+        // TODO: Init tags from DataModel filter
+        selectedTags = [ "история", "игровое занятие" ]
         super.init()
 
         for tag in self.tags {
             let tagButton = TagButtonNode(tagStr: tag)
+            tagButton.selected = contains(selectedTags, tag)
             tagButton.addTarget(self, action: "tagButtonTapped:", forControlEvents: ASControlNodeEvent.TouchUpInside)
             tagButtons.append(tagButton)
             addSubnode(tagButton)
