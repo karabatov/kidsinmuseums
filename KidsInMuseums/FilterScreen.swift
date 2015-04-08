@@ -105,7 +105,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
                 if let node = tagCloudNode {
                     return node
                 } else {
-                    tagCloudNode = TagCloudNode(tags: [])
+                    tagCloudNode = TagCloudNode(tags: DataModel.sharedInstance.tags)
                     return tagCloudNode
                 }
             default: return ASCellNode()

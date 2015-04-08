@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Golova Media. All rights reserved.
 //
 
-import UIKit
-
 class TagCloudNode: ASCellNode {
     let tags: [String]
     var tagButtons = [TagButtonNode]()
@@ -17,10 +15,10 @@ class TagCloudNode: ASCellNode {
     var selectedTags = [String]()
 
     required init(tags: [String]) {
-//        self.tags = tags
-        self.tags = [ "квест", "история", "дом-музей", "беседа", "бал", "игровое занятие", "фильм", "поэзия", "мастер-класс", "выставка", "очень длинное название тега, воу воу воу", "my head is shaped like a frisbee twice its normal size" ]
+        self.tags = tags
+//        self.tags = [ "квест", "история", "дом-музей", "беседа", "бал", "игровое занятие", "фильм", "поэзия", "мастер-класс", "выставка", "очень длинное название тега, воу воу воу", "my head is shaped like a frisbee twice its normal size" ]
         // TODO: Init tags from DataModel filter
-        selectedTags = [ "история", "игровое занятие" ]
+//        selectedTags = [ "история", "игровое занятие" ]
         super.init()
 
         for tag in self.tags {

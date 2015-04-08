@@ -420,9 +420,10 @@ public class DataModel {
         return Static.instance
     }
 
-    public var news : [NewsItem] = [NewsItem]()
-    public var museums : [Museum] = [Museum]()
-    public var events : [Event] = [Event]()
+    public var news: [NewsItem] = [NewsItem]()
+    public var museums: [Museum] = [Museum]()
+    public var events: [Event] = [Event]()
+    public var tags: [String] = [String]()
 
     private let inDateFormatter = NSDateFormatter()
 
@@ -598,7 +599,23 @@ public class DataModel {
                 }
             }
         }
+        tags = tagsFromEvents(events)
         return events
+    }
+
+    internal func tagsFromEvents(events: [Event]) -> [String] {
+        var tags = [String]()
+        for event in events {
+            for tag in event.tags {
+                if !contains(tags, tag) {
+                    tags.append(tag)
+                }
+            }
+        }
+        tags.sort { (s1: String, s2: String) -> Bool in
+            return s1 < s2
+        }
+        return tags
     }
 
     internal func museumsWithData(data: NSData) -> [Museum] {
