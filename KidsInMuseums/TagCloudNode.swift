@@ -61,5 +61,17 @@ class TagCloudNode: ASCellNode {
 
     func tagButtonTapped(sender: TagButtonNode) {
         NSLog("button tapped for tag \(sender.tagStr)")
+        if sender.selected {
+            if !contains(selectedTags, sender.tagStr) {
+                NSLog("Add to tags")
+                selectedTags.append(sender.tagStr)
+            }
+        } else {
+            if let index = find(selectedTags, sender.tagStr) {
+                NSLog("Remove from tags")
+                selectedTags.removeAtIndex(index)
+            }
+        }
+        NSLog("\(selectedTags)")
     }
 }
