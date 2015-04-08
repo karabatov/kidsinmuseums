@@ -74,4 +74,11 @@ class TagCloudNode: ASCellNode {
         }
         NSLog("\(selectedTags)")
     }
+
+    func clearSelectedTags() {
+        selectedTags = []
+        for tagButton in tagButtons {
+            tagButton.selected = false
+        }
+    }
 }

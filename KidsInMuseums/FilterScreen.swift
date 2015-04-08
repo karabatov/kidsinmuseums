@@ -15,6 +15,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     let tagButton: FilterButton
     let museumButton: FilterButton
     let listTags = ASTableView()
+    var tagCloudNode: TagCloudNode?
     var filterButtonV: CGFloat = 0.0
 
     override required init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -93,8 +94,12 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
                 let node = EventDescTitleNode(text: NSLocalizedString("Event subjects", comment: "Event topics title"))
                 return node
             case 3:
-                let node = TagCloudNode(tags: [])
-                return node
+                if let node = tagCloudNode {
+                    return node
+                } else {
+                    tagCloudNode = TagCloudNode(tags: [])
+                    return tagCloudNode
+                }
             default: return ASCellNode()
             }
         default: return ASCellNode()
@@ -120,7 +125,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     }
 
     func clearButtonTapped(sender: UIButton) {
-        NSLog("Clear button tapped")
+        tagCloudNode?.clearSelectedTags()
     }
 
     func applyButtonTapped(sender: UIButton) {
