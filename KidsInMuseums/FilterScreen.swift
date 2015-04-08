@@ -16,6 +16,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     let museumButton: FilterButton
     let listTags = ASTableView()
     var tagCloudNode: TagCloudNode?
+    var ageCloudNode: AgeCloudNode?
     var filterButtonV: CGFloat = 0.0
 
     override required init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -90,6 +91,13 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
             case 0:
                 let node = EventDescTitleNode(text: NSLocalizedString("Age", comment: "Age title"))
                 return node
+            case 1:
+                if let node = ageCloudNode {
+                    return node
+                } else {
+                    ageCloudNode = AgeCloudNode()
+                    return ageCloudNode
+                }
             case 2:
                 let node = EventDescTitleNode(text: NSLocalizedString("Event subjects", comment: "Event topics title"))
                 return node
@@ -126,6 +134,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
 
     func clearButtonTapped(sender: UIButton) {
         tagCloudNode?.clearSelectedTags()
+        ageCloudNode?.clearSelectedAges()
     }
 
     func applyButtonTapped(sender: UIButton) {

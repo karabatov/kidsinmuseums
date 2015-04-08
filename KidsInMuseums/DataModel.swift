@@ -26,6 +26,14 @@ let kKIMDataStorageKeyNews = "kKIMDataStorageKeyNews"
 let kKIMDataStorageKeyMuseums = "kKIMDataStorageKeyMuseums"
 let kKIMDataStorageKeyEvents = "kKIMDataStorageKeyEvents"
 
+struct AgeRange: Equatable {
+    let from: Int
+    let to: Int
+}
+func ==(lhs: AgeRange, rhs: AgeRange) -> Bool {
+    return lhs.from == rhs.from && lhs.to == rhs.to
+}
+
 public class KImage {
     var url: String = ""
     var big: KImage?

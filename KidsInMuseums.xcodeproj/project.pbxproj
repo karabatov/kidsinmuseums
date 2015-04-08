@@ -20,6 +20,8 @@
 		D11DD0081AD405E400307D32 /* icon-filter@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D11DD0061AD405E400307D32 /* icon-filter@3x.png */; };
 		D11DD00B1AD465D900307D32 /* icon-clear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D11DD0091AD465D900307D32 /* icon-clear@2x.png */; };
 		D11DD00C1AD465D900307D32 /* icon-clear@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D11DD00A1AD465D900307D32 /* icon-clear@3x.png */; };
+		D11DD00E1AD538D800307D32 /* AgeCloudNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DD00D1AD538D800307D32 /* AgeCloudNode.swift */; };
+		D11DD03E1AD58C7900307D32 /* AgeButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DD03D1AD58C7900307D32 /* AgeButtonNode.swift */; };
 		D122D6DD1A697149009D30AB /* icon-news@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D122D6DC1A697149009D30AB /* icon-news@2x.png */; };
 		D13700561AA71B8500F70138 /* MuseumEventButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */; };
 		D155CC741A4B49F50072E183 /* NewsItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D155CC731A4B49F50072E183 /* NewsItemViewController.swift */; };
@@ -103,6 +105,8 @@
 		D11DD0061AD405E400307D32 /* icon-filter@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-filter@3x.png"; sourceTree = "<group>"; };
 		D11DD0091AD465D900307D32 /* icon-clear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-clear@2x.png"; sourceTree = "<group>"; };
 		D11DD00A1AD465D900307D32 /* icon-clear@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-clear@3x.png"; sourceTree = "<group>"; };
+		D11DD00D1AD538D800307D32 /* AgeCloudNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeCloudNode.swift; sourceTree = "<group>"; };
+		D11DD03D1AD58C7900307D32 /* AgeButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeButtonNode.swift; sourceTree = "<group>"; };
 		D122D6DC1A697149009D30AB /* icon-news@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-news@2x.png"; sourceTree = "<group>"; };
 		D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumEventButtonNode.swift; sourceTree = "<group>"; };
 		D13DC70C1A45E08A0036A1F0 /* KidsInMuseums-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KidsInMuseums-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -279,6 +283,8 @@
 				D1D484A41A8949E40028C6F4 /* EventDescriptionNode.swift */,
 				D11DCFFD1ACDAB7E00307D32 /* TagCloudNode.swift */,
 				D11DCFFF1ACEA56000307D32 /* TagButtonNode.swift */,
+				D11DD00D1AD538D800307D32 /* AgeCloudNode.swift */,
+				D11DD03D1AD58C7900307D32 /* AgeButtonNode.swift */,
 				D11049391A8A93F400B32316 /* EventReviewNode.swift */,
 				D17476341A9765F200D588A2 /* TextDividerNode.swift */,
 				D17476411A97836800D588A2 /* PhoneDividerNode.swift */,
@@ -559,6 +565,7 @@
 				D1D484991A8926870028C6F4 /* NSTextAttachmentAge.swift in Sources */,
 				D17476331A9764B700D588A2 /* MuseumInfoView.swift in Sources */,
 				D1A9E1641A7E39CD00E06F02 /* EventsListViewController.swift in Sources */,
+				D11DD03E1AD58C7900307D32 /* AgeButtonNode.swift in Sources */,
 				D1FF584E1AB832E1008DD880 /* AppInfoNode.swift in Sources */,
 				D17476421A97836800D588A2 /* PhoneDividerNode.swift in Sources */,
 				D10BFF5F1A48E1890098CCC3 /* NoDataView.swift in Sources */,
@@ -567,6 +574,7 @@
 				D174763B1A976EB600D588A2 /* SMClassicCalloutView.m in Sources */,
 				D11DD0021AD3F11800307D32 /* FilterScreen.swift in Sources */,
 				D110493A1A8A93F400B32316 /* EventReviewNode.swift in Sources */,
+				D11DD00E1AD538D800307D32 /* AgeCloudNode.swift in Sources */,
 				D1FF58541AB85575008DD880 /* DeveloperInfoNode.swift in Sources */,
 				D1A9E1611A7D01D200E06F02 /* MoreScreen.swift in Sources */,
 				D1D4849D1A892D4E0028C6F4 /* UIColorKIMColor.swift in Sources */,
