@@ -22,6 +22,7 @@ class TagCloudNode: ASCellNode {
 
         for tag in self.tags {
             let tagButton = TagButtonNode(tagStr: tag)
+            tagButton.addTarget(self, action: "tagButtonTapped:", forControlEvents: ASControlNodeEvent.TouchUpInside)
             tagButtons.append(tagButton)
             addSubnode(tagButton)
         }
@@ -52,5 +53,9 @@ class TagCloudNode: ASCellNode {
             let tagSize = tagButton.calculatedSize
             tagButton.frame = CGRectMake(origin.x, origin.y, tagSize.width, tagSize.height)
         }
+    }
+
+    func tagButtonTapped(sender: TagButtonNode) {
+        NSLog("button tapped for tag \(sender.tagStr)")
     }
 }

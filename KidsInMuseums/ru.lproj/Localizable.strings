@@ -1,3 +1,9 @@
+/* Clear button title */
+" Clear" = " Очистить";
+
+/* Filter button title */
+" Filter" = " Фильтр";
+
 /* Distance in km format */
 "%0.0f km" = "%0.0f км";
 
@@ -21,6 +27,12 @@
 
 /* Address, museum info card */
 "Address: " = "Адрес: ";
+
+/* Age title */
+"Age" = "Возраст";
+
+/* Apply filter button title */
+"Apply" = "Применить";
 
 /* Navbar back button title */
 "Back" = "Назад";
@@ -61,6 +73,9 @@
 /* More controller title */
 "More" = "Ещё";
 
+/* Filter by museums */
+"Museums" = "По музеям";
+
 /* News controller title */
 "News" = "Новости";
 
@@ -69,6 +84,9 @@
 
 /* Message when there is no data in the news table view */
 "No data is currently available. Please pull down to refresh." = "Здесь пока ничего нет. Потяните вниз, чтобы загрузить данные.";
+
+/* About the developer text */
+"Our strategies, ideas and technology. Your big goals." = "Наши стратегии, идеи и технологии. Ваши большие цели.";
 
 /* Phone, museum info card */
 "Phone: " = "Телефон: ";
@@ -82,14 +100,14 @@
 /* Search */
 "Search" = "Поиск";
 
+/* Filter by tags */
+"Tags" = "По тегам";
+
 /* Info screen support email */
 "Technical support — support@golovamedia.ru" = "Техническая поддержка — support@golovamedia.ru";
 
 /* Vkontakte */
 "Vkontakte" = "Вконтакте";
-
-/* About the developer text */
-"Our strategies, ideas and technology. Your big goals." = "Наши стратегии, идеи и технологии. Ваши большие цели.";
 
 /* Website, museum info card */
 "Website: " = "Сайт: ";

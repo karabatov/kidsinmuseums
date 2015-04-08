@@ -16,6 +16,11 @@ class TagButtonNode: ASControlNode {
     let backgroundColorSelected = UIColor.kimColor()
     let marginH: CGFloat = 6.0
     let marginV: CGFloat = 6.0
+    var selected: Bool = false {
+        didSet {
+            updateButtonState()
+        }
+    }
 
     required init(tagStr: String) {
         self.tagStr = tagStr
@@ -47,5 +52,38 @@ class TagButtonNode: ASControlNode {
         borderNode.frame = CGRectMake((calculatedSize.width - borderSize.width) / 2.0, marginV, borderSize.width, borderSize.height)
 
         borderNode.cornerRadius = borderSize.height / 2.0
+    }
+
+    func updateButtonState() {
+        if !selected {
+            borderNode.backgroundColor = highlighted ? backgroundColorSelected : backgroundColorNormal
+            textNode.attributedString = highlighted ? NSAttributedString(string: tagStr, attributes: textParamsSelected) : NSAttributedString(string: tagStr, attributes: textParamsNormal)
+        } else {
+            borderNode.backgroundColor = highlighted ? backgroundColorNormal : backgroundColorSelected
+            textNode.attributedString = highlighted ? NSAttributedString(string: tagStr, attributes: textParamsNormal) : NSAttributedString(string: tagStr, attributes: textParamsSelected)
+        }
+    }
+
+    override func beginTrackingWithTouch(touch: UITouch!, withEvent touchEvent: UIEvent!) -> Bool {
+        super.beginTrackingWithTouch(touch, withEvent: touchEvent)
+        updateButtonState()
+        return true
+    }
+
+    override func cancelTrackingWithEvent(touchEvent: UIEvent!) {
+        super.cancelTrackingWithEvent(touchEvent)
+        updateButtonState()
+    }
+
+    override func endTrackingWithTouch(touch: UITouch!, withEvent touchEvent: UIEvent!) {
+        super.endTrackingWithTouch(touch, withEvent: touchEvent)
+        updateButtonState()
+    }
+
+    override func sendActionsForControlEvents(controlEvents: ASControlNodeEvent, withEvent touchEvent: UIEvent!) {
+        if controlEvents == .TouchUpInside {
+            selected = !selected
+        }
+        super.sendActionsForControlEvents(controlEvents, withEvent: touchEvent)
     }
 }
