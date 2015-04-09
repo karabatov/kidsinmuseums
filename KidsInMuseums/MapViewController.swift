@@ -52,14 +52,16 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
     }
 
     override func viewDidAppear(animated: Bool) {
-        let delegate = UIApplication.sharedApplication().delegate as AppDelegate
-        delegate.requestLocationPermissions()
-        delegate.wantsLocation = true
+        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+            delegate.requestLocationPermissions()
+            delegate.wantsLocation = true
+        }
     }
 
     override func viewWillDisappear(animated: Bool) {
-        let delegate = UIApplication.sharedApplication().delegate as AppDelegate
-        delegate.wantsLocation = false
+        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+            delegate.wantsLocation = false
+        }
     }
 
     func markersUpdated(notification: NSNotification) {
@@ -70,28 +72,30 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
 
     func updateMarkers() {
         if DataModel.sharedInstance.dataLoaded() {
-            let mapView = view as MKMapView
-            mapView.removeAnnotations(mapView.annotations)
-            var museumsWithEvents = NSMutableSet()
-            for event in DataModel.sharedInstance.events {
-                museumsWithEvents.addObject(event.museumUserId)
-            }
-            museums.removeAll(keepCapacity: false)
-            for museum in DataModel.sharedInstance.museums {
-                if museumsWithEvents.containsObject(museum.id) {
-                    museums.append(museum)
+            if let mapView = view as? MKMapView {
+                mapView.removeAnnotations(mapView.annotations)
+                var museumsWithEvents = NSMutableSet()
+                for event in DataModel.sharedInstance.events {
+                    museumsWithEvents.addObject(event.museumUserId)
                 }
-            }
-            for museum in museums {
-                let annotation = MuseumAnnotation(museum: museum)
-                mapView.addAnnotation(annotation)
+                museums.removeAll(keepCapacity: false)
+                for museum in DataModel.sharedInstance.museums {
+                    if museumsWithEvents.containsObject(museum.id) {
+                        museums.append(museum)
+                    }
+                }
+                for museum in museums {
+                    let annotation = MuseumAnnotation(museum: museum)
+                    mapView.addAnnotation(annotation)
+                }
             }
         }
     }
 
     func showMyLocation() {
-        let mapView = view as MKMapView
-        if let location = mapView.userLocation {
+        if let
+            mapView = view as? MKMapView,
+            location = mapView.userLocation {
             mapView.setCenterCoordinate(location.coordinate, animated: true)
         }
     }
@@ -137,22 +141,22 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
         // if we'd like to reposition our surface first so the callout is completely visible. Here we scroll the map into view,
         // but it takes some math because we have to deal in lon/lat instead of the given offset in pixels.
 
-        let mapView = self.view as MKMapView
+        if let mapView = self.view as? MKMapView {
+            var coordinate = mapView.centerCoordinate
 
-        var coordinate = mapView.centerCoordinate
+            // where's the center coordinate in terms of our view?
+            var center = mapView.convertCoordinate(coordinate, toPointToView:self.view)
 
-        // where's the center coordinate in terms of our view?
-        var center = mapView.convertCoordinate(coordinate, toPointToView:self.view)
+            // move it by the requested offset
+            center.x -= offset.width
+            center.y -= offset.height
 
-        // move it by the requested offset
-        center.x -= offset.width
-        center.y -= offset.height
+            // and translate it back into map coordinates
+            coordinate = mapView.convertPoint(center, toCoordinateFromView:self.view);
 
-        // and translate it back into map coordinates
-        coordinate = mapView.convertPoint(center, toCoordinateFromView:self.view);
-
-        // move the map!
-        mapView.setCenterCoordinate(coordinate, animated:true)
+            // move the map!
+            mapView.setCenterCoordinate(coordinate, animated:true)
+        }
 
         // tell the callout to wait for a while while we scroll (we assume the scroll delay for MKMapView matches UIScrollView)
         return kSMCalloutViewRepositionDelayForUIScrollView

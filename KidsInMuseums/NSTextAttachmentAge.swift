@@ -42,7 +42,7 @@ func attachmentImageForAge(from fromAge: Int, to toAge: Int) -> UIImage {
         let orangeColor = UIColor(red: 231.0/255.0, green: 121.0/255.0, blue: 43.0/255.0, alpha: 1.0)
         let attParams = [NSFontAttributeName: UIFont.systemFontOfSize(10.0), NSForegroundColorAttributeName: orangeColor]
 
-        var yearStr: NSString
+        var yearStr: String
         switch (toAge) {
         case 0, 5...20, 30, 40, 50, 60, 70, 80, 90, 100: yearStr = NSLocalizedString("years0", comment: "0, 5-19, x0")
         case 1, 21, 31, 41, 51, 61, 71, 81, 91, 101: yearStr = NSLocalizedString("year1", comment: "x1 (except 11)")

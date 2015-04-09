@@ -21,7 +21,7 @@ let kKIMAPINewsURL = "/api/news_articles/all"
 let kKIMAPIMuseumsURL = "/api/museum_users/all"
 let kKIMAPIEventsURL = "/api/events/all"
 
-let kKIMAPIDateFormat: NSString = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+let kKIMAPIDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
 let kKIMDataStorageKeyNews = "kKIMDataStorageKeyNews"
 let kKIMDataStorageKeyMuseums = "kKIMDataStorageKeyMuseums"
 let kKIMDataStorageKeyEvents = "kKIMDataStorageKeyEvents"

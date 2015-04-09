@@ -13,7 +13,6 @@ let kEventCellMarginIntra: CGFloat = 4.0
 
 public class EventCell: ASCellNode {
     let eventRef: Event
-    let museumRef: Museum?
     var eventTitle: ASTextNode
     var museumNode: ASTextNode
     var timeNode: ASTextNode

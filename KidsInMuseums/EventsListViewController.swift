@@ -140,9 +140,10 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         }
         var dispatch_token: dispatch_once_t = 0
         dispatch_once(&dispatch_token) {
-            let delegate = UIApplication.sharedApplication().delegate as AppDelegate
-            delegate.requestLocationPermissions()
-            delegate.wantsLocation = true
+            if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+                delegate.requestLocationPermissions()
+                delegate.wantsLocation = true
+            }
         }
     }
 
@@ -162,9 +163,11 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
             self.days.removeAll(keepCapacity: false)
             self.eventsByDay.removeAll(keepCapacity: false)
 
-            let reduced = events.map({ (event: Event) -> [NSDate] in
-                    return event.futureDays(NSDate())
-            }).reduce([], +)
+//            let reduced = events.map({ (event: Event) -> [NSDate] in
+//                    return event.futureDays(NSDate())
+//            }).reduce([], combine: +)
+            let reduced = events.flatMap({(event: Event) -> [NSDate] in
+                return event.futureDays(NSDate())})
             self.days.extend(removeDuplicates(reduced))
             self.days.sort({ (d1: NSDate, d2: NSDate) -> Bool in
                 return d1.compare(d2) == NSComparisonResult.OrderedAscending

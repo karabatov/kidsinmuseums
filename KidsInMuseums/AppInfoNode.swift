@@ -9,7 +9,7 @@
 class AppInfoNode: ASCellNode {
     let appImage = ASImageNode()
     let infoLabel = ASTextNode()
-    var textParams: NSDictionary
+    var textParams: [NSObject: AnyObject]
     let marginH: CGFloat = 20.0
     let marginV: CGFloat = 20.0
 
@@ -26,11 +26,12 @@ class AppInfoNode: ASCellNode {
         let appInfoLocStr = NSLocalizedString("%@ iOS App ver. %@ (%@)\n\n", comment: "Info screen app version")
         let supportLocStr = NSLocalizedString("Technical support — support@golovamedia.ru", comment: "Info screen support email")
         var labelStr = ""
-        if let infoDict = NSBundle.mainBundle().infoDictionary {
-            let appName = infoDict[kCFBundleNameKey] as String
-            let appVer = infoDict["CFBundleShortVersionString"] as String
-            let buildVer = infoDict[kCFBundleVersionKey] as String
-            labelStr += NSString(format: appInfoLocStr, appName, appVer, buildVer)
+        if let
+            infoDict = NSBundle.mainBundle().infoDictionary,
+            appName = infoDict[kCFBundleNameKey] as? String,
+            appVer = infoDict["CFBundleShortVersionString"] as? String,
+            buildVer = infoDict[kCFBundleVersionKey] as? String {
+            labelStr += NSString(format: appInfoLocStr, appName, appVer, buildVer) as String
         }
         labelStr += supportLocStr
         infoLabel.attributedString = NSAttributedString(string: labelStr, attributes: textParams)

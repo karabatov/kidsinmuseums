@@ -41,6 +41,6 @@ class EventImageNode: ASCellNode, ASMultiplexImageNodeDataSource {
     }
 
     func multiplexImageNode(imageNode: ASMultiplexImageNode!, URLForImageIdentifier imageIdentifier: AnyObject!) -> NSURL! {
-        return NSURL(string: imageIdentifier as String)
+        return NSURL(string: imageIdentifier as! String)
     }
 }

@@ -14,7 +14,7 @@ public class NewsItemViewController: UIViewController, ASMultiplexImageNodeDataS
     var dateLabel: ASTextNode
     var newsImage: ASMultiplexImageNode
     var newsText: ASTextNode
-    var images = NSMutableArray()
+    var images = [String]()
 
     required public init(newsItem: NewsItem, frame b: CGRect) {
         self.newsItem = newsItem
@@ -54,13 +54,13 @@ public class NewsItemViewController: UIViewController, ASMultiplexImageNodeDataS
             self.dateLabel.frame = CGRectMake(kMargin, kMargin, dateSize.width, dateSize.height)
 
             if let hugeURL = newsItem.image?.url {
-                self.images.addObject(hugeURL)
+                self.images.append(hugeURL)
             }
             if let bigURL = newsItem.image?.big?.url {
-                self.images.addObject(bigURL)
+                self.images.append(bigURL)
             }
             if let thumbURL = newsItem.image?.thumb?.url {
-                self.images.addObject(thumbURL)
+                self.images.append(thumbURL)
             }
             self.newsImage.backgroundColor = UIColor(white: 0.1, alpha: 0.1)
             self.newsImage.contentMode = UIViewContentMode.ScaleAspectFill
@@ -90,6 +90,6 @@ public class NewsItemViewController: UIViewController, ASMultiplexImageNodeDataS
     }
 
     public func multiplexImageNode(imageNode: ASMultiplexImageNode!, URLForImageIdentifier imageIdentifier: AnyObject!) -> NSURL! {
-        return NSURL(string: imageIdentifier as String)
+        return NSURL(string: imageIdentifier as! String)
     }
 }
