@@ -165,6 +165,15 @@ public class Museum {
     public func coordinate() -> CLLocationCoordinate2D {
         return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
+
+    public func location() -> CLLocation {
+        return CLLocation(latitude: latitude, longitude: longitude)
+    }
+
+    public func distanceFromLocation(location: CLLocation) -> CLLocationDistance {
+        let myLocation = self.location()
+        return location.distanceFromLocation(myLocation)
+    }
 }
 
 public class EventTime {
@@ -400,7 +409,7 @@ public class Event {
 
     public func location() -> CLLocation {
         if let museum = self.museum() {
-            return CLLocation(latitude: museum.latitude, longitude: museum.longitude)
+            return museum.location()
         }
         return CLLocation()
     }

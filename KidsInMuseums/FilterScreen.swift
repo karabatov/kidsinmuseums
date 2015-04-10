@@ -15,9 +15,12 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     let tagButton: FilterButton
     let museumButton: FilterButton
     let listTags = ASTableView()
+    let listMuseums = ASTableView()
     var tagCloudNode: TagCloudNode?
     var ageCloudNode: AgeCloudNode?
     var filterButtonV: CGFloat = 0.0
+    var museums = [Museum]()
+    var selectedMuseums = [Int]()
 
     override required init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         let tagText = NSLocalizedString("Tags", comment: "Filter by tags")
@@ -26,6 +29,12 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         tagButton = FilterButton(text: tagText)
         tagButton.selected = true
         museumButton = FilterButton(text: museumText)
+
+        museums = DataModel.sharedInstance.museums
+        let museumsFiltered = DataModel.sharedInstance.filter.museums
+        if !museumsFiltered.isEmpty {
+            selectedMuseums = museumsFiltered
+        }
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         edgesForExtendedLayout = UIRectEdge.None
@@ -38,10 +47,19 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         listTags.separatorStyle = UITableViewCellSeparatorStyle.None
         listTags.asyncDataSource = self
         listTags.asyncDelegate = self
+        listMuseums.separatorStyle = UITableViewCellSeparatorStyle.None
+        listMuseums.asyncDataSource = self
+        listMuseums.asyncDelegate = self
+        listMuseums.hidden = true
     }
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewWillLayoutSubviews() {
+        self.listTags.frame = CGRectMake(0, self.filterButtonV, view.bounds.width, view.bounds.height - self.filterButtonV)
+        self.listMuseums.frame = CGRectMake(0, self.filterButtonV, view.bounds.width, view.bounds.height - self.filterButtonV)
     }
 
     override func viewDidLoad() {
@@ -53,9 +71,9 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
                 self.view.addSubview(self.tagButton.view)
                 self.view.addSubview(self.museumButton.view)
                 self.view.addSubview(self.listTags)
+                self.view.addSubview(self.listMuseums)
                 self.tagButton.frame = CGRectMake(0, 0, halfWidth, self.filterButtonV)
                 self.museumButton.frame = CGRectMake(halfWidth, 0, halfWidth, self.filterButtonV)
-                self.listTags.frame = CGRectMake(0, self.filterButtonV, UIScreen.mainScreen().applicationFrame.size.width, UIScreen.mainScreen().applicationFrame.size.height - self.filterButtonV)
             })
         })
 
@@ -80,6 +98,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         default: NSLog("UGH")
         }
         listTags.hidden = !tagButton.selected
+        listMuseums.hidden = !museumButton.selected
     }
 
     // MARK: ASTableView
@@ -110,6 +129,13 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
                 }
             default: return ASCellNode()
             }
+        case listMuseums:
+            let museum = museums[indexPath.row]
+            let museumNode = FilterMuseumNode(museum: museum, location: nil)
+            if contains(selectedMuseums, museum.id) {
+                museumNode.selected = true
+            }
+            return museumNode
         default: return ASCellNode()
         }
     }
@@ -117,6 +143,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch tableView {
         case listTags: return 4
+        case listMuseums: return museums.count
         default: return 0
         }
     }
@@ -126,10 +153,14 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     }
 
     func tableView(tableView: UITableView!, shouldHighlightRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
+        if tableView == listMuseums {
+            return true
+        }
         return false
     }
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        tableView.reloadRowsAtIndexPaths([ indexPath ], withRowAnimation: UITableViewRowAnimation.None)
     }
 
     func clearButtonTapped(sender: UIButton) {

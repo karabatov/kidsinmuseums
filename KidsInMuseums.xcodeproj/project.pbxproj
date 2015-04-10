@@ -69,6 +69,11 @@
 		D1D484A11A89361D0028C6F4 /* EventScheduleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484A01A89361D0028C6F4 /* EventScheduleNode.swift */; };
 		D1D484A31A89445A0028C6F4 /* EventDescTitleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484A21A89445A0028C6F4 /* EventDescTitleNode.swift */; };
 		D1D484A51A8949E40028C6F4 /* EventDescriptionNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484A41A8949E40028C6F4 /* EventDescriptionNode.swift */; };
+		D1E2D43C1AD84385000FD803 /* FilterMuseumNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2D43B1AD84385000FD803 /* FilterMuseumNode.swift */; };
+		D1E2D4411AD853AA000FD803 /* icon-checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1E2D43D1AD853AA000FD803 /* icon-checked@2x.png */; };
+		D1E2D4421AD853AA000FD803 /* icon-checked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1E2D43E1AD853AA000FD803 /* icon-checked@3x.png */; };
+		D1E2D4431AD853AA000FD803 /* icon-unchecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1E2D43F1AD853AA000FD803 /* icon-unchecked@2x.png */; };
+		D1E2D4441AD853AA000FD803 /* icon-unchecked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1E2D4401AD853AA000FD803 /* icon-unchecked@3x.png */; };
 		D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */; };
 		D1FF584C1AB83049008DD880 /* AppInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584B1AB83049008DD880 /* AppInfoView.swift */; };
 		D1FF584E1AB832E1008DD880 /* AppInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */; };
@@ -173,6 +178,11 @@
 		D1D484A01A89361D0028C6F4 /* EventScheduleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventScheduleNode.swift; sourceTree = "<group>"; };
 		D1D484A21A89445A0028C6F4 /* EventDescTitleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDescTitleNode.swift; sourceTree = "<group>"; };
 		D1D484A41A8949E40028C6F4 /* EventDescriptionNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDescriptionNode.swift; sourceTree = "<group>"; };
+		D1E2D43B1AD84385000FD803 /* FilterMuseumNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterMuseumNode.swift; sourceTree = "<group>"; };
+		D1E2D43D1AD853AA000FD803 /* icon-checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-checked@2x.png"; sourceTree = "<group>"; };
+		D1E2D43E1AD853AA000FD803 /* icon-checked@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-checked@3x.png"; sourceTree = "<group>"; };
+		D1E2D43F1AD853AA000FD803 /* icon-unchecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-unchecked@2x.png"; sourceTree = "<group>"; };
+		D1E2D4401AD853AA000FD803 /* icon-unchecked@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-unchecked@3x.png"; sourceTree = "<group>"; };
 		D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		D1FF584B1AB83049008DD880 /* AppInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoView.swift; sourceTree = "<group>"; };
 		D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoNode.swift; sourceTree = "<group>"; };
@@ -291,6 +301,7 @@
 				D13700551AA71B8500F70138 /* MuseumEventButtonNode.swift */,
 				D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */,
 				D1FF58531AB85575008DD880 /* DeveloperInfoNode.swift */,
+				D1E2D43B1AD84385000FD803 /* FilterMuseumNode.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -303,6 +314,10 @@
 				D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */,
 				D1FF58501AB8372A008DD880 /* appinfo-logo@3x.png */,
 				D1A0F7581A72AA9900981257 /* Default-huge.png */,
+				D1E2D43D1AD853AA000FD803 /* icon-checked@2x.png */,
+				D1E2D43E1AD853AA000FD803 /* icon-checked@3x.png */,
+				D1E2D43F1AD853AA000FD803 /* icon-unchecked@2x.png */,
+				D1E2D4401AD853AA000FD803 /* icon-unchecked@3x.png */,
 				D11DD0091AD465D900307D32 /* icon-clear@2x.png */,
 				D11DD00A1AD465D900307D32 /* icon-clear@3x.png */,
 				D1A9E1651A7E3ADC00E06F02 /* icon-events@2x.png */,
@@ -487,6 +502,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */,
+				D1E2D4411AD853AA000FD803 /* icon-checked@2x.png in Resources */,
 				D1A0F75D1A72AB2200981257 /* logo@2x.png in Resources */,
 				D1A0F74D1A71318E00981257 /* marker@3x.png in Resources */,
 				D11DD00B1AD465D900307D32 /* icon-clear@2x.png in Resources */,
@@ -505,7 +521,10 @@
 				D1A9E1671A7E3ADC00E06F02 /* icon-events@2x.png in Resources */,
 				D11DD0071AD405E400307D32 /* icon-filter@2x.png in Resources */,
 				D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */,
+				D1E2D4421AD853AA000FD803 /* icon-checked@3x.png in Resources */,
+				D1E2D4441AD853AA000FD803 /* icon-unchecked@3x.png in Resources */,
 				D1A0F7491A7115ED00981257 /* icon-map@2x.png in Resources */,
+				D1E2D4431AD853AA000FD803 /* icon-unchecked@2x.png in Resources */,
 				D1FF58571AB855C3008DD880 /* appinfo-dev@2x.png in Resources */,
 				D1FF58511AB8372A008DD880 /* appinfo-logo@2x.png in Resources */,
 				D17476441A9784E500D588A2 /* icon-phone@2x.png in Resources */,
@@ -579,6 +598,7 @@
 				D1A9E1611A7D01D200E06F02 /* MoreScreen.swift in Sources */,
 				D1D4849D1A892D4E0028C6F4 /* UIColorKIMColor.swift in Sources */,
 				D1A9E1751A8542D900E06F02 /* MuseumAnnotation.swift in Sources */,
+				D1E2D43C1AD84385000FD803 /* FilterMuseumNode.swift in Sources */,
 				D1D484A51A8949E40028C6F4 /* EventDescriptionNode.swift in Sources */,
 				D1169B761A45F68D00C025A3 /* DataModel.swift in Sources */,
 				D1D484A31A89445A0028C6F4 /* EventDescTitleNode.swift in Sources */,
