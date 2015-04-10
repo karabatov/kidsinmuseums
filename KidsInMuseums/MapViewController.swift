@@ -75,7 +75,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
             if let mapView = view as? MKMapView {
                 mapView.removeAnnotations(mapView.annotations)
                 var museumsWithEvents = NSMutableSet()
-                for event in DataModel.sharedInstance.events {
+                for event in DataModel.sharedInstance.allEvents {
                     museumsWithEvents.addObject(event.museumUserId)
                 }
                 museums.removeAll(keepCapacity: false)

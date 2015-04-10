@@ -15,8 +15,7 @@ class AgeCloudNode: ASCellNode {
     var selectedAges = [AgeRange]()
 
     override required init() {
-        // TODO: Init ranges from DataModel filter
-        selectedAges = [ AgeRange(from: 5, to: 7), AgeRange(from: 14, to: 999) ]
+        selectedAges = DataModel.sharedInstance.filter.ageRanges
         super.init()
 
         for age in self.ageRanges {
@@ -65,7 +64,6 @@ class AgeCloudNode: ASCellNode {
                 selectedAges.removeAtIndex(index)
             }
         }
-        NSLog("\(selectedAges)")
     }
 
     func clearSelectedAges() {

@@ -157,15 +157,12 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 oldRowsDict[listView] = oldRows
             }
 
-            let events = DataModel.sharedInstance.events
+            let events = DataModel.sharedInstance.filteredEvents
 
             // Date
             self.days.removeAll(keepCapacity: false)
             self.eventsByDay.removeAll(keepCapacity: false)
 
-//            let reduced = events.map({ (event: Event) -> [NSDate] in
-//                    return event.futureDays(NSDate())
-//            }).reduce([], combine: +)
             let reduced = events.flatMap({(event: Event) -> [NSDate] in
                 return event.futureDays(NSDate())})
             self.days.extend(removeDuplicates(reduced))

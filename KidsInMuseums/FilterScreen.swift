@@ -138,7 +138,12 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     }
 
     func applyButtonTapped(sender: UIButton) {
-        NSLog("Apply button tapped")
+        if let
+            ageRanges = ageCloudNode?.selectedAges,
+            tags = tagCloudNode?.selectedTags {
+                let filter = Filter(ageRanges: ageRanges, tags: tags, museums: [])
+                DataModel.sharedInstance.filter = filter
+        }
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
             //
         })

@@ -16,9 +16,7 @@ class TagCloudNode: ASCellNode {
 
     required init(tags: [String]) {
         self.tags = tags
-//        self.tags = [ "квест", "история", "дом-музей", "беседа", "бал", "игровое занятие", "фильм", "поэзия", "мастер-класс", "выставка", "очень длинное название тега, воу воу воу", "my head is shaped like a frisbee twice its normal size" ]
-        // TODO: Init tags from DataModel filter
-//        selectedTags = [ "история", "игровое занятие" ]
+        selectedTags = DataModel.sharedInstance.filter.tags
         super.init()
 
         for tag in self.tags {
@@ -70,7 +68,6 @@ class TagCloudNode: ASCellNode {
                 selectedTags.removeAtIndex(index)
             }
         }
-        NSLog("\(selectedTags)")
     }
 
     func clearSelectedTags() {

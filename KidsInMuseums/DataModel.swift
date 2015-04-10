@@ -436,9 +436,17 @@ public class DataModel {
 
     public var news: [NewsItem] = [NewsItem]()
     public var museums: [Museum] = [Museum]()
-    public var events: [Event] = [Event]()
+    public var allEvents: [Event] = [Event]()
+    public var filteredEvents: [Event] = [Event]()
     public var tags: [String] = [String]()
-    public var filter: Filter = Filter.emptyFilter()
+    public var filter: Filter = Filter.emptyFilter() {
+        didSet {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+                self.filteredEvents = self.applyFilterToEvents(self.allEvents)
+                NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationEventsUpdated, object: self)
+            })
+        }
+    }
 
     private let inDateFormatter = NSDateFormatter()
 
@@ -454,7 +462,7 @@ public class DataModel {
     }
 
     public func dataLoaded() -> Bool {
-        if news.count > 0 && museums.count > 0 && events.count > 0 {
+        if news.count > 0 && museums.count > 0 && allEvents.count > 0 {
             return true
         }
         return false
@@ -516,7 +524,8 @@ public class DataModel {
             let eventsUrl = NSURL(string: kKIMAPIServerURL + kKIMAPIEventsURL)
             let eventsRequest = NSURLSession.sharedSession().dataTaskWithURL(eventsUrl!) { (data, response, error) -> Void in
                 if (error == nil) {
-                    self.events = self.eventsWithData(data)
+                    self.allEvents = self.eventsWithData(data)
+                    self.filteredEvents = self.applyFilterToEvents(self.allEvents)
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationEventsUpdated, object: self)
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
                         NSUserDefaults.standardUserDefaults().setObject(data, forKey: kKIMDataStorageKeyEvents)
@@ -547,8 +556,9 @@ public class DataModel {
                 }
             }
             if let cachedEventsJSON = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyEvents) as? NSData {
-                self.events = self.eventsWithData(cachedEventsJSON)
-                if (self.events.count > 0) {
+                self.allEvents = self.eventsWithData(cachedEventsJSON)
+                self.filteredEvents = self.applyFilterToEvents(self.allEvents)
+                if (self.allEvents.count > 0) {
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationEventsUpdated, object: self)
                 }
             }
@@ -616,6 +626,39 @@ public class DataModel {
         }
         tags = tagsFromEvents(events)
         return events
+    }
+
+    private func applyFilterToEvents(events: [Event]) -> [Event] {
+        let filteredEvents = events.filter({ (event: Event) -> Bool in
+            var filterAge = true
+            var filterTag = true
+            var filterMuseum = true
+            let filter = self.filter
+            if !filter.ageRanges.isEmpty {
+                filterAge = false
+                let eventRange = AgeRange(from: event.ageFrom, to: event.ageTo)
+                for ageRange in filter.ageRanges {
+                    if !(eventRange.to < ageRange.from || eventRange.from > ageRange.to) {
+                        filterAge = true
+                        break
+                    }
+                }
+            }
+            if !filter.tags.isEmpty {
+                filterTag = false
+                for tag in event.tags {
+                    if contains(filter.tags, tag) {
+                        filterTag = true
+                        break
+                    }
+                }
+            }
+            if !filter.museums.isEmpty {
+                filterMuseum = contains(filter.museums, event.museumUserId)
+            }
+            return filterAge && filterTag && filterMuseum
+        })
+        return filteredEvents
     }
 
     internal func tagsFromEvents(events: [Event]) -> [String] {
