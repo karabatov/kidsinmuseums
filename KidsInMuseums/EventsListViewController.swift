@@ -368,6 +368,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func filterButtonTapped(sender: UIButton) {
         let filterView = FilterScreen(nibName: nil, bundle: nil)
+        filterView.location = self.location
         let navi = UINavigationController(rootViewController: filterView)
         navi.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
         presentViewController(navi, animated: true) { () -> Void in

@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Golova Media. All rights reserved.
 //
 
+import CoreLocation
+
 enum FilterScreenMode {
     case Tags, Museums
 }
@@ -21,6 +23,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     var filterButtonV: CGFloat = 0.0
     var museums = [Museum]()
     var selectedMuseums = [Int]()
+    var location: CLLocation?
 
     override required init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         let tagText = NSLocalizedString("Tags", comment: "Filter by tags")
@@ -30,7 +33,9 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         tagButton.selected = true
         museumButton = FilterButton(text: museumText)
 
-        museums = DataModel.sharedInstance.museums
+        museums = DataModel.sharedInstance.museums.sorted({ (m1: Museum, m2: Museum) -> Bool in
+            return m1.name < m2.name
+        })
         let museumsFiltered = DataModel.sharedInstance.filter.museums
         if !museumsFiltered.isEmpty {
             selectedMuseums = museumsFiltered
@@ -131,7 +136,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
             }
         case listMuseums:
             let museum = museums[indexPath.row]
-            let museumNode = FilterMuseumNode(museum: museum, location: nil)
+            let museumNode = FilterMuseumNode(museum: museum, location: location)
             if contains(selectedMuseums, museum.id) {
                 museumNode.selected = true
             }
@@ -160,19 +165,33 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     }
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
-        tableView.reloadRowsAtIndexPaths([ indexPath ], withRowAnimation: UITableViewRowAnimation.None)
+        if tableView == listMuseums {
+            let museum = museums[indexPath.row]
+            if contains(selectedMuseums, museum.id) {
+                if let index = find(selectedMuseums, museum.id) {
+                    selectedMuseums.removeAtIndex(index)
+                }
+            } else {
+                selectedMuseums.append(museum.id)
+            }
+            listMuseums.beginUpdates()
+            listMuseums.deleteRowsAtIndexPaths([ indexPath ], withRowAnimation: UITableViewRowAnimation.Fade)
+            listMuseums.insertRowsAtIndexPaths([ indexPath ], withRowAnimation: UITableViewRowAnimation.Fade)
+            listMuseums.endUpdates()
+        }
     }
 
     func clearButtonTapped(sender: UIButton) {
         tagCloudNode?.clearSelectedTags()
         ageCloudNode?.clearSelectedAges()
+        selectedMuseums = []
     }
 
     func applyButtonTapped(sender: UIButton) {
         if let
             ageRanges = ageCloudNode?.selectedAges,
             tags = tagCloudNode?.selectedTags {
-                let filter = Filter(ageRanges: ageRanges, tags: tags, museums: [])
+                let filter = Filter(ageRanges: ageRanges, tags: tags, museums: selectedMuseums)
                 DataModel.sharedInstance.filter = filter
         }
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
