@@ -411,6 +411,20 @@ public class Event {
     }
 }
 
+public struct Filter {
+    let ageRanges: [AgeRange]
+    let tags: [String]
+    let museums: [Int]
+
+    func isEmpty() -> Bool {
+        return ageRanges.isEmpty && tags.isEmpty && museums.isEmpty
+    }
+
+    static func emptyFilter() -> Filter {
+        return Filter(ageRanges: [AgeRange](), tags: [String](), museums: [Int]())
+    }
+}
+
 public class DataModel {
     // Singleton model as per https://github.com/hpique/SwiftSingleton
     public class var sharedInstance : DataModel {
@@ -424,6 +438,7 @@ public class DataModel {
     public var museums: [Museum] = [Museum]()
     public var events: [Event] = [Event]()
     public var tags: [String] = [String]()
+    public var filter: Filter = Filter.emptyFilter()
 
     private let inDateFormatter = NSDateFormatter()
 
