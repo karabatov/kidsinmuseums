@@ -75,7 +75,7 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
             let textNode = EventDescriptionNode(description: event.description)
             return textNode
         case 6:
-            let tagNode = TagCloudNode(tags: event.tags)
+            let tagNode = TagCloudNode(tags: event.tags, enabled: false)
             return tagNode
         case 7:
             let reviewTitleNode = EventDescTitleNode(text: NSLocalizedString("Reviews", comment: "Review section description subtitle"))

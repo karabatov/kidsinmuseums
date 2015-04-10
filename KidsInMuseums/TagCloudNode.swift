@@ -7,6 +7,7 @@
 //
 
 class TagCloudNode: ASCellNode {
+    var enabled = true
     let tags: [String]
     var tagButtons = [TagButtonNode]()
     var origins = [CGPoint]()
@@ -14,15 +15,18 @@ class TagCloudNode: ASCellNode {
     let marginV: CGFloat = 8.0
     var selectedTags = [String]()
 
-    required init(tags: [String]) {
+    required init(tags: [String], enabled: Bool) {
+        self.enabled = enabled
         self.tags = tags
         selectedTags = DataModel.sharedInstance.filter.tags
         super.init()
 
         for tag in self.tags {
             let tagButton = TagButtonNode(tagStr: tag)
-            tagButton.selected = contains(selectedTags, tag)
-            tagButton.addTarget(self, action: "tagButtonTapped:", forControlEvents: ASControlNodeEvent.TouchUpInside)
+            if self.enabled {
+                tagButton.selected = contains(selectedTags, tag)
+                tagButton.addTarget(self, action: "tagButtonTapped:", forControlEvents: ASControlNodeEvent.TouchUpInside)
+            }
             tagButtons.append(tagButton)
             addSubnode(tagButton)
         }
@@ -56,15 +60,12 @@ class TagCloudNode: ASCellNode {
     }
 
     func tagButtonTapped(sender: TagButtonNode) {
-        NSLog("button tapped for tag \(sender.tagStr)")
         if sender.selected {
             if !contains(selectedTags, sender.tagStr) {
-                NSLog("Add to tags")
                 selectedTags.append(sender.tagStr)
             }
         } else {
             if let index = find(selectedTags, sender.tagStr) {
-                NSLog("Remove from tags")
                 selectedTags.removeAtIndex(index)
             }
         }
