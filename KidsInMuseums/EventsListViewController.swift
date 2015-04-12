@@ -172,7 +172,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 return d1.compare(d2) == NSComparisonResult.OrderedAscending
             })
 
-            for day in self.days {
+            let filteredDays = DataModel.sharedInstance.filter.days.isEmpty ? self.days : DataModel.sharedInstance.filter.days
+
+            for day in filteredDays {
                 var evts = events.filter({(testEvt: Event) -> Bool in
                     return testEvt.hasEventsDuringTheDay(day)
                 })

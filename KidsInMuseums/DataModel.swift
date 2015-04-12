@@ -424,13 +424,14 @@ public struct Filter {
     let ageRanges: [AgeRange]
     let tags: [String]
     let museums: [Int]
+    let days: [NSDate]
 
     func isEmpty() -> Bool {
-        return ageRanges.isEmpty && tags.isEmpty && museums.isEmpty
+        return ageRanges.isEmpty && tags.isEmpty && museums.isEmpty && days.isEmpty
     }
 
     static func emptyFilter() -> Filter {
-        return Filter(ageRanges: [AgeRange](), tags: [String](), museums: [Int]())
+        return Filter(ageRanges: [AgeRange](), tags: [String](), museums: [Int](), days: [NSDate]())
     }
 }
 
@@ -642,6 +643,7 @@ public class DataModel {
             var filterAge = true
             var filterTag = true
             var filterMuseum = true
+            var filterDay = true
             let filter = self.filter
             if !filter.ageRanges.isEmpty {
                 filterAge = false
@@ -665,7 +667,16 @@ public class DataModel {
             if !filter.museums.isEmpty {
                 filterMuseum = contains(filter.museums, event.museumUserId)
             }
-            return filterAge && filterTag && filterMuseum
+            if !filter.days.isEmpty {
+                filterDay = false
+                for day in filter.days {
+                    if event.hasEventsDuringTheDay(day) {
+                        filterDay = true
+                        break
+                    }
+                }
+            }
+            return filterAge && filterTag && filterMuseum && filterDay
         })
         return filteredEvents
     }

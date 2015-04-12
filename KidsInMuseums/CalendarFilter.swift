@@ -14,6 +14,9 @@ class CalendarFilter: UIViewController, ASTableViewDataSource, ASTableViewDelega
 
     required init(days: [NSDate]) {
         self.days = days
+        if !DataModel.sharedInstance.filter.isEmpty() {
+            selectedDays = DataModel.sharedInstance.filter.days
+        }
         super.init(nibName: nil, bundle: nil)
         edgesForExtendedLayout = UIRectEdge.None
         title = NSLocalizedString("Calendar", comment: "Calendar filter title")
@@ -102,6 +105,11 @@ class CalendarFilter: UIViewController, ASTableViewDataSource, ASTableViewDelega
     }
 
     func applyButtonTapped(sender: UIBarButtonItem) {
-        NSLog("Apply button tapped")
+        let originalFilter = DataModel.sharedInstance.filter
+        let newFilter = Filter(ageRanges: originalFilter.ageRanges, tags: originalFilter.tags, museums: originalFilter.museums, days: selectedDays)
+        DataModel.sharedInstance.filter = newFilter
+        self.presentingViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
+            //
+        })
     }
 }
