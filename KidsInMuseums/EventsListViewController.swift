@@ -91,12 +91,12 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         })
         for listView in listViews {
             self.view.addSubview(listView)
+            listView.hidden = listView != listDay
             listView.separatorStyle = UITableViewCellSeparatorStyle.None;
             listView.backgroundColor = UIColor.clearColor()
             listView.asyncDelegate = self
             listView.asyncDataSource = self
         }
-        self.view.bringSubviewToFront(listDay)
         var segItems = [String]()
         segItems.append(NSLocalizedString("Date", comment: "Date filter segment"))
         segItems.append(NSLocalizedString("Distance", comment: "Distance filter segment"))

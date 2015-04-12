@@ -185,6 +185,9 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         tagCloudNode?.clearSelectedTags()
         ageCloudNode?.clearSelectedAges()
         selectedMuseums = []
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            self.listMuseums.reloadData()
+        })
     }
 
     func applyButtonTapped(sender: UIButton) {
