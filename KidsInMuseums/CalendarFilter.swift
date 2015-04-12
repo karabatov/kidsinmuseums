@@ -17,6 +17,16 @@ class CalendarFilter: UIViewController, ASTableViewDataSource, ASTableViewDelega
         super.init(nibName: nil, bundle: nil)
         edgesForExtendedLayout = UIRectEdge.None
         title = NSLocalizedString("Calendar", comment: "Calendar filter title")
+        if let clearButton: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton {
+            clearButton.setTitle(NSLocalizedString(" Clear", comment: "Clear button title"), forState: UIControlState.Normal)
+            clearButton.setImage(UIImage(named: "icon-clear"), forState: UIControlState.Normal)
+            clearButton.addTarget(self, action: "clearButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+            clearButton.sizeToFit()
+            let leftBarItem = UIBarButtonItem(customView: clearButton)
+            navigationItem.leftBarButtonItem = leftBarItem
+        }
+        let rightBarItem = UIBarButtonItem(title: NSLocalizedString("Apply", comment: "Apply filter button title"), style: UIBarButtonItemStyle.Plain, target: self, action: "applyButtonTapped:")
+        navigationItem.rightBarButtonItem = rightBarItem
 
         // TODO: Add weekday to date format string
         dateFormatter.dateFormat = NSDateFormatter.dateFormatFromTemplate("dMMMM", options: 0, locale: NSLocale.currentLocale())
@@ -82,5 +92,16 @@ class CalendarFilter: UIViewController, ASTableViewDataSource, ASTableViewDelega
                 }
             }
         }
+    }
+
+    func clearButtonTapped(sender: UIButton) {
+        selectedDays = []
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            self.listDays.reloadData()
+        })
+    }
+
+    func applyButtonTapped(sender: UIBarButtonItem) {
+        NSLog("Apply button tapped")
     }
 }
