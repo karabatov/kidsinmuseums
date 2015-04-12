@@ -379,6 +379,11 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     }
 
     func calendarFilterButtonTapped(sender: UIBarButtonItem) {
-        NSLog("Calendar filter button tapped.")
+        let filterView = CalendarFilter(days: days)
+        let navi = UINavigationController(rootViewController: filterView)
+        navi.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
+        presentViewController(navi, animated: true) { () -> Void in
+            //
+        }
     }
 }
