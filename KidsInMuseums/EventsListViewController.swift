@@ -44,6 +44,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     var eventsByRating = [Event]()
     var refreshControl: BDBSpinKitRefreshControl?
     var bgView = NoDataView()
+    let filterInfoNode = FilterInfoNode(filter: DataModel.sharedInstance.filter)
     var location: CLLocation?
     var filterMode = EventFilterMode.Date
     var segControl: UISegmentedControl?
@@ -91,6 +92,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 self.view.sendSubviewToBack(self.bgView.view)
             })
         })
+        view.addSubview(filterInfoNode.view)
         for listView in listViews {
             self.view.addSubview(listView)
             listView.hidden = listView != listDay
@@ -106,7 +108,6 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         segControl = UISegmentedControl(items: segItems)
         segControl?.selectedSegmentIndex = 0
         segControl?.addTarget(self, action: "controlValueChanged:", forControlEvents: .ValueChanged)
-        segControl?.frame = self.segControlFrame()
         self.view.addSubview(segControl!)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdated:", name: kKIMNotificationEventsUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdated:", name: kKIMNotificationMuseumsUpdated, object: nil)
@@ -119,8 +120,12 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     override func viewWillLayoutSubviews() {
         let a = self.view.bounds
-        let sf = self.segControlFrame()
-        let vDiff: CGFloat = sf.size.height + kKIMSegmentedControlMarginV * 2
+        let fi = self.filterInfoSize()
+        let sf = self.segControlSize()
+        filterInfoNode.frame = CGRectMake(0, 0, fi.width, fi.height)
+        filterInfoNode.setNeedsLayout()
+        segControl?.frame = CGRectMake(kKIMSegmentedControlMarginH, fi.height + kKIMSegmentedControlMarginV, sf.width, sf.height)
+        let vDiff: CGFloat = fi.height + sf.height + kKIMSegmentedControlMarginV * 2.0
         let b = CGRectMake(0, vDiff, a.size.width, a.size.height - vDiff)
         for listView in listViews {
             if (listView.frame != b) {
@@ -212,6 +217,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 if let oldRows = oldRowsDict[listView] {
                     self.smoothReload(listView, oldRows: oldRows, newRows: newRows)
                 }
+            }
+            dispatch_async(dispatch_get_main_queue()) {
+                self.viewWillLayoutSubviews()
             }
         }
     }
@@ -341,8 +349,16 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         return event
     }
 
-    func segControlFrame() -> CGRect {
-        return CGRectMake(kKIMSegmentedControlMarginH, kKIMSegmentedControlMarginV, UIScreen.mainScreen().bounds.size.width - kKIMSegmentedControlMarginH * 2, kKIMSegmentedControlHeight)
+    func filterInfoSize() -> CGSize {
+        if !DataModel.sharedInstance.filter.isEmpty() {
+            filterInfoNode.filter = DataModel.sharedInstance.filter
+            return filterInfoNode.measure(CGSizeMake(UIScreen.mainScreen().bounds.size.width, CGFloat.max))
+        }
+        return CGSizeZero
+    }
+
+    func segControlSize() -> CGSize {
+        return CGSizeMake(UIScreen.mainScreen().bounds.size.width - kKIMSegmentedControlMarginH * 2, kKIMSegmentedControlHeight)
     }
 
     func smoothReload(listView: ASTableView, oldRows: Int, newRows: Int) {

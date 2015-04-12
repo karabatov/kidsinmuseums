@@ -80,6 +80,7 @@
 		D1E2D44C1ADAEAE5000FD803 /* DayFilterNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2D44B1ADAEAE5000FD803 /* DayFilterNode.swift */; };
 		D1E2D44F1ADAEBFA000FD803 /* icon-checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1E2D44D1ADAEBFA000FD803 /* icon-checkmark@2x.png */; };
 		D1E2D4501ADAEBFA000FD803 /* icon-checkmark@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1E2D44E1ADAEBFA000FD803 /* icon-checkmark@3x.png */; };
+		D1E2D4521ADAF9EB000FD803 /* FilterInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2D4511ADAF9EB000FD803 /* FilterInfoNode.swift */; };
 		D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */; };
 		D1FF584C1AB83049008DD880 /* AppInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584B1AB83049008DD880 /* AppInfoView.swift */; };
 		D1FF584E1AB832E1008DD880 /* AppInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */; };
@@ -195,6 +196,7 @@
 		D1E2D44B1ADAEAE5000FD803 /* DayFilterNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayFilterNode.swift; sourceTree = "<group>"; };
 		D1E2D44D1ADAEBFA000FD803 /* icon-checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-checkmark@2x.png"; sourceTree = "<group>"; };
 		D1E2D44E1ADAEBFA000FD803 /* icon-checkmark@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-checkmark@3x.png"; sourceTree = "<group>"; };
+		D1E2D4511ADAF9EB000FD803 /* FilterInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterInfoNode.swift; sourceTree = "<group>"; };
 		D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		D1FF584B1AB83049008DD880 /* AppInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoView.swift; sourceTree = "<group>"; };
 		D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoNode.swift; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 				D11DD0011AD3F11800307D32 /* FilterScreen.swift */,
 				D11DD0031AD3F4D100307D32 /* FilterButton.swift */,
 				D1E2D4451ADAE250000FD803 /* CalendarFilter.swift */,
+				D1E2D4511ADAF9EB000FD803 /* FilterInfoNode.swift */,
 				D1169B791A460C4500C025A3 /* Cells */,
 			);
 			name = UI;
@@ -614,6 +617,7 @@
 				D174763A1A976EB600D588A2 /* SMCalloutView.m in Sources */,
 				D174763B1A976EB600D588A2 /* SMClassicCalloutView.m in Sources */,
 				D11DD0021AD3F11800307D32 /* FilterScreen.swift in Sources */,
+				D1E2D4521ADAF9EB000FD803 /* FilterInfoNode.swift in Sources */,
 				D110493A1A8A93F400B32316 /* EventReviewNode.swift in Sources */,
 				D11DD00E1AD538D800307D32 /* AgeCloudNode.swift in Sources */,
 				D1FF58541AB85575008DD880 /* DeveloperInfoNode.swift in Sources */,
