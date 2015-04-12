@@ -77,6 +77,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
             navigationItem.leftBarButtonItem = leftBarItem
         }
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navbar back button title"), style: .Plain, target: nil, action: nil)
+        let calendarButton = UIBarButtonItem(image: UIImage(named: "icon-calendar"), style: UIBarButtonItemStyle.Plain, target: self, action: "calendarFilterButtonTapped:")
+        self.navigationItem.rightBarButtonItem = calendarButton
         self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | .FlexibleWidth
         self.view.backgroundColor = UIColor.whiteColor()
         self.edgesForExtendedLayout = UIRectEdge.None
@@ -374,5 +376,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         presentViewController(navi, animated: true) { () -> Void in
             //
         }
+    }
+
+    func calendarFilterButtonTapped(sender: UIBarButtonItem) {
+        NSLog("Calendar filter button tapped.")
     }
 }

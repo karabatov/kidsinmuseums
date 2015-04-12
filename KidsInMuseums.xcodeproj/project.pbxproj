@@ -74,6 +74,9 @@
 		D1E2D4421AD853AA000FD803 /* icon-checked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1E2D43E1AD853AA000FD803 /* icon-checked@3x.png */; };
 		D1E2D4431AD853AA000FD803 /* icon-unchecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1E2D43F1AD853AA000FD803 /* icon-unchecked@2x.png */; };
 		D1E2D4441AD853AA000FD803 /* icon-unchecked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1E2D4401AD853AA000FD803 /* icon-unchecked@3x.png */; };
+		D1E2D4461ADAE250000FD803 /* CalendarFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2D4451ADAE250000FD803 /* CalendarFilter.swift */; };
+		D1E2D4491ADAE2C4000FD803 /* icon-calendar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1E2D4471ADAE2C4000FD803 /* icon-calendar@2x.png */; };
+		D1E2D44A1ADAE2C4000FD803 /* icon-calendar@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1E2D4481ADAE2C4000FD803 /* icon-calendar@3x.png */; };
 		D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */; };
 		D1FF584C1AB83049008DD880 /* AppInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584B1AB83049008DD880 /* AppInfoView.swift */; };
 		D1FF584E1AB832E1008DD880 /* AppInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */; };
@@ -183,6 +186,9 @@
 		D1E2D43E1AD853AA000FD803 /* icon-checked@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-checked@3x.png"; sourceTree = "<group>"; };
 		D1E2D43F1AD853AA000FD803 /* icon-unchecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-unchecked@2x.png"; sourceTree = "<group>"; };
 		D1E2D4401AD853AA000FD803 /* icon-unchecked@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-unchecked@3x.png"; sourceTree = "<group>"; };
+		D1E2D4451ADAE250000FD803 /* CalendarFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarFilter.swift; sourceTree = "<group>"; };
+		D1E2D4471ADAE2C4000FD803 /* icon-calendar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-calendar@2x.png"; sourceTree = "<group>"; };
+		D1E2D4481ADAE2C4000FD803 /* icon-calendar@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-calendar@3x.png"; sourceTree = "<group>"; };
 		D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		D1FF584B1AB83049008DD880 /* AppInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoView.swift; sourceTree = "<group>"; };
 		D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoNode.swift; sourceTree = "<group>"; };
@@ -274,6 +280,7 @@
 				D1FF584B1AB83049008DD880 /* AppInfoView.swift */,
 				D11DD0011AD3F11800307D32 /* FilterScreen.swift */,
 				D11DD0031AD3F4D100307D32 /* FilterButton.swift */,
+				D1E2D4451ADAE250000FD803 /* CalendarFilter.swift */,
 				D1169B791A460C4500C025A3 /* Cells */,
 			);
 			name = UI;
@@ -314,6 +321,8 @@
 				D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */,
 				D1FF58501AB8372A008DD880 /* appinfo-logo@3x.png */,
 				D1A0F7581A72AA9900981257 /* Default-huge.png */,
+				D1E2D4471ADAE2C4000FD803 /* icon-calendar@2x.png */,
+				D1E2D4481ADAE2C4000FD803 /* icon-calendar@3x.png */,
 				D1E2D43D1AD853AA000FD803 /* icon-checked@2x.png */,
 				D1E2D43E1AD853AA000FD803 /* icon-checked@3x.png */,
 				D1E2D43F1AD853AA000FD803 /* icon-unchecked@2x.png */,
@@ -508,12 +517,14 @@
 				D11DD00B1AD465D900307D32 /* icon-clear@2x.png in Resources */,
 				D11DD0081AD405E400307D32 /* icon-filter@3x.png in Resources */,
 				D17476401A97816900D588A2 /* icon-phone@3x.png in Resources */,
+				D1E2D44A1ADAE2C4000FD803 /* icon-calendar@3x.png in Resources */,
 				D1FF58521AB8372A008DD880 /* appinfo-logo@3x.png in Resources */,
 				D122D6DD1A697149009D30AB /* icon-news@2x.png in Resources */,
 				D155CC861A4B73A50072E183 /* Localizable.strings in Resources */,
 				D1A0F74C1A71318E00981257 /* marker@2x.png in Resources */,
 				D1A9E15E1A7D01A000E06F02 /* icon-more@2x.png in Resources */,
 				D1A0F7591A72AA9900981257 /* Default-huge.png in Resources */,
+				D1E2D4491ADAE2C4000FD803 /* icon-calendar@2x.png in Resources */,
 				D155CC7C1A4B73A50072E183 /* InfoPlist.strings in Resources */,
 				D1FF58581AB855C3008DD880 /* appinfo-dev@3x.png in Resources */,
 				D1A0F75F1A72ADC700981257 /* location@2x.png in Resources */,
@@ -605,6 +616,7 @@
 				D1D484971A891E0F0028C6F4 /* EventImageNode.swift in Sources */,
 				D11DD0001ACEA56000307D32 /* TagButtonNode.swift in Sources */,
 				D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */,
+				D1E2D4461ADAE250000FD803 /* CalendarFilter.swift in Sources */,
 				D1A9E1731A8536DD00E06F02 /* MapViewController.swift in Sources */,
 				D1D484951A8915560028C6F4 /* EventItemViewController.swift in Sources */,
 				D1A9E16F1A7FABA900E06F02 /* CLLocationHumanReadable.swift in Sources */,
