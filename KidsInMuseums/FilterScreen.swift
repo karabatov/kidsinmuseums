@@ -165,19 +165,25 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     }
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        var selected: Bool
         if tableView == listMuseums {
             let museum = museums[indexPath.row]
             if contains(selectedMuseums, museum.id) {
+                selected = false
                 if let index = find(selectedMuseums, museum.id) {
                     selectedMuseums.removeAtIndex(index)
                 }
             } else {
+                selected = true
                 selectedMuseums.append(museum.id)
             }
-            listMuseums.beginUpdates()
-            listMuseums.deleteRowsAtIndexPaths([ indexPath ], withRowAnimation: UITableViewRowAnimation.Fade)
-            listMuseums.insertRowsAtIndexPaths([ indexPath ], withRowAnimation: UITableViewRowAnimation.Fade)
-            listMuseums.endUpdates()
+            for node in listMuseums.visibleNodes() {
+                if let museumNode = node as? FilterMuseumNode {
+                    if museumNode.museum.id == museum.id {
+                        museumNode.selected = selected
+                    }
+                }
+            }
         }
     }
 
