@@ -82,7 +82,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
             })
         })
 
-        if let clearButton: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton {
+        if let clearButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as? UIButton {
             clearButton.setTitle(NSLocalizedString(" Clear", comment: "Clear button title"), forState: UIControlState.Normal)
             clearButton.setImage(UIImage(named: "icon-clear"), forState: UIControlState.Normal)
             clearButton.addTarget(self, action: "clearButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -90,8 +90,13 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
             let leftBarItem = UIBarButtonItem(customView: clearButton)
             navigationItem.leftBarButtonItem = leftBarItem
         }
-        let rightBarItem = UIBarButtonItem(title: NSLocalizedString("Apply", comment: "Apply filter button title"), style: UIBarButtonItemStyle.Plain, target: self, action: "applyButtonTapped:")
-        navigationItem.rightBarButtonItem = rightBarItem
+        if let applyButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as? UIButton {
+            applyButton.setTitle(NSLocalizedString("Apply", comment: "Apply filter button title"), forState: UIControlState.Normal)
+            applyButton.addTarget(self, action: "applyButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+            applyButton.sizeToFit()
+            let rightBarItem = UIBarButtonItem(customView: applyButton)
+            navigationItem.rightBarButtonItem = rightBarItem
+        }
     }
 
     func filterButtonTapped(sender: FilterButton) {

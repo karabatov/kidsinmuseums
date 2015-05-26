@@ -69,7 +69,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         listViews.append(listDay)
         listViews.append(listRating)
         listViews.append(listDistance)
-        if let filterButton: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton {
+        if let filterButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as? UIButton {
             filterButton.setTitle(NSLocalizedString(" Filter", comment: "Filter button title"), forState: UIControlState.Normal)
             filterButton.setImage(UIImage(named: "icon-filter"), forState: UIControlState.Normal)
             filterButton.addTarget(self, action: "filterButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)

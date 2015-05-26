@@ -20,7 +20,7 @@ class CalendarFilter: UIViewController, ASTableViewDataSource, ASTableViewDelega
         super.init(nibName: nil, bundle: nil)
         edgesForExtendedLayout = UIRectEdge.None
         title = NSLocalizedString("Calendar", comment: "Calendar filter title")
-        if let clearButton: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton {
+        if let clearButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as? UIButton {
             clearButton.setTitle(NSLocalizedString(" Clear", comment: "Clear button title"), forState: UIControlState.Normal)
             clearButton.setImage(UIImage(named: "icon-clear"), forState: UIControlState.Normal)
             clearButton.addTarget(self, action: "clearButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -28,8 +28,13 @@ class CalendarFilter: UIViewController, ASTableViewDataSource, ASTableViewDelega
             let leftBarItem = UIBarButtonItem(customView: clearButton)
             navigationItem.leftBarButtonItem = leftBarItem
         }
-        let rightBarItem = UIBarButtonItem(title: NSLocalizedString("Apply", comment: "Apply filter button title"), style: UIBarButtonItemStyle.Plain, target: self, action: "applyButtonTapped:")
-        navigationItem.rightBarButtonItem = rightBarItem
+        if let applyButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as? UIButton {
+            applyButton.setTitle(NSLocalizedString("Apply", comment: "Apply filter button title"), forState: UIControlState.Normal)
+            applyButton.addTarget(self, action: "applyButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+            applyButton.sizeToFit()
+            let rightBarItem = UIBarButtonItem(customView: applyButton)
+            navigationItem.rightBarButtonItem = rightBarItem
+        }
 
         // TODO: Add weekday to date format string
         dateFormatter.dateFormat = NSDateFormatter.dateFormatFromTemplate("dMMMM", options: 0, locale: NSLocale.currentLocale())
