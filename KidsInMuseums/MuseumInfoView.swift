@@ -128,6 +128,9 @@ class MuseumInfoView: UIScrollView {
     }
 
     func eventsInMuseumButtonTapped() {
-        println("Events in museum.")
+        DataModel.sharedInstance.filter = Filter(ageRanges: [AgeRange](), tags: [String](), museums: [ownMuseum.id], days: [NSDate]())
+        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+            delegate.tabController?.selectedIndex = 0
+        }
     }
 }
