@@ -112,6 +112,7 @@ class MuseumInfoView: UIScrollView {
 
         let openEventsStr = NSLocalizedString("Events in this museum", comment: "Events in this museum button in map callout")
         let openEventNode = MuseumEventButtonNode(text: openEventsStr)
+        openEventNode.addTarget(self, action: "eventsInMuseumButtonTapped", forControlEvents: ASControlNodeEvent.TouchUpInside)
         let openEventSize = openEventNode.measure(zeroHeightSize)
 
         openEventNode.frame = CGRectMake(0, height, maxWidth, openEventSize.height)
@@ -124,5 +125,9 @@ class MuseumInfoView: UIScrollView {
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func eventsInMuseumButtonTapped() {
+        println("Events in museum.")
     }
 }

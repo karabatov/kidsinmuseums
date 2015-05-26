@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Golova Media. All rights reserved.
 //
 
-class TextDividerNode: ASControlNode, ASTextNodeDelegate {
+class TextDividerNode: ASDisplayNode, ASTextNodeDelegate {
     let textView = ASTextNode()
     let divider = ASDisplayNode()
     let kTextDividerNodeMarginV: CGFloat = 8.0
@@ -20,6 +20,7 @@ class TextDividerNode: ASControlNode, ASTextNodeDelegate {
 
         textView.attributedString = attributedText
         textView.delegate = self
+        textView.linkAttributeNames = [ NSLinkAttributeName ]
         textView.userInteractionEnabled = true
 
         addSubnode(textView)
@@ -46,8 +47,16 @@ class TextDividerNode: ASControlNode, ASTextNodeDelegate {
     // MARK: ASTextNodeDelegate
 
     func textNode(textNode: ASTextNode!, tappedLinkAttribute attribute: String!, value: AnyObject!, atPoint point: CGPoint, textRange: NSRange) {
+        println("Link attribute tapped")
         if let url = NSURL(string: attribute) {
             UIApplication.sharedApplication().openURL(url)
         }
+    }
+
+    func textNode(textNode: ASTextNode!, shouldHighlightLinkAttribute attribute: String!, value: AnyObject!, atPoint point: CGPoint) -> Bool {
+        if attribute == NSLinkAttributeName {
+            return true
+        }
+        return false
     }
 }

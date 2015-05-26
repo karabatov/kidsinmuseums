@@ -15,6 +15,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
     var museums: [Museum] = [Museum]()
     let calloutView = SMCalloutView.platformCalloutView()
     let kCalloutMargin: CGFloat = 14.0
+    var calloutStartRect = CGRect.zeroRect
+    var calloutShouldOffset = false
 
     // MARK: UIViewController
 
@@ -128,7 +130,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
         if let museumAnnotation = view.annotation as? MuseumAnnotation {
             let museumInfoView = MuseumInfoView(museum: museumAnnotation.museum, maxWidth: self.view.frame.size.width - kCalloutMargin * 2)
             calloutView.contentView = museumInfoView
-            calloutView.presentCalloutFromRect(view.bounds, inView: view, constrainedToView: self.view, animated: true)
+
+            calloutShouldOffset = true
+            calloutStartRect = mapView.convertRect(view.bounds, fromView: view)
+            calloutView.presentCalloutFromRect(calloutStartRect, inView: mapView, constrainedToView: mapView, animated: true)
         }
     }
 
@@ -141,7 +146,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
         // if we'd like to reposition our surface first so the callout is completely visible. Here we scroll the map into view,
         // but it takes some math because we have to deal in lon/lat instead of the given offset in pixels.
 
-        if let mapView = self.view as? MKMapView {
+        if let mapView = self.view as? MKMapView where calloutShouldOffset {
             var coordinate = mapView.centerCoordinate
 
             // where's the center coordinate in terms of our view?
@@ -155,7 +160,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
             coordinate = mapView.convertPoint(center, toCoordinateFromView:self.view);
 
             // move the map!
-            mapView.setCenterCoordinate(coordinate, animated:true)
+            mapView.setCenterCoordinate(coordinate, animated: true)
+
+            calloutShouldOffset = false
+            calloutStartRect.offset(dx: offset.width, dy: offset.height)
+            self.calloutView.dismissCalloutAnimated(false)
+            let time: dispatch_time_t = UInt64(kSMCalloutViewRepositionDelayForUIScrollView * Double(NSEC_PER_SEC))
+            dispatch_after(time, dispatch_get_main_queue(), { () -> Void in
+                self.calloutView.presentCalloutFromRect(self.calloutStartRect, inView: mapView, constrainedToView: mapView, animated: true)
+            })
         }
 
         // tell the callout to wait for a while while we scroll (we assume the scroll delay for MKMapView matches UIScrollView)
