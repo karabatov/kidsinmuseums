@@ -130,6 +130,12 @@ class MuseumInfoView: UIScrollView {
     func eventsInMuseumButtonTapped() {
         DataModel.sharedInstance.filter = Filter(ageRanges: [AgeRange](), tags: [String](), museums: [ownMuseum.id], days: [NSDate]())
         if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+            if let
+                mapNav = delegate.tabController?.selectedViewController as? UINavigationController,
+                map = mapNav.topViewController as? MapViewController
+            {
+                map.calloutView.dismissCalloutAnimated(false)
+            }
             delegate.tabController?.selectedIndex = 0
         }
     }

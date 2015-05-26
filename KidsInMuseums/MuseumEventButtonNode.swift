@@ -9,9 +9,11 @@
 class MuseumEventButtonNode: ASControlNode {
     let borderNode = ASDisplayNode()
     let textNode = ASTextNode()
-    let textParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), NSForegroundColorAttributeName: UIColor.kimOrangeColor()]
+    let textParamsInactive = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), NSForegroundColorAttributeName: UIColor.kimOrangeColor()]
+    let textParamsHighlighted = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), NSForegroundColorAttributeName: UIColor.whiteColor()]
     let kMuseumEventButtonNodeMarginV: CGFloat = 8.0
     let kMuseumEventButtonNodeMarginH: CGFloat = 16.0
+    var buttonText = ""
 
     required init(text: String) {
         super.init()
@@ -19,7 +21,8 @@ class MuseumEventButtonNode: ASControlNode {
         borderNode.borderColor = UIColor.kimOrangeColor().CGColor
         borderNode.borderWidth = 1.0
 
-        textNode.attributedString = NSAttributedString(string: text, attributes: textParams)
+        buttonText = text
+        textNode.attributedString = NSAttributedString(string: buttonText, attributes: textParamsInactive)
 
         self.addSubnode(borderNode)
         self.addSubnode(textNode)
@@ -39,5 +42,30 @@ class MuseumEventButtonNode: ASControlNode {
         borderNode.frame = CGRectMake((calculatedSize.width - borderSize.width) / 2.0, kMuseumEventButtonNodeMarginV, borderSize.width, borderSize.height)
 
         borderNode.cornerRadius = borderSize.height / 2.0
+    }
+    
+    override func beginTrackingWithTouch(touch: UITouch!, withEvent touchEvent: UIEvent!) -> Bool {
+        updateBackgroundColor()
+        return true
+    }
+
+    override func cancelTrackingWithEvent(touchEvent: UIEvent!) {
+        super.cancelTrackingWithEvent(touchEvent)
+        updateBackgroundColor()
+    }
+
+    override func endTrackingWithTouch(touch: UITouch!, withEvent touchEvent: UIEvent!) {
+        super.endTrackingWithTouch(touch, withEvent: touchEvent)
+        updateBackgroundColor()
+    }
+
+    func updateBackgroundColor() {
+        if highlighted {
+            borderNode.backgroundColor = UIColor.kimOrangeColor()
+            textNode.attributedString = NSAttributedString(string: buttonText, attributes: textParamsHighlighted)
+        } else {
+            borderNode.backgroundColor = UIColor.whiteColor()
+            textNode.attributedString = NSAttributedString(string: buttonText, attributes: textParamsInactive)
+        }
     }
 }
