@@ -128,8 +128,12 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
                     return ageCloudNode
                 }
             case 2:
-                let node = EventDescTitleNode(text: NSLocalizedString("Event subjects", comment: "Event topics title"))
-                return node
+                if DataModel.sharedInstance.tags.count > 0 {
+                    let node = EventDescTitleNode(text: NSLocalizedString("Event subjects", comment: "Event topics title"))
+                    return node
+                } else {
+                    return ASCellNode()
+                }
             case 3:
                 if let node = tagCloudNode {
                     return node
