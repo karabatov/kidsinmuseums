@@ -11,7 +11,11 @@
 "%0.0f m" = "%0.0f м";
 
 /* Info screen app version */
-"%@ iOS App ver. %@ (%@)\n\n" = "%1$@, версия %2$@ (%3$@)\n\n";
+"%@ iOS App ver. %@ (%@)
+
+" = "%1$@, версия %2$@ (%3$@)
+
+";
 
 /* Event duration, time only */
 "%@ to %@" = "с %1$@ до %2$@";
@@ -36,6 +40,9 @@
 
 /* Navbar back button title */
 "Back" = "Назад";
+
+/* Calendar filter title */
+"Calendar" = "Календарь";
 
 /* Social networks section */
 "Connect with us on social networks" = "Мы в социальных сетях";
@@ -72,6 +79,9 @@
 
 /* Filter screen title */
 "Filter" = "Фильтр";
+
+/* Filter node beginning text */
+"Filter applied: " = "Применен фильтр: ";
 
 /* Map controller title */
 "Map" = "Карта";
@@ -118,8 +128,20 @@
 /* Website, museum info card */
 "Website: " = "Сайт: ";
 
+/* Ages filter text */
+"ages" = "по возрасту";
+
+/* Dates filter text */
+"dates" = "по датам";
+
+/* Museums filter text */
+"museums" = "по музеям";
+
 /* Event duration if no end time, time only */
 "starts at %@" = "с %@";
+
+/* Tags filter text */
+"tags" = "по тегам";
 
 /* x1 (except 11) */
 "year1" = "год";
