@@ -47,8 +47,11 @@ class TextDividerNode: ASDisplayNode, ASTextNodeDelegate {
     // MARK: ASTextNodeDelegate
 
     func textNode(textNode: ASTextNode!, tappedLinkAttribute attribute: String!, value: AnyObject!, atPoint point: CGPoint, textRange: NSRange) {
-        println("Link attribute tapped")
-        if let url = NSURL(string: attribute) {
+        if let
+            text = value as? String,
+            url = NSURL(string: text)
+            where attribute == NSLinkAttributeName
+        {
             UIApplication.sharedApplication().openURL(url)
         }
     }

@@ -79,7 +79,8 @@ class MuseumInfoView: UIScrollView {
             let emailTitleStr = NSAttributedString(string: NSLocalizedString("Email: ", comment: "Email, museum info card"), attributes: greyTextParams)
             emailStr.appendAttributedString(emailTitleStr)
 
-            let emailTextStr = NSAttributedString(string: museum.email, attributes: blackTextParams)
+            let emailTextStr = NSMutableAttributedString(string: museum.email, attributes: blackTextParams)
+            emailTextStr.addAttribute(NSLinkAttributeName, value: "mailto:\(museum.email)", range: NSMakeRange(0, emailTextStr.length))
             emailStr.appendAttributedString(emailTextStr)
 
             let emailNode = TextDividerNode(attributedText: emailStr)
