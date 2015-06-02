@@ -12,8 +12,9 @@ import UIKit
 class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewDataSource {
     var listView = ASTableView()
     var newsItems: [NewsItem] = [NewsItem]()
-    var refreshControl: BDBSpinKitRefreshControl?
-    var bgView = NoDataView()
+    var refreshControl: UIRefreshControl?
+    let loadingView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+    let bgView = NoDataView()
 
     // MARK: UIViewController
 
@@ -36,18 +37,16 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             self.bgView.measure(b.size)
             self.bgView.frame = b
-            dispatch_async(dispatch_get_main_queue(), {
-                self.view.addSubview(self.bgView.view)
-                self.view.sendSubviewToBack(self.bgView.view)
-            })
         })
+        loadingView.startAnimating()
+        self.view.addSubview(loadingView)
         self.view.addSubview(listView)
         listView.separatorStyle = UITableViewCellSeparatorStyle.None;
         listView.backgroundColor = UIColor.clearColor()
         listView.asyncDelegate = self
         listView.asyncDataSource = self
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "newsItemsUpdated:", name: kKIMNotificationNewsUpdated, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "newsItemsUpdateFailed:", name: kKIMNotificationNewsUpdated, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "newsItemsUpdateFailed:", name: kKIMNotificationNewsUpdateFailed, object: nil)
         newsItems = DataModel.sharedInstance.news
     }
 
@@ -59,11 +58,12 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
             self.bgView.frame = b
             listView.reloadData()
         }
+        loadingView.center = CGPoint(x: b.midX, y: b.midY)
     }
 
     override func viewDidAppear(animated: Bool) {
         if (refreshControl == nil) {
-            refreshControl = BDBSpinKitRefreshControl(style: RTSpinKitViewStyle.StyleThreeBounce, color: UIColor.whiteColor())
+            refreshControl = UIRefreshControl()
             refreshControl?.backgroundColor = UIColor(red: 127.0/255.0, green: 86.0/255.0, blue: 149.0/255.0, alpha: 1.0)
             refreshControl?.tintColor = UIColor.whiteColor()
             refreshControl?.addTarget(self, action: "updateNews", forControlEvents: UIControlEvents.ValueChanged)
@@ -75,7 +75,9 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
     // MARK: Data
 
     func updateNews() {
-        DataModel.sharedInstance.updateNews()
+        DataModel.sharedInstance.update()
+        bgView.hidden = true
+        loadingView.hidden = DataModel.sharedInstance.news.count > 0
     }
 
     func newsItemsUpdated(notification: NSNotification) {
@@ -83,14 +85,26 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
             self.refreshControl?.endRefreshing()
             self.newsItems = DataModel.sharedInstance.news
             self.listView.reloadData()
-            self.bgView.hidden = true
+            if self.newsItems.count == 0 && self.bgView.view.superview == nil {
+                self.view.insertSubview(self.bgView.view, aboveSubview: self.loadingView)
+                self.bgView.hidden = false
+            } else {
+                self.bgView.hidden = true
+            }
+            self.loadingView.hidden = true
         }
     }
 
     func newsItemsUpdateFailed(notification: NSNotification) {
         dispatch_async(dispatch_get_main_queue()) {
             self.refreshControl?.endRefreshing()
-            return
+            self.loadingView.hidden = true
+            if self.newsItems.count == 0 {
+                if self.bgView.view.superview == nil {
+                    self.view.insertSubview(self.bgView.view, aboveSubview: self.loadingView)
+                }
+                self.bgView.hidden = false
+            }
         }
     }
 

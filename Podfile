@@ -6,5 +6,4 @@ link_with 'KidsInMuseums'
 pod 'SDWebImage'
 pod 'AsyncDisplayKit', :head
 pod 'FontAwesomeKit/FontAwesome'
-pod 'BDBSpinKitRefreshControl'
 

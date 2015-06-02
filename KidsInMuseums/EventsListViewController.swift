@@ -42,9 +42,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     var eventsByDay = [Event]()
     var eventsByDistance = [Event]()
     var eventsByRating = [Event]()
-    var refreshControlDay: BDBSpinKitRefreshControl?
-    var refreshControlDistance: BDBSpinKitRefreshControl?
-    var refreshControlRating: BDBSpinKitRefreshControl?
+    var refreshControlDay: UIRefreshControl?
+    var refreshControlDistance: UIRefreshControl?
+    var refreshControlRating: UIRefreshControl?
     let bgView = NoDataView()
     let loadingView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     let filterInfoNode = FilterInfoNode(filter: DataModel.sharedInstance.filter)
@@ -158,13 +158,13 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         }
     }
 
-    func addRefreshControl(view: ASTableView) -> BDBSpinKitRefreshControl {
-        let refreshControl = BDBSpinKitRefreshControl(style: RTSpinKitViewStyle.StyleThreeBounce, color: UIColor.whiteColor())
+    func addRefreshControl(view: ASTableView) -> UIRefreshControl {
+        let refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = UIColor.kimColor()
         refreshControl.tintColor = UIColor.whiteColor()
         refreshControl.addTarget(self, action: "updateEvents", forControlEvents: UIControlEvents.ValueChanged)
-        view.addSubview(refreshControl!)
-        view.sendSubviewToBack(refreshControl!)
+        view.addSubview(refreshControl)
+        view.sendSubviewToBack(refreshControl)
         return refreshControl
     }
 
@@ -263,10 +263,12 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
             self.refreshControlDistance?.endRefreshing()
             self.refreshControlRating?.endRefreshing()
             self.loadingView.hidden = true
-            if self.bgView.view.superview == nil {
-                self.view.insertSubview(self.bgView.view, aboveSubview: self.loadingView)
+            if DataModel.sharedInstance.filteredEvents.count == 0 {
+                if self.bgView.view.superview == nil {
+                    self.view.insertSubview(self.bgView.view, aboveSubview: self.loadingView)
+                }
+                self.bgView.hidden = false
             }
-            self.bgView.hidden = false
         }
     }
 

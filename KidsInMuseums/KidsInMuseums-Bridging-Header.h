@@ -14,7 +14,6 @@
 #import <AsyncDisplayKit/ASControlNode+Subclasses.h>
 #import <AsyncDisplayKit/ASHighlightOverlayLayer.h>
 #import <FontAwesomeKit/FAKFontAwesome.h>
-#import <BDBSpinKitRefreshControl/BDBSpinKitRefreshControl.h>
 #import "SMCalloutView.h"
 
 #endif
