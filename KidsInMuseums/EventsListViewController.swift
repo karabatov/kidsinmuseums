@@ -42,7 +42,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     var eventsByDay = [Event]()
     var eventsByDistance = [Event]()
     var eventsByRating = [Event]()
-    var refreshControl: BDBSpinKitRefreshControl?
+    var refreshControlDay: BDBSpinKitRefreshControl?
+    var refreshControlDistance: BDBSpinKitRefreshControl?
+    var refreshControlRating: BDBSpinKitRefreshControl?
     var bgView = NoDataView()
     let filterInfoNode = FilterInfoNode(filter: DataModel.sharedInstance.filter)
     var location: CLLocation?
@@ -137,13 +139,14 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     }
 
     override func viewDidAppear(animated: Bool) {
-        if (refreshControl == nil) {
-            refreshControl = BDBSpinKitRefreshControl(style: RTSpinKitViewStyle.StyleThreeBounce, color: UIColor.whiteColor())
-            refreshControl?.backgroundColor = UIColor.kimColor()
-            refreshControl?.tintColor = UIColor.whiteColor()
-            refreshControl?.addTarget(self, action: "updateEvents", forControlEvents: UIControlEvents.ValueChanged)
-            self.listDay.addSubview(refreshControl!)
-            self.listDay.sendSubviewToBack(refreshControl!)
+        if (refreshControlDay == nil) {
+            refreshControlDay = addRefreshControl(listDay)
+        }
+        if (refreshControlDistance == nil) {
+            refreshControlDistance = addRefreshControl(listDistance)
+        }
+        if (refreshControlRating == nil) {
+            refreshControlRating = addRefreshControl(listRating)
         }
         var dispatch_token: dispatch_once_t = 0
         dispatch_once(&dispatch_token) {
@@ -152,6 +155,16 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 delegate.wantsLocation = true
             }
         }
+    }
+
+    func addRefreshControl(view: ASTableView) -> BDBSpinKitRefreshControl {
+        let refreshControl = BDBSpinKitRefreshControl(style: RTSpinKitViewStyle.StyleThreeBounce, color: UIColor.whiteColor())
+        refreshControl.backgroundColor = UIColor.kimColor()
+        refreshControl.tintColor = UIColor.whiteColor()
+        refreshControl.addTarget(self, action: "updateEvents", forControlEvents: UIControlEvents.ValueChanged)
+        view.addSubview(refreshControl!)
+        view.sendSubviewToBack(refreshControl!)
+        return refreshControl
     }
 
     // MARK: Data
@@ -232,7 +245,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         if DataModel.sharedInstance.dataLoaded() {
             self.fillAndReload()
             dispatch_async(dispatch_get_main_queue()) {
-                self.refreshControl?.endRefreshing()
+                self.refreshControlDay?.endRefreshing()
+                self.refreshControlDistance?.endRefreshing()
+                self.refreshControlRating?.endRefreshing()
                 self.bgView.hidden = true
             }
         }
@@ -240,7 +255,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func eventItemsUpdateFailed(notification: NSNotification) {
         dispatch_async(dispatch_get_main_queue()) {
-            self.refreshControl?.endRefreshing()
+            self.refreshControlDay?.endRefreshing()
+            self.refreshControlDistance?.endRefreshing()
+            self.refreshControlRating?.endRefreshing()
             return
         }
     }
