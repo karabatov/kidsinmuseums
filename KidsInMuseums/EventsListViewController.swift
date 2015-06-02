@@ -168,6 +168,12 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         return refreshControl
     }
 
+    func scrollToTop() {
+        for listView in listViews {
+            listView.scrollRectToVisible(CGRect(origin: CGPoint.zeroPoint, size: CGSize(width: 1, height: 1)), animated: true)
+        }
+    }
+
     // MARK: Data
 
     func fillAndReload() {

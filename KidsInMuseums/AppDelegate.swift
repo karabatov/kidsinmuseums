@@ -13,7 +13,7 @@ let kKIMLocationUpdated = "kKIMLocationUpdated"
 let kKIMLocationUpdatedKey = "kKIMLocationUpdatedKey"
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate, UITabBarControllerDelegate {
 
     var window: UIWindow?
     var location: CLLocationManager?
@@ -30,8 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     internal var lastLocationUpdate = NSDate(timeIntervalSince1970: 0)
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        DataModel.sharedInstance // Trigger update
-
         location = CLLocationManager()
         location?.delegate = self
         location?.desiredAccuracy = kCLLocationAccuracyHundredMeters
@@ -61,7 +59,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         window?.rootViewController = tabController
         tabController?.tabBar.translucent = false
         tabController?.tabBar.tintColor = purpleColor
+        tabController?.delegate = self
         window?.makeKeyAndVisible()
+
+        DataModel.sharedInstance // Trigger update
 
         return true
     }
@@ -125,6 +126,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 NSNotificationCenter.defaultCenter().postNotificationName(kKIMLocationUpdated, object: self, userInfo:userInfo)
             }
         }
+    }
+
+    // MARK: UITabBarControllerDeleagate
+
+    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
+        if viewController == tabBarController.selectedViewController {
+            switch viewController {
+            case eventsNavController!:
+                eventsNavController?.popToRootViewControllerAnimated(true)
+                if let events = eventsNavController?.viewControllers.first as? EventsListViewController {
+                    events.scrollToTop()
+                }
+            case mapNavController!:
+                mapNavController?.popToRootViewControllerAnimated(true)
+            case moreNavController!:
+                moreNavController?.popToRootViewControllerAnimated(true)
+            case newsNavController!:
+                newsNavController?.popToRootViewControllerAnimated(true)
+                if let news = newsNavController?.viewControllers.first as? NewsListController {
+                    news.scrollToTop()
+                }
+            default:
+                return true
+            }
+        }
+
+        return true
     }
 }
 

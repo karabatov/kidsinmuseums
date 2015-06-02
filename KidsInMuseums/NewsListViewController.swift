@@ -72,6 +72,10 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
         }
     }
 
+    func scrollToTop() {
+        listView.scrollRectToVisible(CGRect(origin: CGPoint.zeroPoint, size: CGSize(width: 1, height: 1)), animated: true)
+    }
+
     // MARK: Data
 
     func updateNews() {
