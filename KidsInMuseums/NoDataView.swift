@@ -35,6 +35,6 @@ public class NoDataView: ASDisplayNode {
 
     public override func layout() {
         let textSize = textMessage.calculatedSize
-        textMessage.frame = CGRectMake(kNoDataViewMarginX, kNoDataViewMarginY, textSize.width, textSize.height)
+        textMessage.frame = CGRectMake((calculatedSize.width - textSize.width) / 2.0, kNoDataViewMarginY, textSize.width, textSize.height)
     }
 }
