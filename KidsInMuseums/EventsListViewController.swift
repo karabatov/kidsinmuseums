@@ -45,7 +45,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     var refreshControlDay: BDBSpinKitRefreshControl?
     var refreshControlDistance: BDBSpinKitRefreshControl?
     var refreshControlRating: BDBSpinKitRefreshControl?
-    var bgView = NoDataView()
+    let bgView = NoDataView()
+    let loadingView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     let filterInfoNode = FilterInfoNode(filter: DataModel.sharedInstance.filter)
     var location: CLLocation?
     var filterMode = EventFilterMode.Date
@@ -89,11 +90,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             self.bgView.measure(b.size)
             self.bgView.frame = b
-            dispatch_async(dispatch_get_main_queue(), {
-                self.view.addSubview(self.bgView.view)
-                self.view.sendSubviewToBack(self.bgView.view)
-            })
         })
+        loadingView.startAnimating()
+        view.addSubview(loadingView)
         view.addSubview(filterInfoNode.view)
         for listView in listViews {
             self.view.addSubview(listView)
@@ -113,7 +112,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         self.view.addSubview(segControl!)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdated:", name: kKIMNotificationEventsUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdated:", name: kKIMNotificationMuseumsUpdated, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdateFailed:", name: kKIMNotificationEventsUpdated, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdated:", name: kKIMNotificationNewsUpdated, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "eventItemsUpdateFailed:", name: kKIMNotificationEventsUpdateFailed, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "locationUpdated:", name: kKIMLocationUpdated, object: nil)
 
         let timeFormat = NSDateFormatter.dateFormatFromTemplate("EEEE, dMMMM", options: 0, locale: NSLocale.currentLocale())
@@ -136,6 +136,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         }
         self.bgView.measure(a.size)
         self.bgView.frame = a
+        self.loadingView.center = CGPoint(x: a.midX, y: a.midY)
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -238,7 +239,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     }
 
     func updateEvents() {
-        DataModel.sharedInstance.updateEvents()
+        DataModel.sharedInstance.update()
+        bgView.hidden = true
+        loadingView.hidden = DataModel.sharedInstance.filteredEvents.count > 0
     }
 
     func eventItemsUpdated(notification: NSNotification) {
@@ -248,6 +251,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 self.refreshControlDay?.endRefreshing()
                 self.refreshControlDistance?.endRefreshing()
                 self.refreshControlRating?.endRefreshing()
+                self.loadingView.hidden = true
                 self.bgView.hidden = true
             }
         }
@@ -258,7 +262,11 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
             self.refreshControlDay?.endRefreshing()
             self.refreshControlDistance?.endRefreshing()
             self.refreshControlRating?.endRefreshing()
-            return
+            self.loadingView.hidden = true
+            if self.bgView.view.superview == nil {
+                self.view.insertSubview(self.bgView.view, aboveSubview: self.loadingView)
+            }
+            self.bgView.hidden = false
         }
     }
 
