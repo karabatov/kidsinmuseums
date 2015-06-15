@@ -328,6 +328,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
     }
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        if filterMode == .Date && indexPath.row == 0 {
+            return
+        }
         if let event = eventForIndexPath(tableView, indexPath: indexPath) {
             let eventItemVC = EventItemViewController(event: event, frame: view.bounds)
             navigationController?.pushViewController(eventItemVC, animated: true)
