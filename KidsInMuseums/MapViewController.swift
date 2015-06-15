@@ -17,6 +17,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
     let kCalloutMargin: CGFloat = 14.0
     var calloutStartRect = CGRect.zeroRect
     var calloutShouldOffset = false
+    var shouldDisplayMuseumId: Int?
 
     // MARK: UIViewController
 
@@ -58,6 +59,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
             delegate.requestLocationPermissions()
             delegate.wantsLocation = true
         }
+        tryDisplayingPreselectedMuseum()
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -75,6 +77,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
     func updateMarkers() {
         if DataModel.sharedInstance.dataLoaded() {
             if let mapView = view as? MKMapView {
+                if mapView.selectedAnnotations != nil && mapView.selectedAnnotations.count == 1 {
+                    if let ann = mapView.selectedAnnotations.first as? MuseumAnnotation {
+                        shouldDisplayMuseumId = ann.museum.id
+                    }
+                }
                 mapView.removeAnnotations(mapView.annotations)
                 var museumsWithEvents = NSMutableSet()
                 for event in DataModel.sharedInstance.allEvents {
@@ -90,6 +97,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
                     let annotation = MuseumAnnotation(museum: museum)
                     mapView.addAnnotation(annotation)
                 }
+                tryDisplayingPreselectedMuseum()
             }
         }
     }
@@ -165,7 +173,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
             calloutShouldOffset = false
             calloutStartRect.offset(dx: offset.width, dy: offset.height)
             self.calloutView.dismissCalloutAnimated(false)
-            let time: dispatch_time_t = UInt64(kSMCalloutViewRepositionDelayForUIScrollView * Double(NSEC_PER_SEC))
+            let time: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(kSMCalloutViewRepositionDelayForUIScrollView * Double(NSEC_PER_SEC)))
             dispatch_after(time, dispatch_get_main_queue(), { () -> Void in
                 self.calloutView.presentCalloutFromRect(self.calloutStartRect, inView: mapView, constrainedToView: mapView, animated: true)
             })
@@ -173,5 +181,27 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
 
         // tell the callout to wait for a while while we scroll (we assume the scroll delay for MKMapView matches UIScrollView)
         return kSMCalloutViewRepositionDelayForUIScrollView
+    }
+
+    func selectMuseum(museum: Museum) {
+        shouldDisplayMuseumId = museum.id
+    }
+
+    func tryDisplayingPreselectedMuseum() {
+        if let mapView = view as? MKMapView where mapView.bounds != CGRect.zeroRect {
+            for anno in mapView.annotations {
+                if let
+                    ann = anno as? MuseumAnnotation,
+                    museumId = shouldDisplayMuseumId
+                    where ann.museum.id == museumId
+                {
+                    shouldDisplayMuseumId = nil
+                    let time: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(kSMCalloutViewRepositionDelayForUIScrollView * Double(NSEC_PER_SEC)))
+                    dispatch_after(time, dispatch_get_main_queue(), { () -> Void in
+                        mapView.selectAnnotation(ann, animated: true)
+                    })
+                }
+            }
+        }
     }
 }

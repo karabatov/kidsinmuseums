@@ -137,6 +137,10 @@ class MuseumInfoView: UIScrollView {
             {
                 map.calloutView.dismissCalloutAnimated(false)
             }
+            if let eventNav = delegate.tabController?.viewControllers?.first as? UINavigationController
+            {
+                eventNav.popToRootViewControllerAnimated(true)
+            }
             delegate.tabController?.selectedIndex = 0
         }
     }

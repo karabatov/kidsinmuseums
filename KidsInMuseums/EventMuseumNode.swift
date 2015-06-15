@@ -8,6 +8,7 @@
 
 class EventMuseumNode: ASCellNode {
     var museumFound = false
+    var museum: Museum?
     let pinNode = ASTextNode()
     let textNode = ASTextNode()
     let kEventMuseumNodeMarginH: CGFloat = 16.0
@@ -16,6 +17,7 @@ class EventMuseumNode: ASCellNode {
 
     required init(museumId: Int) {
         if let mus = DataModel.sharedInstance.findMuseum(museumId) {
+            museum = mus
             museumFound = true
 
             let pin = FAKFontAwesome.mapMarkerIconWithSize(kEventMuseumNodePinFontSize)
@@ -37,6 +39,7 @@ class EventMuseumNode: ASCellNode {
         if museumFound {
             addSubnode(pinNode)
             addSubnode(textNode)
+            textNode.addTarget(self, action: "openMuseum", forControlEvents: ASControlNodeEvent.TouchUpInside)
         }
     }
 
@@ -56,6 +59,24 @@ class EventMuseumNode: ASCellNode {
             let textSize = textNode.calculatedSize
             pinNode.frame = CGRectMake(kEventMuseumNodeMarginH, kEventMuseumNodeMarginV, pinSize.width, pinSize.height)
             textNode.frame = CGRectMake(kEventMuseumNodeMarginH * 2, kEventMuseumNodeMarginV, textSize.width, textSize.height)
+        }
+    }
+
+    func openMuseum() {
+        if let
+            mus = museum,
+            delegate = UIApplication.sharedApplication().delegate as? AppDelegate,
+            controllers = delegate.tabController?.viewControllers
+        {
+            for (index, cntr) in enumerate(controllers) {
+                if let
+                    controller = cntr as? UINavigationController,
+                    mapView = controller.topViewController as? MapViewController
+                {
+                    mapView.selectMuseum(mus)
+                    delegate.tabController?.selectedIndex = index
+                }
+            }
         }
     }
 }
