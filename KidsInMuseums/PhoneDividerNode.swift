@@ -15,6 +15,8 @@ class PhoneDividerNode: TextDividerNode {
         phoneButton.image = UIImage(named: "icon-phone")
         phoneButton.contentMode = UIViewContentMode.Center
         addSubnode(phoneButton)
+
+        phoneButton.addTarget(self, action: "dialPhone", forControlEvents: ASControlNodeEvent.TouchUpInside)
     }
 
     override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {
@@ -31,5 +33,15 @@ class PhoneDividerNode: TextDividerNode {
 
         let pixelSize: CGFloat = 1.0 / UIScreen.mainScreen().scale
         divider.frame = CGRectMake(0, calculatedSize.height - pixelSize, calculatedSize.width, pixelSize)
+    }
+
+    func dialPhone() {
+        if textView.attributedString != nil {
+            let phoneSet = NSCharacterSet(charactersInString: "+0123456789")
+            let phone = join("", textView.attributedString.string.componentsSeparatedByCharactersInSet(phoneSet.invertedSet))
+            if let url = NSURL(string: "tel://\(phone)") {
+                UIApplication.sharedApplication().openURL(url)
+            }
+        }
     }
 }
