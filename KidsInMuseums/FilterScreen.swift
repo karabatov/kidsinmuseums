@@ -12,15 +12,16 @@ enum FilterScreenMode {
     case Tags, Museums
 }
 
-class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate {
-    let myToolbar = UIToolbar()
+class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate, UISearchBarDelegate {
     let tagButton: FilterButton
     let museumButton: FilterButton
+    let searchBar = UISearchBar()
     let listTags = ASTableView()
     let listMuseums = ASTableView()
     var tagCloudNode: TagCloudNode?
     var ageCloudNode: AgeCloudNode?
     var filterButtonV: CGFloat = 0.0
+    let searchBarV: CGFloat = 44.0
     var museums = [Museum]()
     var selectedMuseums = [Int]()
     var location: CLLocation?
@@ -56,6 +57,10 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         listMuseums.asyncDataSource = self
         listMuseums.asyncDelegate = self
         listMuseums.hidden = true
+
+        searchBar.delegate = self
+        searchBar.tintColor = UIColor.kimColor()
+        searchBar.placeholder = NSLocalizedString("Place or event", comment: "Search bar placeholder")
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -63,8 +68,9 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     }
 
     override func viewWillLayoutSubviews() {
-        self.listTags.frame = CGRectMake(0, self.filterButtonV, view.bounds.width, view.bounds.height - self.filterButtonV)
-        self.listMuseums.frame = CGRectMake(0, self.filterButtonV, view.bounds.width, view.bounds.height - self.filterButtonV)
+        let offset = filterButtonV + searchBarV
+        self.listTags.frame = CGRectMake(0, offset, view.bounds.width, view.bounds.height - offset)
+        self.listMuseums.frame = CGRectMake(0, offset, view.bounds.width, view.bounds.height - offset)
     }
 
     override func viewDidLoad() {
@@ -75,10 +81,12 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.view.addSubview(self.tagButton.view)
                 self.view.addSubview(self.museumButton.view)
+                self.view.addSubview(self.searchBar)
                 self.view.addSubview(self.listTags)
                 self.view.addSubview(self.listMuseums)
                 self.tagButton.frame = CGRectMake(0, 0, halfWidth, self.filterButtonV)
                 self.museumButton.frame = CGRectMake(halfWidth, 0, halfWidth, self.filterButtonV)
+                self.searchBar.frame = CGRect(x: 0, y: self.filterButtonV, width: halfWidth * 2, height: self.searchBarV)
             })
         })
 
@@ -216,5 +224,30 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
             //
         })
+    }
+
+    // MARK: UISearchBarDelegate
+
+    func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            // Commence search
+            return false
+        }
+        return true
+    }
+
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        searchBar.setShowsCancelButton(!searchText.isEmpty || searchBar.isFirstResponder(), animated: true)
+    }
+
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.resignFirstResponder()
+    }
+
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        searchBar.becomeFirstResponder()
+        searchBar.setShowsCancelButton(true, animated: true)
     }
 }
