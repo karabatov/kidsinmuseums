@@ -41,6 +41,9 @@ class EventMuseumNode: ASCellNode {
             addSubnode(textNode)
             textNode.addTarget(self, action: "openMuseum", forControlEvents: ASControlNodeEvent.TouchUpInside)
         }
+
+        placeholderEnabled = true
+        placeholderFadeDuration = 0.25
     }
 
     override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {

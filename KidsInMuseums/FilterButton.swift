@@ -21,6 +21,8 @@ class FilterButton: ASControlNode {
     required init(text: String) {
         super.init()
         let textParams = [ NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), NSForegroundColorAttributeName: UIColor.whiteColor() ]
+        textNode.placeholderEnabled = true
+        textNode.placeholderFadeDuration = 0.25
         textNode.attributedString = NSAttributedString(string: text, attributes: textParams)
         addSubnode(textNode)
         updateBackgroundColor()
@@ -64,5 +66,6 @@ class FilterButton: ASControlNode {
         } else {
             backgroundColor = highlighted ? bgColorInactive : bgColorHighlighted
         }
+        textNode.placeholderColor = backgroundColor
     }
 }

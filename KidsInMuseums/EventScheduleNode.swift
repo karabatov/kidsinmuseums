@@ -59,6 +59,9 @@ class EventScheduleNode: ASCellNode {
             addSubnode(clockNode)
             addSubnode(textNode)
         }
+
+        placeholderEnabled = true
+        placeholderFadeDuration = 0.25
     }
 
     override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {

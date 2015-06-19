@@ -22,6 +22,9 @@ class EventTitleNode: ASCellNode {
         titleStr.appendAttributedString(attStr)
 
         textNode.attributedString = titleStr
+        textNode.placeholderEnabled = true
+        textNode.placeholderColor = UIColor.whiteColor()
+        textNode.placeholderFadeDuration = 0.25
 
         addSubnode(textNode)
     }

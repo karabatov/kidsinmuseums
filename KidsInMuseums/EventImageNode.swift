@@ -30,6 +30,12 @@ class EventImageNode: ASCellNode, ASMultiplexImageNodeDataSource {
         imageNode.imageIdentifiers = images
 
         addSubnode(imageNode)
+
+        imageNode.placeholderEnabled = true
+        imageNode.placeholderFadeDuration = 0.25
+        imageNode.placeholderColor = imageNode.backgroundColor
+
+        backgroundColor = imageNode.backgroundColor
     }
 
     override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {
