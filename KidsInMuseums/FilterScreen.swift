@@ -50,6 +50,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
             selectedMuseums = museumsFiltered
         }
         searchMuseums = museums
+        searchEvents = DataModel.sharedInstance.allEvents
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         edgesForExtendedLayout = UIRectEdge.None
@@ -174,7 +175,20 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
             return museumNode
         case listSearch:
             switch indexPath.section {
-            case 0: return ASCellNode()
+            case 0:
+                switch indexPath.row {
+                case 0:
+                    if searchEvents.count > 0 {
+                        let found = NSLocalizedString("Events found: ", comment: "Search section for events")
+                        return EventDescTitleNode(text: found + String(searchEvents.count))
+                    } else {
+                        return EventDescTitleNode(text: NSLocalizedString("Events not found", comment: "Search section for events when not found"))
+                    }
+                default:
+                    let event = searchEvents[indexPath.row - 1]
+                    let eventNode = EventCell(event: event, filterMode: EventFilterMode.Distance, referenceDate: NSDate(), location: location)
+                    return eventNode
+                }
             case 1:
                 switch indexPath.row {
                 case 0:
@@ -202,7 +216,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         case listMuseums: return museums.count
         case listSearch:
             switch section {
-            case 0: return 0
+            case 0: return searchEvents.count > 0 ? searchEvents.count + 1 : 1
             case 1: return searchMuseums.count > 0 ? searchMuseums.count + 1 : 1
             default: return 0
             }
@@ -247,7 +261,13 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         }
         if tableView == listSearch {
             switch indexPath.section {
-            case 0: return
+            case 0:
+                switch indexPath.row {
+                case 0: return
+                default:
+                    let event = searchEvents[indexPath.row - 1]
+                    openEvent(event)
+                }
             case 1:
                 switch indexPath.row {
                 case 0: return
@@ -331,6 +351,9 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         } else {
             filterScreenMode = .Museums
         }
+        searchEvents = DataModel.sharedInstance.allEvents
+        searchMuseums = museums
+        listSearch.reloadData()
     }
 
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
@@ -348,6 +371,16 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
             }
             return false
         }
+
+        searchEvents = DataModel.sharedInstance.allEvents.filter() { event in
+            for substr in comps {
+                if let range = event.name.lowercaseString.rangeOfString(substr.lowercaseString) {
+                    return true
+                }
+            }
+            return false
+        }
+
         searchBar.resignFirstResponder()
         listSearch.reloadData()
     }
@@ -355,6 +388,11 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     func openMuseum(museum: Museum) {
         let vc = MuseumInfoController()
         vc.museum = museum
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    func openEvent(event: Event) {
+        let vc = EventItemViewController(event: event, frame: view.bounds)
         navigationController?.pushViewController(vc, animated: true)
     }
 }
