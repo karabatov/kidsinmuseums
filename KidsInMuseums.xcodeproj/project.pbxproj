@@ -48,6 +48,7 @@
 		D1A0F75D1A72AB2200981257 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F75C1A72AB2200981257 /* logo@2x.png */; };
 		D1A0F75F1A72ADC700981257 /* location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F75E1A72ADC700981257 /* location@2x.png */; };
 		D1A6BAAB1B33F10300CF6CE5 /* MuseumInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6BAAA1B33F10300CF6CE5 /* MuseumInfoController.swift */; };
+		D1A6BAAD1B33F92A00CF6CE5 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6BAAC1B33F92A00CF6CE5 /* SearchViewController.swift */; };
 		D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */; };
 		D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1A937421A3F13CE00CE8E9F /* Images.xcassets */; };
 		D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1A937441A3F13CE00CE8E9F /* LaunchScreen.xib */; };
@@ -161,6 +162,7 @@
 		D1A0F75C1A72AB2200981257 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		D1A0F75E1A72ADC700981257 /* location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location@2x.png"; sourceTree = "<group>"; };
 		D1A6BAAA1B33F10300CF6CE5 /* MuseumInfoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumInfoController.swift; sourceTree = "<group>"; };
+		D1A6BAAC1B33F92A00CF6CE5 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		D1A937361A3F13CE00CE8E9F /* KidsInMuseums.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KidsInMuseums.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A9373A1A3F13CE00CE8E9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				D11DD0031AD3F4D100307D32 /* FilterButton.swift */,
 				D1E2D4451ADAE250000FD803 /* CalendarFilter.swift */,
 				D1E2D4511ADAF9EB000FD803 /* FilterInfoNode.swift */,
+				D1A6BAAC1B33F92A00CF6CE5 /* SearchViewController.swift */,
 				D1169B791A460C4500C025A3 /* Cells */,
 			);
 			name = UI;
@@ -632,6 +635,7 @@
 				D110493A1A8A93F400B32316 /* EventReviewNode.swift in Sources */,
 				D11DD00E1AD538D800307D32 /* AgeCloudNode.swift in Sources */,
 				D1FF58541AB85575008DD880 /* DeveloperInfoNode.swift in Sources */,
+				D1A6BAAD1B33F92A00CF6CE5 /* SearchViewController.swift in Sources */,
 				D1A9E1611A7D01D200E06F02 /* MoreScreen.swift in Sources */,
 				D1D4849D1A892D4E0028C6F4 /* UIColorKIMColor.swift in Sources */,
 				D1A9E1751A8542D900E06F02 /* MuseumAnnotation.swift in Sources */,

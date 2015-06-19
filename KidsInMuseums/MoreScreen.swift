@@ -49,7 +49,7 @@ class MoreScreen: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch (section) {
-        case 0: return 4
+        case 0: return 3
         case 1: return 2
         default: fatalError("Unknown section")
         }
@@ -60,9 +60,9 @@ class MoreScreen: UITableViewController {
         case 0:
             switch (indexPath.row) {
             case 0: return searchCell
-            case 1: return familyTripCell
-            case 2: return aboutProjectCell
-            case 3: return aboutAppCell
+//            case 1: return familyTripCell
+            case 1: return aboutProjectCell
+            case 2: return aboutAppCell
             default: fatalError("Unknown row")
             }
         case 1:
@@ -95,9 +95,12 @@ class MoreScreen: UITableViewController {
         switch (indexPath.section) {
         case 0:
             switch (indexPath.row) {
+            case 0:
+                let search = SearchViewController()
+                navigationController?.pushViewController(search, animated: true)
             case 3:
                 let appInfoScreen = AppInfoView(nibName: nil, bundle: nil)
-                self.navigationController?.pushViewController(appInfoScreen, animated: true)
+                navigationController?.pushViewController(appInfoScreen, animated: true)
             default: break
             }
         case 1:
