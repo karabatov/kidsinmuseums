@@ -41,6 +41,9 @@ class FilterInfoNode: ASDisplayNode {
             }
             titleStr.appendAttributedString(NSAttributedString(string: filterStr, attributes: boldParams))
             textNode.attributedString = titleStr
+            textNode.placeholderEnabled = true
+            textNode.placeholderColor = UIColor.kimOrangeColor()
+            textNode.placeholderFadeDuration = 0.25
             invalidateCalculatedSize()
         }
     }
