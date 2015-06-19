@@ -71,7 +71,8 @@ class FilterMuseumNode: ASCellNode {
         let addressSize = addressNode.calculatedSize
 
         accessoryNode.frame = CGRectMake(marginH, (calculatedSize.height - imageSize.height) / 2.0, imageSize.width, imageSize.height)
-        titleNode.frame = CGRectMake(marginH + imageSize.width + marginIntra, marginV, titleSize.width, titleSize.height)
-        addressNode.frame = CGRectMake(marginH + imageSize.width + marginIntra, marginV + titleSize.height + marginIntra, addressSize.width, addressSize.height)
+        let hiddenSize = accessoryNode.hidden ? 0 : imageSize.width + marginIntra
+        titleNode.frame = CGRectMake(marginH + hiddenSize, marginV, titleSize.width, titleSize.height)
+        addressNode.frame = CGRectMake(marginH + hiddenSize, marginV + titleSize.height + marginIntra, addressSize.width, addressSize.height)
     }
 }

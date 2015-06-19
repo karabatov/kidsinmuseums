@@ -136,7 +136,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
 
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
         if let museumAnnotation = view.annotation as? MuseumAnnotation {
-            let museumInfoView = MuseumInfoView(museum: museumAnnotation.museum, maxWidth: self.view.frame.size.width - kCalloutMargin * 2)
+            let museumInfoView = MuseumInfoView(museum: museumAnnotation.museum, maxWidth: self.view.frame.size.width - kCalloutMargin * 2, showsEvents: true)
             calloutView.contentView = museumInfoView
 
             calloutShouldOffset = true

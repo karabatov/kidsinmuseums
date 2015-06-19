@@ -47,6 +47,7 @@
 		D1A0F7591A72AA9900981257 /* Default-huge.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F7581A72AA9900981257 /* Default-huge.png */; };
 		D1A0F75D1A72AB2200981257 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F75C1A72AB2200981257 /* logo@2x.png */; };
 		D1A0F75F1A72ADC700981257 /* location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1A0F75E1A72ADC700981257 /* location@2x.png */; };
+		D1A6BAAB1B33F10300CF6CE5 /* MuseumInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6BAAA1B33F10300CF6CE5 /* MuseumInfoController.swift */; };
 		D1A9373C1A3F13CE00CE8E9F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */; };
 		D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1A937421A3F13CE00CE8E9F /* Images.xcassets */; };
 		D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1A937441A3F13CE00CE8E9F /* LaunchScreen.xib */; };
@@ -159,6 +160,7 @@
 		D1A0F7581A72AA9900981257 /* Default-huge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-huge.png"; sourceTree = "<group>"; };
 		D1A0F75C1A72AB2200981257 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		D1A0F75E1A72ADC700981257 /* location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location@2x.png"; sourceTree = "<group>"; };
+		D1A6BAAA1B33F10300CF6CE5 /* MuseumInfoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumInfoController.swift; sourceTree = "<group>"; };
 		D1A937361A3F13CE00CE8E9F /* KidsInMuseums.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KidsInMuseums.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A9373A1A3F13CE00CE8E9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1A9373B1A3F13CE00CE8E9F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 				D1A9E1631A7E39CD00E06F02 /* EventsListViewController.swift */,
 				D1D484941A8915560028C6F4 /* EventItemViewController.swift */,
 				D17476321A9764B700D588A2 /* MuseumInfoView.swift */,
+				D1A6BAAA1B33F10300CF6CE5 /* MuseumInfoController.swift */,
 				D1FF584B1AB83049008DD880 /* AppInfoView.swift */,
 				D11DD0011AD3F11800307D32 /* FilterScreen.swift */,
 				D11DD0031AD3F4D100307D32 /* FilterButton.swift */,
@@ -651,6 +654,7 @@
 				D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */,
 				D1FF584C1AB83049008DD880 /* AppInfoView.swift in Sources */,
 				D1D484A11A89361D0028C6F4 /* EventScheduleNode.swift in Sources */,
+				D1A6BAAB1B33F10300CF6CE5 /* MuseumInfoController.swift in Sources */,
 				D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */,
 				D155CC741A4B49F50072E183 /* NewsItemViewController.swift in Sources */,
 				D1D4849B1A89291C0028C6F4 /* EventTitleNode.swift in Sources */,

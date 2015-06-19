@@ -9,15 +9,21 @@
 import CoreLocation
 
 enum FilterScreenMode {
-    case Tags, Museums
+    case Tags, Museums, Search
 }
 
 class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate, UISearchBarDelegate {
+    var filterScreenMode = FilterScreenMode.Tags {
+        didSet {
+            filterScreenModeSet(filterScreenMode)
+        }
+    }
     let tagButton: FilterButton
     let museumButton: FilterButton
     let searchBar = UISearchBar()
     let listTags = ASTableView()
     let listMuseums = ASTableView()
+    let listSearch = ASTableView()
     var tagCloudNode: TagCloudNode?
     var ageCloudNode: AgeCloudNode?
     var filterButtonV: CGFloat = 0.0
@@ -25,6 +31,8 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     var museums = [Museum]()
     var selectedMuseums = [Int]()
     var location: CLLocation?
+    var searchMuseums: [Museum] = []
+    var searchEvents: [Event] = []
 
     override required init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         let tagText = NSLocalizedString("Tags", comment: "Filter by tags")
@@ -41,6 +49,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         if !museumsFiltered.isEmpty {
             selectedMuseums = museumsFiltered
         }
+        searchMuseums = museums
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         edgesForExtendedLayout = UIRectEdge.None
@@ -57,6 +66,11 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         listMuseums.asyncDataSource = self
         listMuseums.asyncDelegate = self
         listMuseums.hidden = true
+        listSearch.separatorStyle = UITableViewCellSeparatorStyle.None
+        listSearch.backgroundColor = UIColor.whiteColor()
+        listSearch.asyncDataSource = self
+        listSearch.asyncDelegate = self
+        listSearch.hidden = true
 
         searchBar.delegate = self
         searchBar.tintColor = UIColor.kimColor()
@@ -71,6 +85,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         let offset = filterButtonV + searchBarV
         self.listTags.frame = CGRectMake(0, offset, view.bounds.width, view.bounds.height - offset)
         self.listMuseums.frame = CGRectMake(0, offset, view.bounds.width, view.bounds.height - offset)
+        self.listSearch.frame = CGRectMake(0, offset, view.bounds.width, view.bounds.height - offset)
     }
 
     override func viewDidLoad() {
@@ -84,6 +99,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
                 self.view.addSubview(self.searchBar)
                 self.view.addSubview(self.listTags)
                 self.view.addSubview(self.listMuseums)
+                self.view.addSubview(self.listSearch)
                 self.tagButton.frame = CGRectMake(0, 0, halfWidth, self.filterButtonV)
                 self.museumButton.frame = CGRectMake(halfWidth, 0, halfWidth, self.filterButtonV)
                 self.searchBar.frame = CGRect(x: 0, y: self.filterButtonV, width: halfWidth * 2, height: self.searchBarV)
@@ -110,13 +126,11 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
     func filterButtonTapped(sender: FilterButton) {
         switch sender {
         case tagButton:
-            museumButton.selected = !tagButton.selected
+            filterScreenMode = .Tags
         case museumButton:
-            tagButton.selected = !museumButton.selected
+            filterScreenMode = .Museums
         default: NSLog("UGH")
         }
-        listTags.hidden = !tagButton.selected
-        listMuseums.hidden = !museumButton.selected
     }
 
     // MARK: ASTableView
@@ -158,6 +172,26 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
                 museumNode.selected = true
             }
             return museumNode
+        case listSearch:
+            switch indexPath.section {
+            case 0: return ASCellNode()
+            case 1:
+                switch indexPath.row {
+                case 0:
+                    if searchMuseums.count > 0 {
+                        let found = NSLocalizedString("Museums found: ", comment: "Search section for museums")
+                        return EventDescTitleNode(text: found + String(searchMuseums.count))
+                    } else {
+                        return EventDescTitleNode(text: NSLocalizedString("Museums not found", comment: "Search section for museums when not found"))
+                    }
+                default:
+                    let museum = searchMuseums[indexPath.row - 1]
+                    let museumNode = FilterMuseumNode(museum: museum, location: location)
+                    museumNode.accessoryNode.hidden = true
+                    return museumNode
+                }
+            default: return ASCellNode()
+            }
         default: return ASCellNode()
         }
     }
@@ -166,19 +200,28 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         switch tableView {
         case listTags: return 4
         case listMuseums: return museums.count
+        case listSearch:
+            switch section {
+            case 0: return 0
+            case 1: return searchMuseums.count > 0 ? searchMuseums.count + 1 : 1
+            default: return 0
+            }
         default: return 0
         }
     }
 
     func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
+        if tableView == listSearch {
+            return 2
+        }
         return 1
     }
 
     func tableView(tableView: UITableView!, shouldHighlightRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
-        if tableView == listMuseums {
-            return true
+        if tableView == listTags {
+            return false
         }
-        return false
+        return true
     }
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
@@ -200,6 +243,19 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
                         museumNode.selected = selected
                     }
                 }
+            }
+        }
+        if tableView == listSearch {
+            switch indexPath.section {
+            case 0: return
+            case 1:
+                switch indexPath.row {
+                case 0: return
+                default:
+                    let museum = searchMuseums[indexPath.row - 1]
+                    openMuseum(museum)
+                }
+            default: return
             }
         }
     }
@@ -226,12 +282,38 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         })
     }
 
+    func filterScreenModeSet(newMode: FilterScreenMode) {
+        switch newMode {
+        case .Tags:
+            tagButton.selected = true
+            museumButton.selected = false
+            listTags.hidden = false
+            listMuseums.hidden = true
+            listSearch.hidden = true
+        case .Museums:
+            tagButton.selected = false
+            museumButton.selected = true
+            listTags.hidden = true
+            listMuseums.hidden = false
+            listSearch.hidden = true
+        case .Search:
+            listTags.hidden = true
+            listMuseums.hidden = true
+            listSearch.hidden = false
+            searchBar.becomeFirstResponder()
+        }
+    }
+
     // MARK: UISearchBarDelegate
 
     func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            // Commence search
-            return false
+            if !searchBar.text.isEmpty {
+                startSearchWithText(searchBar.text)
+                return false
+            } else {
+                searchBarCancelButtonClicked(searchBar)
+            }
         }
         return true
     }
@@ -244,10 +326,35 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         searchBar.text = ""
         searchBar.setShowsCancelButton(false, animated: true)
         searchBar.resignFirstResponder()
+        if tagButton.selected {
+            filterScreenMode = .Tags
+        } else {
+            filterScreenMode = .Museums
+        }
     }
 
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        searchBar.becomeFirstResponder()
         searchBar.setShowsCancelButton(true, animated: true)
+        filterScreenMode = .Search
+    }
+
+    func startSearchWithText(text: String) {
+        let comps = text.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        searchMuseums = museums.filter() { museum in
+            for substr in comps {
+                if let range = museum.name.lowercaseString.rangeOfString(substr.lowercaseString) {
+                    return true
+                }
+            }
+            return false
+        }
+        searchBar.resignFirstResponder()
+        listSearch.reloadData()
+    }
+
+    func openMuseum(museum: Museum) {
+        let vc = MuseumInfoController()
+        vc.museum = museum
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

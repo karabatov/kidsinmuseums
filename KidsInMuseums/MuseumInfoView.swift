@@ -9,7 +9,7 @@
 class MuseumInfoView: UIScrollView {
     let ownMuseum: Museum
 
-    required init(museum: Museum, maxWidth: CGFloat) {
+    required init(museum: Museum, maxWidth: CGFloat, showsEvents: Bool) {
         ownMuseum = museum
         super.init(frame: CGRectZero)
 
@@ -111,15 +111,17 @@ class MuseumInfoView: UIScrollView {
             height += siteSize.height
         }
 
-        let openEventsStr = NSLocalizedString("Events in this museum", comment: "Events in this museum button in map callout")
-        let openEventNode = MuseumEventButtonNode(text: openEventsStr)
-        openEventNode.addTarget(self, action: "eventsInMuseumButtonTapped", forControlEvents: ASControlNodeEvent.TouchUpInside)
-        let openEventSize = openEventNode.measure(zeroHeightSize)
+        if showsEvents {
+            let openEventsStr = NSLocalizedString("Events in this museum", comment: "Events in this museum button in map callout")
+            let openEventNode = MuseumEventButtonNode(text: openEventsStr)
+            openEventNode.addTarget(self, action: "eventsInMuseumButtonTapped", forControlEvents: ASControlNodeEvent.TouchUpInside)
+            let openEventSize = openEventNode.measure(zeroHeightSize)
 
-        openEventNode.frame = CGRectMake(0, height, maxWidth, openEventSize.height)
-        self.addSubview(openEventNode.view)
+            openEventNode.frame = CGRectMake(0, height, maxWidth, openEventSize.height)
+            self.addSubview(openEventNode.view)
 
-        height += openEventSize.height
+            height += openEventSize.height
+        }
 
         self.frame = CGRectMake(0, 0, maxWidth, height)
     }
