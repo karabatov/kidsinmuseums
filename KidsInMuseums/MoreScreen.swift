@@ -98,7 +98,7 @@ class MoreScreen: UITableViewController {
             case 0:
                 let search = SearchViewController()
                 navigationController?.pushViewController(search, animated: true)
-            case 3:
+            case 2:
                 let appInfoScreen = AppInfoView(nibName: nil, bundle: nil)
                 navigationController?.pushViewController(appInfoScreen, animated: true)
             default: break

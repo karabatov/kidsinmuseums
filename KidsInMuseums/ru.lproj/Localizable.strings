@@ -68,8 +68,14 @@
 /* Events controller title */
 "Events" = "Афиша";
 
+/* Search section for events */
+"Events found: " = "Найдено событий: ";
+
 /* Events in this museum button in map callout */
 "Events in this museum" = "События в этом музее";
+
+/* Search section for events when not found */
+"Events not found" = "События не найдены";
 
 /* Facebook */
 "Facebook" = "Facebook";
@@ -92,6 +98,12 @@
 /* Filter by museums */
 "Museums" = "По музеям";
 
+/* Search section for museums */
+"Museums found: " = "Музеев найдено: ";
+
+/* Search section for museums when not found */
+"Museums not found" = "Музеи не найдены";
+
 /* News controller title */
 "News" = "Новости";
 
@@ -107,13 +119,17 @@
 /* Phone, museum info card */
 "Phone: " = "Телефон: ";
 
+/* Search bar placeholder */
+"Place or event" = "Место или событие";
+
 /* Rating filter segment */
 "Rating" = "По рейтингу";
 
 /* Review section description subtitle */
 "Reviews" = "Отзывы";
 
-/* Search */
+/* Search
+   Search controller title */
 "Search" = "Поиск";
 
 /* Filter by tags */
