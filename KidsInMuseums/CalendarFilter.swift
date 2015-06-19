@@ -36,8 +36,7 @@ class CalendarFilter: UIViewController, ASTableViewDataSource, ASTableViewDelega
             navigationItem.rightBarButtonItem = rightBarItem
         }
 
-        // TODO: Add weekday to date format string
-        dateFormatter.dateFormat = NSDateFormatter.dateFormatFromTemplate("dMMMM", options: 0, locale: NSLocale.currentLocale())
+        dateFormatter.dateFormat = NSDateFormatter.dateFormatFromTemplate("EEEE, dMMMM", options: 0, locale: NSLocale.currentLocale())
 
         listDays.allowsSelection = true
         listDays.asyncDataSource = self
