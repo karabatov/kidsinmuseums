@@ -10,7 +10,7 @@ import UIKit
 
 class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTableViewDataSource {
     let listView = ASTableView()
-    var numberOfRows = 2
+    var numberOfRows = 4
 
     override required init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -33,6 +33,8 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
         listView.backgroundColor = UIColor.clearColor()
         listView.asyncDelegate = self
         listView.asyncDataSource = self
+
+        ++numberOfRows
     }
 
     override func viewWillLayoutSubviews() {
@@ -51,6 +53,8 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
 
     func tableView(tableView: ASTableView!, nodeForRowAtIndexPath indexPath: NSIndexPath!) -> ASCellNode! {
         switch indexPath.row {
+
+        // Trip dates
         case 0:
             if DataModel.sharedInstance.specialProject.startDate.compare(NSDate(timeIntervalSince1970: 0)) != NSComparisonResult.OrderedSame && DataModel.sharedInstance.specialProject.endDate.compare(NSDate(timeIntervalSince1970: 0)) != NSComparisonResult.OrderedSame {
                 let formatter = NSDateFormatter()
@@ -65,10 +69,29 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
             } else {
                 return ASCellNode()
             }
+
+        // Trip rules heading
         case 1:
             let titleParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)]
             let attrStr = NSAttributedString(string: NSLocalizedString("Trip rules", comment: "Family trip rules heading"), attributes: titleParams)
             let node = TripTextCell(text: attrStr)
+            return node
+
+        // Trip rules
+        case 2:
+            return ASCellNode()
+
+        // Countdown
+        case 3:
+            if DataModel.sharedInstance.specialProject.countdown {
+                return ASCellNode()
+            } else {
+                return ASCellNode()
+            }
+
+        // Family trip routes title
+        case 4:
+            let node = EventDescTitleNode(text: NSLocalizedString("Family trip routes", comment: "Family trip routes title"))
             return node
         default:
             return ASCellNode()
