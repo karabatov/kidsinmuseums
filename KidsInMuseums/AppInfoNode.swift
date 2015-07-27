@@ -13,7 +13,7 @@ class AppInfoNode: ASCellNode {
     let marginH: CGFloat = 20.0
     let marginV: CGFloat = 20.0
 
-    required override init() {
+    required init(text: String) {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = NSTextAlignment.Center
         paragraphStyle.lineBreakMode = NSLineBreakMode.ByWordWrapping
@@ -23,18 +23,7 @@ class AppInfoNode: ASCellNode {
 
         appImage.image = UIImage(named: "appinfo-logo")
 
-        let appInfoLocStr = NSLocalizedString("%@ iOS App ver. %@ (%@)\n\n", comment: "Info screen app version")
-        let supportLocStr = NSLocalizedString("Technical support — support@golovamedia.ru", comment: "Info screen support email")
-        var labelStr = ""
-        if let
-            infoDict = NSBundle.mainBundle().infoDictionary,
-            appName = infoDict[kCFBundleNameKey] as? String,
-            appVer = infoDict["CFBundleShortVersionString"] as? String,
-            buildVer = infoDict[kCFBundleVersionKey] as? String {
-            labelStr += NSString(format: appInfoLocStr, appName, appVer, buildVer) as String
-        }
-        labelStr += supportLocStr
-        infoLabel.attributedString = NSAttributedString(string: labelStr, attributes: textParams)
+        infoLabel.attributedString = NSAttributedString(string: text, attributes: textParams)
 
         self.addSubnode(appImage)
         self.addSubnode(infoLabel)

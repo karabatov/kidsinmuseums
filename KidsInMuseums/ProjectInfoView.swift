@@ -1,12 +1,14 @@
 //
-//  AppInfoView.swift
+//  ProjectInfoView.swift
 //  KidsInMuseums
 //
-//  Created by Yuri Karabatov on 17.03.15.
+//  Created by Yuri Karabatov on 28.07.15.
 //  Copyright (c) 2015 Golova Media. All rights reserved.
 //
 
-class AppInfoView: UIViewController, ASTableViewDataSource, ASTableViewDelegate {
+import UIKit
+
+class ProjectInfoView: UIViewController, ASTableViewDataSource, ASTableViewDelegate {
     let asTableView = ASTableView()
 
     required override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -18,7 +20,7 @@ class AppInfoView: UIViewController, ASTableViewDataSource, ASTableViewDelegate 
         asTableView.asyncDelegate = self
         asTableView.separatorStyle = .None
 
-        self.title = NSLocalizedString("About the app", comment: "")
+        self.title = NSLocalizedString("About the project", comment: "")
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -34,20 +36,11 @@ class AppInfoView: UIViewController, ASTableViewDataSource, ASTableViewDelegate 
     func tableView(tableView: ASTableView!, nodeForRowAtIndexPath indexPath: NSIndexPath!) -> ASCellNode! {
         switch (indexPath.row) {
         case 0:
-            let appInfoLocStr = NSLocalizedString("%@ iOS App ver. %@ (%@)\n\n", comment: "Info screen app version")
-            let supportLocStr = NSLocalizedString("Technical support — support@golovamedia.ru", comment: "Info screen support email")
-            var labelStr = ""
-            if let
-                infoDict = NSBundle.mainBundle().infoDictionary,
-                appName = infoDict[kCFBundleNameKey] as? String,
-                appVer = infoDict["CFBundleShortVersionString"] as? String,
-                buildVer = infoDict[kCFBundleVersionKey] as? String {
-                    labelStr += NSString(format: appInfoLocStr, appName, appVer, buildVer) as String
-            }
-            labelStr += supportLocStr
-            return AppInfoNode(text: labelStr)
-        case 1: return EventDescTitleNode(text: NSLocalizedString("Developer", comment: "About the developer section title"))
-        case 2: return DeveloperInfoNode(image: UIImage(named: "appinfo-dev")!, text: NSLocalizedString("Our strategies, ideas and technology. Your big goals.", comment: "About the developer text"))
+            return AppInfoNode(text: "text")
+        case 1: return EventDescTitleNode(text: NSLocalizedString("Project team", comment: "About the project team section title"))
+        case 2: return DeveloperInfoNode(image: UIImage(named: "sophia-pantyulina.jpg")!, text: NSLocalizedString("Sophia Pantyulina, project creator", comment: "Sophia Pantyulina"))
+        case 3: return DeveloperInfoNode(image: UIImage(named: "irina-novichkova.jpg")!, text: NSLocalizedString("Irina Novichkova, project coordinator", comment: "Irina Novichkova"))
+        case 4: return DeveloperInfoNode(image: UIImage(named: "yulia-smolchenko.jpg")!, text: NSLocalizedString("Yulia Smolchenko, media support", comment: "Yulia Smolchenko"))
         default: fatalError("Invalid row number")
         }
     }
@@ -57,7 +50,7 @@ class AppInfoView: UIViewController, ASTableViewDataSource, ASTableViewDelegate 
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 5
     }
 
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {

@@ -11,14 +11,13 @@ class DeveloperInfoNode: ASCellNode {
     let devText = ASTextNode()
     let margin: CGFloat = 20.0
 
-    required override init() {
+    required init(image: UIImage, text: String) {
         super.init()
 
-        devLogo.image = UIImage(named: "appinfo-dev")
+        devLogo.image = image
 
-        let devStr = NSLocalizedString("Our strategies, ideas and technology. Your big goals.", comment: "About the developer text")
         let textParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)]
-        let devTextStr = NSAttributedString(string: devStr, attributes: textParams)
+        let devTextStr = NSAttributedString(string: text, attributes: textParams)
         devText.attributedString = devTextStr
 
         self.addSubnode(devLogo)
