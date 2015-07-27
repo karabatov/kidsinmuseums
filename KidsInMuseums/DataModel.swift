@@ -650,6 +650,7 @@ public class DataModel {
         if let spcO = jsonObject as? NSDictionary {
             specialProject = SpecialProject(data: spcO)
         }
+        specialProject.active = true
         return specialProject
     }
 

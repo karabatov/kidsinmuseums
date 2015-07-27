@@ -64,6 +64,11 @@
 		D1A9E1731A8536DD00E06F02 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9E1721A8536DD00E06F02 /* MapViewController.swift */; };
 		D1A9E1751A8542D900E06F02 /* MuseumAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A9E1741A8542D900E06F02 /* MuseumAnnotation.swift */; };
 		D1A9E1771A854C0F00E06F02 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A9E1761A854C0F00E06F02 /* MapKit.framework */; };
+		D1B490BF1B66C4EF001B403D /* SpecialProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B490BE1B66C4EF001B403D /* SpecialProjectViewController.swift */; };
+		D1B490C71B66C9E5001B403D /* KTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B490C61B66C9E5001B403D /* KTabBarController.swift */; };
+		D1B490CB1B66CD47001B403D /* icon-family-trip.png in Resources */ = {isa = PBXBuildFile; fileRef = D1B490C81B66CD47001B403D /* icon-family-trip.png */; };
+		D1B490CC1B66CD47001B403D /* icon-family-trip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1B490C91B66CD47001B403D /* icon-family-trip@2x.png */; };
+		D1B490CD1B66CD47001B403D /* icon-family-trip@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1B490CA1B66CD47001B403D /* icon-family-trip@3x.png */; };
 		D1D484951A8915560028C6F4 /* EventItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484941A8915560028C6F4 /* EventItemViewController.swift */; };
 		D1D484971A891E0F0028C6F4 /* EventImageNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484961A891E0F0028C6F4 /* EventImageNode.swift */; };
 		D1D484991A8926870028C6F4 /* NSTextAttachmentAge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484981A8926870028C6F4 /* NSTextAttachmentAge.swift */; };
@@ -184,6 +189,11 @@
 		D1A9E1721A8536DD00E06F02 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D1A9E1741A8542D900E06F02 /* MuseumAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseumAnnotation.swift; sourceTree = "<group>"; };
 		D1A9E1761A854C0F00E06F02 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		D1B490BE1B66C4EF001B403D /* SpecialProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialProjectViewController.swift; sourceTree = "<group>"; };
+		D1B490C61B66C9E5001B403D /* KTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KTabBarController.swift; sourceTree = "<group>"; };
+		D1B490C81B66CD47001B403D /* icon-family-trip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-family-trip.png"; sourceTree = "<group>"; };
+		D1B490C91B66CD47001B403D /* icon-family-trip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-family-trip@2x.png"; sourceTree = "<group>"; };
+		D1B490CA1B66CD47001B403D /* icon-family-trip@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-family-trip@3x.png"; sourceTree = "<group>"; };
 		D1D484941A8915560028C6F4 /* EventItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventItemViewController.swift; sourceTree = "<group>"; };
 		D1D484961A891E0F0028C6F4 /* EventImageNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventImageNode.swift; sourceTree = "<group>"; };
 		D1D484981A8926870028C6F4 /* NSTextAttachmentAge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextAttachmentAge.swift; sourceTree = "<group>"; };
@@ -278,6 +288,7 @@
 				D1A9E16E1A7FABA900E06F02 /* CLLocationHumanReadable.swift */,
 				D1D484981A8926870028C6F4 /* NSTextAttachmentAge.swift */,
 				D1D4849C1A892D4E0028C6F4 /* UIColorKIMColor.swift */,
+				D1B490C61B66C9E5001B403D /* KTabBarController.swift */,
 				D174763C1A976EBD00D588A2 /* SMCalloutView */,
 			);
 			name = Libraries;
@@ -292,6 +303,7 @@
 				D1A9E1601A7D01D200E06F02 /* MoreScreen.swift */,
 				D1A9E1631A7E39CD00E06F02 /* EventsListViewController.swift */,
 				D1D484941A8915560028C6F4 /* EventItemViewController.swift */,
+				D1B490BE1B66C4EF001B403D /* SpecialProjectViewController.swift */,
 				D17476321A9764B700D588A2 /* MuseumInfoView.swift */,
 				D1A6BAAA1B33F10300CF6CE5 /* MuseumInfoController.swift */,
 				D1FF584B1AB83049008DD880 /* AppInfoView.swift */,
@@ -353,6 +365,9 @@
 				D11DD00A1AD465D900307D32 /* icon-clear@3x.png */,
 				D1A9E1651A7E3ADC00E06F02 /* icon-events@2x.png */,
 				D1A9E1661A7E3ADC00E06F02 /* icon-events@3x.png */,
+				D1B490C81B66CD47001B403D /* icon-family-trip.png */,
+				D1B490C91B66CD47001B403D /* icon-family-trip@2x.png */,
+				D1B490CA1B66CD47001B403D /* icon-family-trip@3x.png */,
 				D11DD0051AD405E400307D32 /* icon-filter@2x.png */,
 				D11DD0061AD405E400307D32 /* icon-filter@3x.png */,
 				D122D6DC1A697149009D30AB /* icon-news@2x.png */,
@@ -536,6 +551,7 @@
 			files = (
 				D1A937461A3F13CE00CE8E9F /* LaunchScreen.xib in Resources */,
 				D1E2D4411AD853AA000FD803 /* icon-checked@2x.png in Resources */,
+				D1B490CC1B66CD47001B403D /* icon-family-trip@2x.png in Resources */,
 				D1A0F75D1A72AB2200981257 /* logo@2x.png in Resources */,
 				D1A0F74D1A71318E00981257 /* marker@3x.png in Resources */,
 				D11DD00B1AD465D900307D32 /* icon-clear@2x.png in Resources */,
@@ -554,9 +570,11 @@
 				D1E2D44F1ADAEBFA000FD803 /* icon-checkmark@2x.png in Resources */,
 				D1A0F75F1A72ADC700981257 /* location@2x.png in Resources */,
 				D109845A1B14F0100033C761 /* icon-map@3x.png in Resources */,
+				D1B490CD1B66CD47001B403D /* icon-family-trip@3x.png in Resources */,
 				D1A9E1681A7E3ADC00E06F02 /* icon-events@3x.png in Resources */,
 				D1E2D4501ADAEBFA000FD803 /* icon-checkmark@3x.png in Resources */,
 				D1A9E1671A7E3ADC00E06F02 /* icon-events@2x.png in Resources */,
+				D1B490CB1B66CD47001B403D /* icon-family-trip.png in Resources */,
 				D11DD0071AD405E400307D32 /* icon-filter@2x.png in Resources */,
 				D1A937431A3F13CE00CE8E9F /* Images.xcassets in Resources */,
 				D1E2D4421AD853AA000FD803 /* icon-checked@3x.png in Resources */,
@@ -620,6 +638,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1B490BF1B66C4EF001B403D /* SpecialProjectViewController.swift in Sources */,
 				D1D484991A8926870028C6F4 /* NSTextAttachmentAge.swift in Sources */,
 				D17476331A9764B700D588A2 /* MuseumInfoView.swift in Sources */,
 				D1A9E1641A7E39CD00E06F02 /* EventsListViewController.swift in Sources */,
@@ -632,6 +651,7 @@
 				D174763B1A976EB600D588A2 /* SMClassicCalloutView.m in Sources */,
 				D11DD0021AD3F11800307D32 /* FilterScreen.swift in Sources */,
 				D1E2D4521ADAF9EB000FD803 /* FilterInfoNode.swift in Sources */,
+				D1B490C71B66C9E5001B403D /* KTabBarController.swift in Sources */,
 				D110493A1A8A93F400B32316 /* EventReviewNode.swift in Sources */,
 				D11DD00E1AD538D800307D32 /* AgeCloudNode.swift in Sources */,
 				D1FF58541AB85575008DD880 /* DeveloperInfoNode.swift in Sources */,

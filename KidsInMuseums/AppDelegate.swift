@@ -21,7 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var mapNavController: UINavigationController?
     var moreNavController: UINavigationController?
     var eventsNavController: UINavigationController?
-    var tabController: UITabBarController?
+    var familyTripNavController: UINavigationController?
+    var tabController: KTabBarController?
     internal var wantsLocation: Bool = false {
         willSet(newWantsLocation) {
             setupLocationService(newWantsLocation)
@@ -45,7 +46,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         UISegmentedControl.appearance().tintColor = purpleColor
-        tabController = UITabBarController()
+
+        DataModel.sharedInstance // Trigger update
+
+        tabController = KTabBarController()
         var news = NewsListController(nibName: nil, bundle: nil)
         newsNavController = UINavigationController(rootViewController: news)
         var map = MapViewController(nibName: nil, bundle: nil)
@@ -54,15 +58,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         moreNavController = UINavigationController(rootViewController: more);
         var events = EventsListViewController(nibName: nil, bundle: nil)
         eventsNavController = UINavigationController(rootViewController: events)
-        tabController?.viewControllers = [eventsNavController!, mapNavController!, newsNavController!, moreNavController!]
+
+        // Show and select family trip controller if special project is active
+        if DataModel.sharedInstance.specialProject.active {
+            let familyTrip = SpecialProjectViewController(nibName: nil, bundle: nil)
+            familyTripNavController = UINavigationController(rootViewController: familyTrip)
+            familyTripNavController?.tabBarItem = UITabBarItem(title: nil, image: nil, tag: 0)
+            tabController?.viewControllers = [eventsNavController!, mapNavController!, familyTripNavController!, newsNavController!, moreNavController!]
+            tabController?.selectedIndex = 2
+            tabController?.specialProjectEnabled = true
+        } else {
+            tabController?.viewControllers = [eventsNavController!, mapNavController!, newsNavController!, moreNavController!]
+        }
+
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = tabController
         tabController?.tabBar.translucent = false
         tabController?.tabBar.tintColor = purpleColor
         tabController?.delegate = self
         window?.makeKeyAndVisible()
-
-        DataModel.sharedInstance // Trigger update
 
         return true
     }
