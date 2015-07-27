@@ -20,11 +20,14 @@ let kKIMAPIServerURL = "http://www.kidsinmuseums.ru"
 let kKIMAPINewsURL = "/api/news_articles/all"
 let kKIMAPIMuseumsURL = "/api/museum_users/all"
 let kKIMAPIEventsURL = "/api/events/all"
+let kKIMAPISpecialProjectURL = "/api/family_trip_settings/current"
 
 let kKIMAPIDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+let kKIMAPIDateFormat2 = "yyyy-MM-dd"
 let kKIMDataStorageKeyNews = "kKIMDataStorageKeyNews"
 let kKIMDataStorageKeyMuseums = "kKIMDataStorageKeyMuseums"
 let kKIMDataStorageKeyEvents = "kKIMDataStorageKeyEvents"
+let kKIMDataStorageKeySpecialProject = "kKIMDataStorageKeySpecialProject"
 
 struct AgeRange: Equatable {
     let from: Int
@@ -284,6 +287,31 @@ public class Review {
     }
 }
 
+public class SpecialProject {
+    var id: Int = -1
+    var active: Bool = false
+    var startDate: NSDate = NSDate(timeIntervalSince1970: 0)
+    var endDate: NSDate = NSDate(timeIntervalSince1970: 0)
+    var countdown: Bool = false
+
+    public init() {
+    }
+
+    required public init(data: NSDictionary) {
+        if let idInt = data["id"] as? Int {
+            id = idInt
+        }
+        if let activeBool = data["active"] as? Bool {
+            active = activeBool
+        }
+        if let countdownBool = data["countdown"] as? Bool {
+            countdown = countdownBool
+        }
+        startDate = DataModel.sharedInstance.dateFromString(data["start_date"] as? String, useFormat2: true)
+        endDate = DataModel.sharedInstance.dateFromString(data["end_date"] as? String, useFormat2: true)
+    }
+}
+
 public class Event {
     var id: Int = -1
     var name: String = ""
@@ -444,6 +472,7 @@ public class DataModel {
         return Static.instance
     }
 
+    public var specialProject = SpecialProject()
     public var news: [NewsItem] = [NewsItem]()
     public var museums: [Museum] = [Museum]()
     public var allEvents: [Event] = [Event]()
@@ -466,6 +495,7 @@ public class DataModel {
     }
 
     public func update() {
+        updateSpecialProject()
         updateMuseums()
         updateEvents()
         updateNews()
@@ -478,13 +508,35 @@ public class DataModel {
         return false
     }
 
-    public func dateFromString(dateString: String?) -> NSDate {
+    public func dateFromString(dateString: String?, useFormat2: Bool = false) -> NSDate {
         if let dateStringGiven = dateString {
+            var format = inDateFormatter.dateFormat
+            if useFormat2 {
+                inDateFormatter.dateFormat = kKIMAPIDateFormat2
+            }
             if let date = inDateFormatter.dateFromString(dateStringGiven) {
+                inDateFormatter.dateFormat = format
                 return date
             }
         }
         return NSDate(timeIntervalSince1970: 0)
+    }
+
+    public func updateSpecialProject() {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            let specialProjectUrl = NSURL(string: kKIMAPIServerURL + kKIMAPISpecialProjectURL)
+            let specialProjectRequest = NSURLSession.sharedSession().dataTaskWithURL(specialProjectUrl!) { (data, response, error) -> Void in
+                if (error == nil) {
+                    self.specialProject = self.specialProjectWithData(data)
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                        NSUserDefaults.standardUserDefaults().setObject(data, forKey: kKIMDataStorageKeySpecialProject)
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                    }
+                }
+                NSLog("Special project updated.")
+            }
+            specialProjectRequest.resume()
+        }
     }
 
     public func updateNews() {
@@ -553,6 +605,9 @@ public class DataModel {
 
     public func loadFromCache() {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            if let cachedSpecialProjectJSON = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeySpecialProject) as? NSData {
+                self.specialProject = self.specialProjectWithData(cachedSpecialProjectJSON)
+            }
             if let cachedNewsJSON = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyNews) as? NSData {
                 self.news = self.newsWithData(cachedNewsJSON)
                 if (self.news.count > 0) {
@@ -587,6 +642,15 @@ public class DataModel {
             }
         }
         return nil
+    }
+
+    internal func specialProjectWithData(data: NSData) -> SpecialProject {
+        var specialProject = SpecialProject()
+        let jsonObject: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+        if let spcO = jsonObject as? NSDictionary {
+            specialProject = SpecialProject(data: spcO)
+        }
+        return specialProject
     }
 
     internal func newsWithData(data: NSData) -> [NewsItem] {
