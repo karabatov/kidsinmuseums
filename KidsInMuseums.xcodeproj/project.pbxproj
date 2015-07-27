@@ -69,6 +69,7 @@
 		D1B490CB1B66CD47001B403D /* icon-family-trip.png in Resources */ = {isa = PBXBuildFile; fileRef = D1B490C81B66CD47001B403D /* icon-family-trip.png */; };
 		D1B490CC1B66CD47001B403D /* icon-family-trip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1B490C91B66CD47001B403D /* icon-family-trip@2x.png */; };
 		D1B490CD1B66CD47001B403D /* icon-family-trip@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1B490CA1B66CD47001B403D /* icon-family-trip@3x.png */; };
+		D1B490CF1B66D790001B403D /* TripTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B490CE1B66D790001B403D /* TripTextCell.swift */; };
 		D1D484951A8915560028C6F4 /* EventItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484941A8915560028C6F4 /* EventItemViewController.swift */; };
 		D1D484971A891E0F0028C6F4 /* EventImageNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484961A891E0F0028C6F4 /* EventImageNode.swift */; };
 		D1D484991A8926870028C6F4 /* NSTextAttachmentAge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D484981A8926870028C6F4 /* NSTextAttachmentAge.swift */; };
@@ -194,6 +195,7 @@
 		D1B490C81B66CD47001B403D /* icon-family-trip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-family-trip.png"; sourceTree = "<group>"; };
 		D1B490C91B66CD47001B403D /* icon-family-trip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-family-trip@2x.png"; sourceTree = "<group>"; };
 		D1B490CA1B66CD47001B403D /* icon-family-trip@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-family-trip@3x.png"; sourceTree = "<group>"; };
+		D1B490CE1B66D790001B403D /* TripTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripTextCell.swift; sourceTree = "<group>"; };
 		D1D484941A8915560028C6F4 /* EventItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventItemViewController.swift; sourceTree = "<group>"; };
 		D1D484961A891E0F0028C6F4 /* EventImageNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventImageNode.swift; sourceTree = "<group>"; };
 		D1D484981A8926870028C6F4 /* NSTextAttachmentAge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextAttachmentAge.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 				D1A9E1741A8542D900E06F02 /* MuseumAnnotation.swift */,
 				D1D484961A891E0F0028C6F4 /* EventImageNode.swift */,
 				D1D4849A1A89291C0028C6F4 /* EventTitleNode.swift */,
+				D1B490CE1B66D790001B403D /* TripTextCell.swift */,
 				D1D4849E1A892E630028C6F4 /* EventMuseumNode.swift */,
 				D1D484A01A89361D0028C6F4 /* EventScheduleNode.swift */,
 				D1D484A21A89445A0028C6F4 /* EventDescTitleNode.swift */,
@@ -682,6 +685,7 @@
 				D1169B701A45EFEC00C025A3 /* NewsListViewController.swift in Sources */,
 				D155CC741A4B49F50072E183 /* NewsItemViewController.swift in Sources */,
 				D1D4849B1A89291C0028C6F4 /* EventTitleNode.swift in Sources */,
+				D1B490CF1B66D790001B403D /* TripTextCell.swift in Sources */,
 				D1D4849F1A892E630028C6F4 /* EventMuseumNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
