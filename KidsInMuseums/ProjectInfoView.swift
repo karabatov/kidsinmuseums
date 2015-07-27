@@ -21,6 +21,12 @@ class ProjectInfoView: UIViewController, ASTableViewDataSource, ASTableViewDeleg
         asTableView.separatorStyle = .None
 
         self.title = NSLocalizedString("About the project", comment: "")
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "textBlocksUpdated:", name: kKIMNotificationTextBlocksUpdated, object: nil)
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -31,12 +37,23 @@ class ProjectInfoView: UIViewController, ASTableViewDataSource, ASTableViewDeleg
         asTableView.frame = self.view.frame
     }
 
+    func textBlocksUpdated(notification: NSNotification) {
+        asTableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
+
     // MARK: ASTableView
 
     func tableView(tableView: ASTableView!, nodeForRowAtIndexPath indexPath: NSIndexPath!) -> ASCellNode! {
         switch (indexPath.row) {
         case 0:
-            return AppInfoNode(text: "text")
+            if let
+                textBlock = DataModel.sharedInstance.textBlocks.filter({ $0.name == "about_project_for_app" }).first
+                where !textBlock.text.isEmpty
+            {
+                return AppInfoNode(text: textBlock.text)
+            } else {
+                return ASCellNode()
+            }
         case 1: return EventDescTitleNode(text: NSLocalizedString("Project team", comment: "About the project team section title"))
         case 2: return DeveloperInfoNode(image: UIImage(named: "sophia-pantyulina.jpg")!, text: NSLocalizedString("Sophia Pantyulina, project creator", comment: "Sophia Pantyulina"))
         case 3: return DeveloperInfoNode(image: UIImage(named: "irina-novichkova.jpg")!, text: NSLocalizedString("Irina Novichkova, project coordinator", comment: "Irina Novichkova"))

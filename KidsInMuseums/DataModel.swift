@@ -15,12 +15,14 @@ public let kKIMNotificationMuseumsUpdated = "kKIMNotificationMuseumsUpdated"
 public let kKIMNotificationMuseumsUpdateFailed = "kKIMNotificationMuseumsUpdateFailed"
 public let kKIMNotificationEventsUpdated = "kKIMNotificationEventsUpdated"
 public let kKIMNotificationEventsUpdateFailed = "kKIMNotificationEventsUpdateFailed"
+public let kKIMNotificationTextBlocksUpdated = "kKIMNotificationTextBlocksUpdated"
 
 let kKIMAPIServerURL = "http://www.kidsinmuseums.ru"
 let kKIMAPINewsURL = "/api/news_articles/all"
 let kKIMAPIMuseumsURL = "/api/museum_users/all"
 let kKIMAPIEventsURL = "/api/events/all"
 let kKIMAPISpecialProjectURL = "/api/family_trip_settings/current"
+let kKIMAPITextBlocksURL = "/api/text_blocks/all"
 
 let kKIMAPIDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
 let kKIMAPIDateFormat2 = "yyyy-MM-dd"
@@ -28,6 +30,7 @@ let kKIMDataStorageKeyNews = "kKIMDataStorageKeyNews"
 let kKIMDataStorageKeyMuseums = "kKIMDataStorageKeyMuseums"
 let kKIMDataStorageKeyEvents = "kKIMDataStorageKeyEvents"
 let kKIMDataStorageKeySpecialProject = "kKIMDataStorageKeySpecialProject"
+let kKIMDataStorageKeyTextBlocks = "kKIMDataStorageKeyTextBlocks"
 
 struct AgeRange: Equatable {
     let from: Int
@@ -312,6 +315,27 @@ public class SpecialProject {
     }
 }
 
+public class TextBlock {
+    var id: Int = -1
+    var name: String = ""
+    var text: String = ""
+
+    public init() {
+    }
+
+    required public init(data: NSDictionary) {
+        if let idInt = data["id"] as? Int {
+            id = idInt
+        }
+        if let nameStr = data["name"] as? String {
+            name = nameStr
+        }
+        if let textStr = data["text"] as? String {
+            text = textStr
+        }
+    }
+}
+
 public class Event {
     var id: Int = -1
     var name: String = ""
@@ -473,6 +497,7 @@ public class DataModel {
     }
 
     public var specialProject = SpecialProject()
+    public var textBlocks: [TextBlock] = []
     public var news: [NewsItem] = [NewsItem]()
     public var museums: [Museum] = [Museum]()
     public var allEvents: [Event] = [Event]()
@@ -496,6 +521,7 @@ public class DataModel {
 
     public func update() {
         updateSpecialProject()
+        updateTextBlocks()
         updateMuseums()
         updateEvents()
         updateNews()
@@ -536,6 +562,24 @@ public class DataModel {
                 NSLog("Special project updated.")
             }
             specialProjectRequest.resume()
+        }
+    }
+
+    public func updateTextBlocks() {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            let textBlocksUrl = NSURL(string: kKIMAPIServerURL + kKIMAPITextBlocksURL)
+            let textBlocksRequest = NSURLSession.sharedSession().dataTaskWithURL(textBlocksUrl!) { (data, response, error) -> Void in
+                if (error == nil) {
+                    self.textBlocks = self.textBlocksWithData(data)
+                    NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationTextBlocksUpdated, object: self)
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                        NSUserDefaults.standardUserDefaults().setObject(data, forKey: kKIMDataStorageKeyTextBlocks)
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                    }
+                }
+                NSLog("Text blocks updated.")
+            }
+            textBlocksRequest.resume()
         }
     }
 
@@ -608,6 +652,9 @@ public class DataModel {
             if let cachedSpecialProjectJSON = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeySpecialProject) as? NSData {
                 self.specialProject = self.specialProjectWithData(cachedSpecialProjectJSON)
             }
+            if let cachedTextBlocksJSON = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyTextBlocks) as? NSData {
+                self.textBlocks = self.textBlocksWithData(cachedTextBlocksJSON)
+            }
             if let cachedNewsJSON = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyNews) as? NSData {
                 self.news = self.newsWithData(cachedNewsJSON)
                 if (self.news.count > 0) {
@@ -650,8 +697,21 @@ public class DataModel {
         if let spcO = jsonObject as? NSDictionary {
             specialProject = SpecialProject(data: spcO)
         }
-        specialProject.active = true
         return specialProject
+    }
+
+    internal func textBlocksWithData(data: NSData) -> [TextBlock] {
+        var textBlocks = [TextBlock]()
+        let jsonObject: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+        if let jsonArray = jsonObject as? NSArray {
+            for textObject: AnyObject in jsonArray {
+                if let textItemDic = textObject as? NSDictionary {
+                    let textBlock = TextBlock(data: textItemDic)
+                    textBlocks.append(textBlock)
+                }
+            }
+        }
+        return textBlocks
     }
 
     internal func newsWithData(data: NSData) -> [NewsItem] {

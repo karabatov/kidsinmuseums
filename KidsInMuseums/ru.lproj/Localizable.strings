@@ -83,11 +83,17 @@
 /* Family trip */
 "Family trip" = "Семейное путешествие";
 
+/* Family trip routes title */
+"Family trip routes" = "Маршруты путешествий";
+
 /* Filter screen title */
 "Filter" = "Фильтр";
 
 /* Filter node beginning text */
 "Filter applied: " = "Применен фильтр: ";
+
+/* Irina Novichkova */
+"Irina Novichkova, project coordinator" = "Ирина Новичкова, координатор проекта";
 
 /* Map controller title */
 "Map" = "Карта";
@@ -122,6 +128,9 @@
 /* Search bar placeholder */
 "Place or event" = "Место или событие";
 
+/* About the project team section title */
+"Project team" = "Команда проекта";
+
 /* Rating filter segment */
 "Rating" = "По рейтингу";
 
@@ -132,17 +141,26 @@
    Search controller title */
 "Search" = "Поиск";
 
+/* Sophia Pantyulina */
+"Sophia Pantyulina, project creator" = "Софья Пантюлина, создатель проекта";
+
 /* Filter by tags */
 "Tags" = "По тегам";
 
 /* Info screen support email */
 "Technical support — support@golovamedia.ru" = "Техническая поддержка — support@golovamedia.ru";
 
+/* Family trip rules heading */
+"Trip rules" = "Правила путешествия";
+
 /* Vkontakte */
 "Vkontakte" = "Вконтакте";
 
 /* Website, museum info card */
 "Website: " = "Сайт: ";
+
+/* Yulia Smolchenko */
+"Yulia Smolchenko, media support" = "Юлия Смольченко, информационное сопровождение проекта";
 
 /* Ages filter text */
 "ages" = "по возрасту";

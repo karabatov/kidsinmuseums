@@ -156,6 +156,9 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 delegate.wantsLocation = true
             }
         }
+        if DataModel.sharedInstance.filteredEvents.count > 0 && !loadingView.hidden {
+            eventItemsUpdated(NSNotification(name: kKIMNotificationEventsUpdated, object: nil))
+        }
     }
 
     func addRefreshControl(view: ASTableView) -> UIRefreshControl {
