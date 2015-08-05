@@ -17,7 +17,7 @@ public let kKIMNotificationEventsUpdated = "kKIMNotificationEventsUpdated"
 public let kKIMNotificationEventsUpdateFailed = "kKIMNotificationEventsUpdateFailed"
 public let kKIMNotificationTextBlocksUpdated = "kKIMNotificationTextBlocksUpdated"
 public let kKIMNotificationFamilyTripRulesUpdated = "kKIMNotificationFamilyTripRulesUpdated"
-public let kKIMNotificationFamilyTripRoutesUpdated = "kKIMNotificationFamilyTripRoutesUpdated"
+public let kKIMNotificationFamilyTripsUpdated = "kKIMNotificationFamilyTripsUpdated"
 
 let kKIMAPIServerURL = "http://www.kidsinmuseums.ru"
 let kKIMAPINewsURL = "/api/news_articles/all"
@@ -26,7 +26,7 @@ let kKIMAPIEventsURL = "/api/events/all"
 let kKIMAPISpecialProjectURL = "/api/family_trip_settings/current"
 let kKIMAPITextBlocksURL = "/api/text_blocks/all"
 let kKIMAPIFamilyTripRulesURL = "/api/family_trip_rules/all"
-let kKIMAPIFamilyTripRoutesURL = "/api/family_trip_routes/all"
+let kKIMAPIFamilyTripsURL = "/api/family_trip_routes/all"
 
 let kKIMAPIDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
 let kKIMAPIDateFormat2 = "yyyy-MM-dd"
@@ -36,7 +36,7 @@ let kKIMDataStorageKeyEvents = "kKIMDataStorageKeyEvents"
 let kKIMDataStorageKeySpecialProject = "kKIMDataStorageKeySpecialProject"
 let kKIMDataStorageKeyTextBlocks = "kKIMDataStorageKeyTextBlocks"
 let kKIMDataStorageKeyFamilyTripRules = "kKIMDataStorageKeyFamilyTripRules"
-let kKIMDataStorageKeyFamilyTripRoutes = "kKIMDataStorageKeyFamilyTripRoutes"
+let kKIMDataStorageKeyFamilyTrips = "kKIMDataStorageKeyFamilyTrips"
 
 struct AgeRange: Equatable {
     let from: Int
@@ -581,6 +581,7 @@ public class DataModel {
     public var specialProject = SpecialProject()
     public var textBlocks: [TextBlock] = []
     public var familyTripRules: [FamilyTripRule] = []
+    public var familyTrips: [FamilyTrip] = []
     public var news: [NewsItem] = [NewsItem]()
     public var museums: [Museum] = [Museum]()
     public var allEvents: [Event] = [Event]()
@@ -604,6 +605,7 @@ public class DataModel {
 
     public func update() {
         updateSpecialProject()
+        updateFamilyTrips()
         updateFamilyTripRules()
         updateTextBlocks()
         updateMuseums()
@@ -646,6 +648,24 @@ public class DataModel {
                 NSLog("Special project updated.")
             }
             specialProjectRequest.resume()
+        }
+    }
+
+    public func updateFamilyTrips() {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            let tripsUrl = NSURL(string: kKIMAPIServerURL + kKIMAPIFamilyTripsURL)
+            let tripsRequest = NSURLSession.sharedSession().dataTaskWithURL(tripsUrl!) { (data, response, error) -> Void in
+                if (error == nil) {
+                    self.familyTrips = self.familyTripsWithData(data)
+                    NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationFamilyTripsUpdated, object: self)
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                        NSUserDefaults.standardUserDefaults().setObject(data, forKey: kKIMDataStorageKeyFamilyTrips)
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                    }
+                }
+                NSLog("Family trips updated.")
+            }
+            tripsRequest.resume()
         }
     }
 
@@ -760,6 +780,12 @@ public class DataModel {
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationFamilyTripRulesUpdated, object: self)
                 }
             }
+            if let cachedFamilyTripsJSON = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyFamilyTrips) as? NSData {
+                self.familyTrips = self.familyTripsWithData(cachedFamilyTripsJSON)
+                if (self.familyTrips.count > 0) {
+                    NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationFamilyTripsUpdated, object: self)
+                }
+            }
             if let cachedTextBlocksJSON = NSUserDefaults.standardUserDefaults().objectForKey(kKIMDataStorageKeyTextBlocks) as? NSData {
                 self.textBlocks = self.textBlocksWithData(cachedTextBlocksJSON)
             }
@@ -807,6 +833,21 @@ public class DataModel {
         }
         specialProject.active = true
         return specialProject
+    }
+
+    internal func familyTripsWithData(data: NSData) -> [FamilyTrip] {
+        var familyTrips = [FamilyTrip]()
+        let jsonObject: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+        if let jsonArray = jsonObject as? NSArray {
+            for familyTripDic: AnyObject in jsonArray {
+                if let routeItemDic = familyTripDic as? NSDictionary {
+                    let familyTrip = FamilyTrip(data: routeItemDic)
+                    familyTrips.append(familyTrip)
+                }
+            }
+        }
+        familyTrips.sort({ $0.position < $1.position })
+        return familyTrips
     }
 
     internal func familyTripRulesWithData(data: NSData) -> [FamilyTripRule] {
