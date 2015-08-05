@@ -69,6 +69,11 @@ class FamilyTripViewController: UIViewController, ASTableViewDataSource, ASTable
         case 1:
             let titleNode = EventTitleNode(name: trip.name, ageFrom: trip.ageFrom, ageTo: trip.ageTo)
             return titleNode
+        case 2:
+            if !trip.timeText.isEmpty || !trip.timeComment.isEmpty {
+                let timeNode = TripScheduleNode(text: trip.timeText, comment: trip.timeComment)
+                return timeNode
+            }
         default:
             return EmptyNode(height: 50.0)
         }
