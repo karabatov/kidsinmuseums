@@ -380,6 +380,9 @@ public class FamilyTrip {
     var timeComment: String = ""
     var museums: [Int] = []
 
+    public init() {
+    }
+
     required public init(data: NSDictionary) {
         if let idInt = data["id"] as? Int {
             id = idInt

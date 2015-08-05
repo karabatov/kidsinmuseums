@@ -141,5 +141,13 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
         dispatch_after(delayTime, dispatch_get_main_queue()) {
             self.listView.deselectRowAtIndexPath(indexPath, animated: false)
         }
+
+        let prospectedIndex = indexPath.row - (baseNumberOfRows + 1)
+        if prospectedIndex >= 0 && prospectedIndex < DataModel.sharedInstance.familyTrips.count {
+            let familyTrip = DataModel.sharedInstance.familyTrips[prospectedIndex]
+            let tripController = FamilyTripViewController(nibName: nil, bundle: nil)
+            tripController.trip = familyTrip
+            navigationController?.pushViewController(tripController, animated: true)
+        }
     }
 }
