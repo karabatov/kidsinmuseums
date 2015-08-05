@@ -17,6 +17,7 @@ public let kKIMNotificationEventsUpdated = "kKIMNotificationEventsUpdated"
 public let kKIMNotificationEventsUpdateFailed = "kKIMNotificationEventsUpdateFailed"
 public let kKIMNotificationTextBlocksUpdated = "kKIMNotificationTextBlocksUpdated"
 public let kKIMNotificationFamilyTripRulesUpdated = "kKIMNotificationFamilyTripRulesUpdated"
+public let kKIMNotificationFamilyTripRoutesUpdated = "kKIMNotificationFamilyTripRoutesUpdated"
 
 let kKIMAPIServerURL = "http://www.kidsinmuseums.ru"
 let kKIMAPINewsURL = "/api/news_articles/all"
@@ -25,6 +26,7 @@ let kKIMAPIEventsURL = "/api/events/all"
 let kKIMAPISpecialProjectURL = "/api/family_trip_settings/current"
 let kKIMAPITextBlocksURL = "/api/text_blocks/all"
 let kKIMAPIFamilyTripRulesURL = "/api/family_trip_rules/all"
+let kKIMAPIFamilyTripRoutesURL = "/api/family_trip_routes/all"
 
 let kKIMAPIDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
 let kKIMAPIDateFormat2 = "yyyy-MM-dd"
@@ -34,6 +36,7 @@ let kKIMDataStorageKeyEvents = "kKIMDataStorageKeyEvents"
 let kKIMDataStorageKeySpecialProject = "kKIMDataStorageKeySpecialProject"
 let kKIMDataStorageKeyTextBlocks = "kKIMDataStorageKeyTextBlocks"
 let kKIMDataStorageKeyFamilyTripRules = "kKIMDataStorageKeyFamilyTripRules"
+let kKIMDataStorageKeyFamilyTripRoutes = "kKIMDataStorageKeyFamilyTripRoutes"
 
 struct AgeRange: Equatable {
     let from: Int
@@ -357,6 +360,60 @@ public class FamilyTripRule {
         }
         if let positionInt = data["position"] as? Int {
             position = positionInt
+        }
+    }
+}
+
+public class FamilyTrip {
+    var id: Int = -1
+    var name: String = ""
+    var previewImage: KImage?
+    var ageFrom: Int = -1
+    var ageTo: Int = -1
+    var shortDescription: String = ""
+    var description: String = ""
+    var position: Int = -1
+    var timeText: String = ""
+    var timeComment: String = ""
+    var museums: [Int] = []
+
+    required public init(data: NSDictionary) {
+        if let idInt = data["id"] as? Int {
+            id = idInt
+        }
+        if let nameStr = data["name"] as? String {
+            name = nameStr
+        }
+        if let imageDic = data["preview_image"] as? NSDictionary {
+            previewImage = KImage(data: imageDic)
+        }
+        if let ageFromInt = data["age_from"] as? Int {
+            ageFrom = ageFromInt
+        }
+        if let ageToInt = data["age_to"] as? Int {
+            ageTo = ageToInt
+        }
+        if let shortDescriptionStr = data["short_description"] as? String {
+            shortDescription = shortDescriptionStr
+        }
+        if let descriptionStr = data["description"] as? String {
+            description = descriptionStr
+        }
+        if let positionInt = data["position"] as? Int {
+            position = positionInt
+        }
+        if let timeStr = data["time_text"] as? String {
+            timeText = timeStr
+        }
+        if let timeCommentStr = data["time_comment"] as? String {
+            timeComment = timeCommentStr
+        }
+        if let museumIdsArray = data["family_trip_route_museum_ids"] as? NSArray {
+            for arrayObject in museumIdsArray {
+                if let museumId = arrayObject as? Int {
+                    museums.append(museumId)
+                }
+            }
         }
     }
 }
