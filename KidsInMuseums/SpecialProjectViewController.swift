@@ -10,7 +10,7 @@ import UIKit
 
 class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTableViewDataSource {
     let listView = ASTableView()
-    var numberOfRows = 4
+    var numberOfRows = 5
 
     override required init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -29,12 +29,17 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
         self.edgesForExtendedLayout = UIRectEdge.None
 
         self.view.addSubview(listView)
+        listView.directionalLockEnabled = true
         listView.separatorStyle = UITableViewCellSeparatorStyle.None;
         listView.backgroundColor = UIColor.clearColor()
         listView.asyncDelegate = self
         listView.asyncDataSource = self
 
-        ++numberOfRows
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "familyTripRulesUpdated:", name: kKIMNotificationFamilyTripRulesUpdated, object: nil)
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     override func viewWillLayoutSubviews() {
@@ -43,6 +48,10 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
             listView.frame = b
             listView.reloadData()
         }
+    }
+
+    func familyTripRulesUpdated(notification: NSNotification) {
+        listView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Fade)
     }
 
     // MARK: ASTableView
@@ -79,7 +88,7 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
 
         // Trip rules
         case 2:
-            return ASCellNode()
+            return FamilyTripRulesNode(rules: DataModel.sharedInstance.familyTripRules)
 
         // Countdown
         case 3:

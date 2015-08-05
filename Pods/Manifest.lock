@@ -1,7 +1,7 @@
 PODS:
-  - AsyncDisplayKit (HEAD based on 1.2.1):
-    - AsyncDisplayKit/ASDealloc2MainObject (= HEAD based on 1.2.1)
-  - AsyncDisplayKit/ASDealloc2MainObject (HEAD based on 1.2.1)
+  - AsyncDisplayKit (1.2.1):
+    - AsyncDisplayKit/ASDealloc2MainObject (= 1.2.1)
+  - AsyncDisplayKit/ASDealloc2MainObject (1.2.1)
   - FontAwesomeKit/Core (2.2.0)
   - FontAwesomeKit/FontAwesome (2.2.0):
     - FontAwesomeKit/Core
@@ -10,7 +10,7 @@ PODS:
   - SDWebImage/Core (3.7.2)
 
 DEPENDENCIES:
-  - AsyncDisplayKit (HEAD)
+  - AsyncDisplayKit (= 1.2.1)
   - FontAwesomeKit/FontAwesome
   - SDWebImage
 
