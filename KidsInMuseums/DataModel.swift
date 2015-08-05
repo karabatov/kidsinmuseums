@@ -52,6 +52,9 @@ public class KImage {
     var thumb: KImage?
     var thumb2: KImage?
 
+    public init() {
+    }
+
     required public init(data: NSDictionary) {
         if let urlString = data["url"] as? String {
             url = kKIMAPIServerURL + urlString

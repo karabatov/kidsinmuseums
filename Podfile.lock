@@ -8,15 +8,20 @@ PODS:
   - SDWebImage (3.7.2):
     - SDWebImage/Core (= 3.7.2)
   - SDWebImage/Core (3.7.2)
+  - WebASDKImageManager (1.0.1):
+    - AsyncDisplayKit (~> 1.1)
+    - SDWebImage/Core (~> 3.7)
 
 DEPENDENCIES:
   - AsyncDisplayKit (= 1.2.1)
   - FontAwesomeKit/FontAwesome
   - SDWebImage
+  - WebASDKImageManager (~> 1.0)
 
 SPEC CHECKSUMS:
   AsyncDisplayKit: b2f777da3a246b4aad660b2a55d60bb4328049b9
   FontAwesomeKit: 025fd4dd1017fe4e3f8d47b03e024deedbb33cd4
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
+  WebASDKImageManager: 8e37e97c115c8e9092fc6111218a71ddec7a73d5
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2

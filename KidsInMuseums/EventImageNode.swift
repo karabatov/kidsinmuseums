@@ -19,7 +19,7 @@ class EventImageNode: ASCellNode, ASMultiplexImageNodeDataSource {
             images.append(thumb2URL)
         }
 
-        imageNode = ASMultiplexImageNode(cache: nil, downloader: ASBasicImageDownloader())
+        imageNode = ASMultiplexImageNode(cache: SDWebASDKImageManager.sharedManager(), downloader: SDWebASDKImageManager.sharedManager())
         imageNode.backgroundColor = UIColor(white: 0.1, alpha: 0.1)
         imageNode.contentMode = UIViewContentMode.ScaleAspectFill
 

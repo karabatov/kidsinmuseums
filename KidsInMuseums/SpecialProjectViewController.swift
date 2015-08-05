@@ -10,7 +10,8 @@ import UIKit
 
 class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTableViewDataSource {
     let listView = ASTableView()
-    var numberOfRows = 5
+    let baseNumberOfRows = 4
+    var numberOfRows = 4
 
     override required init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -28,6 +29,8 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
         self.view.backgroundColor = UIColor.whiteColor()
         self.edgesForExtendedLayout = UIRectEdge.None
 
+        updateNumberOfRows()
+
         self.view.addSubview(listView)
         listView.directionalLockEnabled = true
         listView.separatorStyle = UITableViewCellSeparatorStyle.None;
@@ -36,10 +39,16 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
         listView.asyncDataSource = self
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "familyTripRulesUpdated:", name: kKIMNotificationFamilyTripRulesUpdated, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "familyTripsUpdated:", name: kKIMNotificationFamilyTripsUpdated, object: nil)
     }
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+    private func updateNumberOfRows() {
+        // 2 is Trip routes header and empty cell in the end
+        numberOfRows = baseNumberOfRows + ((DataModel.sharedInstance.familyTrips.count > 0) ? DataModel.sharedInstance.familyTrips.count + 2 : 0)
     }
 
     override func viewWillLayoutSubviews() {
@@ -52,6 +61,11 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
 
     func familyTripRulesUpdated(notification: NSNotification) {
         listView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Fade)
+    }
+
+    func familyTripsUpdated(notification: NSNotification) {
+        updateNumberOfRows()
+        listView.reloadData()
     }
 
     // MARK: ASTableView
@@ -103,11 +117,22 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
             let node = EventDescTitleNode(text: NSLocalizedString("Family trip routes", comment: "Family trip routes title"))
             return node
         default:
-            return ASCellNode()
+            let prospectedIndex = indexPath.row - (baseNumberOfRows + 1)
+            if prospectedIndex >= 0 && prospectedIndex < DataModel.sharedInstance.familyTrips.count {
+                let familyTrip = DataModel.sharedInstance.familyTrips[prospectedIndex]
+                let familyTripNode = FamilyTripNode(title: familyTrip.name, ageFrom: familyTrip.ageFrom, ageTo: familyTrip.ageTo, image: familyTrip.previewImage ?? KImage())
+                return familyTripNode
+            } else {
+                return EmptyNode(height: 50.0)
+            }
         }
     }
 
     func tableView(tableView: UITableView!, shouldHighlightRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
+        let prospectedIndex = indexPath.row - (baseNumberOfRows + 1)
+        if prospectedIndex >= 0 && prospectedIndex < DataModel.sharedInstance.familyTrips.count {
+            return true
+        }
         return false
     }
 

@@ -15,5 +15,6 @@
 #import <AsyncDisplayKit/ASHighlightOverlayLayer.h>
 #import <FontAwesomeKit/FAKFontAwesome.h>
 #import "SMCalloutView.h"
+#import <WebASDKImageManager/WebASDKImageManager.h>
 
 #endif

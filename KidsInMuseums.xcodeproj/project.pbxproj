@@ -103,6 +103,8 @@
 		D1E2D4521ADAF9EB000FD803 /* FilterInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2D4511ADAF9EB000FD803 /* FilterInfoNode.swift */; };
 		D1E52E4D1A48B5D2007D98EF /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */; };
 		D1F1C4771B7244EF009487B0 /* FamilyTripRulesNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F1C4761B7244EE009487B0 /* FamilyTripRulesNode.swift */; };
+		D1F1C4791B729B19009487B0 /* FamilyTripNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F1C4781B729B19009487B0 /* FamilyTripNode.swift */; };
+		D1F1C47B1B72A493009487B0 /* EmptyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F1C47A1B72A493009487B0 /* EmptyNode.swift */; };
 		D1FF584C1AB83049008DD880 /* AppInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584B1AB83049008DD880 /* AppInfoView.swift */; };
 		D1FF584E1AB832E1008DD880 /* AppInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */; };
 		D1FF58511AB8372A008DD880 /* appinfo-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */; };
@@ -240,6 +242,8 @@
 		D1E2D4511ADAF9EB000FD803 /* FilterInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterInfoNode.swift; sourceTree = "<group>"; };
 		D1E52E4C1A48B5D2007D98EF /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		D1F1C4761B7244EE009487B0 /* FamilyTripRulesNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FamilyTripRulesNode.swift; sourceTree = "<group>"; };
+		D1F1C4781B729B19009487B0 /* FamilyTripNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FamilyTripNode.swift; sourceTree = "<group>"; };
+		D1F1C47A1B72A493009487B0 /* EmptyNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyNode.swift; sourceTree = "<group>"; };
 		D1FF584B1AB83049008DD880 /* AppInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoView.swift; sourceTree = "<group>"; };
 		D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoNode.swift; sourceTree = "<group>"; };
 		D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appinfo-logo@2x.png"; sourceTree = "<group>"; };
@@ -350,6 +354,8 @@
 				D1A9E1741A8542D900E06F02 /* MuseumAnnotation.swift */,
 				D1D484961A891E0F0028C6F4 /* EventImageNode.swift */,
 				D1D4849A1A89291C0028C6F4 /* EventTitleNode.swift */,
+				D1F1C4781B729B19009487B0 /* FamilyTripNode.swift */,
+				D1F1C47A1B72A493009487B0 /* EmptyNode.swift */,
 				D1F1C4761B7244EE009487B0 /* FamilyTripRulesNode.swift */,
 				D1B490CE1B66D790001B403D /* TripTextCell.swift */,
 				D1D4849E1A892E630028C6F4 /* EventMuseumNode.swift */,
@@ -684,6 +690,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1B490BF1B66C4EF001B403D /* SpecialProjectViewController.swift in Sources */,
+				D1F1C47B1B72A493009487B0 /* EmptyNode.swift in Sources */,
 				D1D484991A8926870028C6F4 /* NSTextAttachmentAge.swift in Sources */,
 				D17476331A9764B700D588A2 /* MuseumInfoView.swift in Sources */,
 				D1A9E1641A7E39CD00E06F02 /* EventsListViewController.swift in Sources */,
@@ -694,6 +701,7 @@
 				D11DCFFE1ACDAB7E00307D32 /* TagCloudNode.swift in Sources */,
 				D174763A1A976EB600D588A2 /* SMCalloutView.m in Sources */,
 				D174763B1A976EB600D588A2 /* SMClassicCalloutView.m in Sources */,
+				D1F1C4791B729B19009487B0 /* FamilyTripNode.swift in Sources */,
 				D11DD0021AD3F11800307D32 /* FilterScreen.swift in Sources */,
 				D1E2D4521ADAF9EB000FD803 /* FilterInfoNode.swift in Sources */,
 				D1B490C71B66C9E5001B403D /* KTabBarController.swift in Sources */,
