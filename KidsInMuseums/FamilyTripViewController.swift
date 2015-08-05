@@ -74,8 +74,20 @@ class FamilyTripViewController: UIViewController, ASTableViewDataSource, ASTable
                 let timeNode = TripScheduleNode(text: trip.timeText, comment: trip.timeComment)
                 return timeNode
             }
+        case 3:
+            let descCell = EventDescriptionNode(description: trip.description)
+            return descCell
+        case 4:
+            let museumsTitleCell = EventDescTitleNode(text: NSLocalizedString("Route museums", comment: "Section title for family trip museum list"))
+            return museumsTitleCell
         default:
-            return EmptyNode(height: 50.0)
+            let prospectedIndex = indexPath.row - (baseNumberOfRows + 1)
+            if prospectedIndex >= 0 && prospectedIndex < trip.museums.count {
+                let museumNode = TripMuseumNode(museumId: trip.museums[prospectedIndex])
+                return museumNode
+            } else {
+                return EmptyNode(height: 50.0)
+            }
         }
 
         return ASCellNode()

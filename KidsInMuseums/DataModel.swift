@@ -414,7 +414,7 @@ public class FamilyTrip {
         if let timeCommentStr = data["time_comment"] as? String {
             timeComment = timeCommentStr
         }
-        if let museumIdsArray = data["family_trip_route_museum_ids"] as? NSArray {
+        if let museumIdsArray = data["family_trip_route_museums_ids"] as? NSArray {
             for arrayObject in museumIdsArray {
                 if let museumId = arrayObject as? Int {
                     museums.append(museumId)

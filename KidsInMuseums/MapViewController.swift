@@ -51,6 +51,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "markersUpdated:", name: kKIMNotificationMuseumsUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "markersUpdated:", name: kKIMNotificationEventsUpdated, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "markersUpdated:", name: kKIMNotificationFamilyTripsUpdated, object: nil)
         updateMarkers()
     }
 
@@ -86,6 +87,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
                 var museumsWithEvents = NSMutableSet()
                 for event in DataModel.sharedInstance.allEvents {
                     museumsWithEvents.addObject(event.museumUserId)
+                }
+                // Also show museums in family trips (if special project is active)
+                for trip in DataModel.sharedInstance.familyTrips {
+                    for museumId in trip.museums {
+                        museumsWithEvents.addObject(museumId)
+                    }
                 }
                 museums.removeAll(keepCapacity: false)
                 for museum in DataModel.sharedInstance.museums {

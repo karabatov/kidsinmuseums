@@ -107,6 +107,7 @@
 		D1F1C47B1B72A493009487B0 /* EmptyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F1C47A1B72A493009487B0 /* EmptyNode.swift */; };
 		D1F1C47D1B72A6A1009487B0 /* FamilyTripViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F1C47C1B72A6A1009487B0 /* FamilyTripViewController.swift */; };
 		D1F1C47F1B72AD83009487B0 /* TripScheduleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F1C47E1B72AD83009487B0 /* TripScheduleNode.swift */; };
+		D1F1C4811B72B484009487B0 /* TripMuseumNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F1C4801B72B484009487B0 /* TripMuseumNode.swift */; };
 		D1FF584C1AB83049008DD880 /* AppInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584B1AB83049008DD880 /* AppInfoView.swift */; };
 		D1FF584E1AB832E1008DD880 /* AppInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */; };
 		D1FF58511AB8372A008DD880 /* appinfo-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */; };
@@ -248,6 +249,7 @@
 		D1F1C47A1B72A493009487B0 /* EmptyNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyNode.swift; sourceTree = "<group>"; };
 		D1F1C47C1B72A6A1009487B0 /* FamilyTripViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FamilyTripViewController.swift; sourceTree = "<group>"; };
 		D1F1C47E1B72AD83009487B0 /* TripScheduleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripScheduleNode.swift; sourceTree = "<group>"; };
+		D1F1C4801B72B484009487B0 /* TripMuseumNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripMuseumNode.swift; sourceTree = "<group>"; };
 		D1FF584B1AB83049008DD880 /* AppInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoView.swift; sourceTree = "<group>"; };
 		D1FF584D1AB832E1008DD880 /* AppInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoNode.swift; sourceTree = "<group>"; };
 		D1FF584F1AB8372A008DD880 /* appinfo-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appinfo-logo@2x.png"; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 				D1F1C4761B7244EE009487B0 /* FamilyTripRulesNode.swift */,
 				D1B490CE1B66D790001B403D /* TripTextCell.swift */,
 				D1D4849E1A892E630028C6F4 /* EventMuseumNode.swift */,
+				D1F1C4801B72B484009487B0 /* TripMuseumNode.swift */,
 				D1D484A01A89361D0028C6F4 /* EventScheduleNode.swift */,
 				D1F1C47E1B72AD83009487B0 /* TripScheduleNode.swift */,
 				D1D484A21A89445A0028C6F4 /* EventDescTitleNode.swift */,
@@ -708,6 +711,7 @@
 				D174763A1A976EB600D588A2 /* SMCalloutView.m in Sources */,
 				D174763B1A976EB600D588A2 /* SMClassicCalloutView.m in Sources */,
 				D1F1C4791B729B19009487B0 /* FamilyTripNode.swift in Sources */,
+				D1F1C4811B72B484009487B0 /* TripMuseumNode.swift in Sources */,
 				D11DD0021AD3F11800307D32 /* FilterScreen.swift in Sources */,
 				D1E2D4521ADAF9EB000FD803 /* FilterInfoNode.swift in Sources */,
 				D1B490C71B66C9E5001B403D /* KTabBarController.swift in Sources */,
