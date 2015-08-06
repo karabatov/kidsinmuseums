@@ -137,12 +137,18 @@
 /* Review section description subtitle */
 "Reviews" = "Отзывы";
 
+/* Section title for family trip museum list */
+"Route museums" = "Музеи маршрута";
+
 /* Search
    Search controller title */
 "Search" = "Поиск";
 
 /* Sophia Pantyulina */
 "Sophia Pantyulina, project creator" = "Софья Пантюлина, создатель проекта";
+
+/* Countdown timer heading */
+"TIME BEFORE THE FAMILY TRIP STARTS" = "ДО СТАРТА СЕМЕЙНОГО ПУТЕШЕСТВИЯ";
 
 /* Filter by tags */
 "Tags" = "По тегам";
@@ -168,8 +174,20 @@
 /* Dates filter text */
 "dates" = "по датам";
 
+/* Countdown timer days */
+"days" = "дней";
+
+/* Countdown timer hours */
+"hours" = "часов";
+
+/* Countdown timer minutes */
+"minutes" = "минут";
+
 /* Museums filter text */
 "museums" = "по музеям";
+
+/* Countdown timer seconds */
+"seconds" = "секунд";
 
 /* Event duration if no end time, time only */
 "starts at %@" = "с %@";
