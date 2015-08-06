@@ -839,8 +839,8 @@ public class DataModel {
         }
 
         // TODO: Remove after debug
-        specialProject.active = true
-        specialProject.countdown = true
+//        specialProject.active = true
+//        specialProject.countdown = true
 
         return specialProject
     }
