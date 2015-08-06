@@ -107,7 +107,7 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
         // Countdown
         case 3:
             if DataModel.sharedInstance.specialProject.countdown {
-                return ASCellNode()
+                return TripCountdownNode(date: DataModel.sharedInstance.specialProject.startDate)
             } else {
                 return ASCellNode()
             }

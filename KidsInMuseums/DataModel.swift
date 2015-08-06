@@ -837,7 +837,11 @@ public class DataModel {
         if let spcO = jsonObject as? NSDictionary {
             specialProject = SpecialProject(data: spcO)
         }
+
+        // TODO: Remove after debug
         specialProject.active = true
+        specialProject.countdown = true
+
         return specialProject
     }
 
