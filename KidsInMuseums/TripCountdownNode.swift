@@ -79,8 +79,6 @@ class TripCountdownNode: ASCellNode {
         addSubnode(colon2Node)
 
         updateCountdownTimer()
-
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "timerTicked:", userInfo: nil, repeats: true)
     }
 
     deinit {
@@ -99,10 +97,10 @@ class TripCountdownNode: ASCellNode {
         let minutesLeft = (difference % 3600) / 60
         let secondsLeft = difference % 60
 
-        self.dayNode.attributedString = NSAttributedString(string: "\(daysLeft)", attributes: self.bigParams)
-        self.hourNode.attributedString = NSAttributedString(string: hoursLeft < 10 ? "0\(hoursLeft)" : "\(hoursLeft)", attributes: self.bigParams)
-        self.minuteNode.attributedString = NSAttributedString(string: minutesLeft < 10 ? "0\(minutesLeft)" : "\(minutesLeft)", attributes: self.bigParams)
-        self.secondNode.attributedString = NSAttributedString(string: secondsLeft < 10 ? "0\(secondsLeft)" : "\(secondsLeft)", attributes: self.bigParams)
+        dayNode.attributedString = NSAttributedString(string: "\(daysLeft)", attributes: self.bigParams)
+        hourNode.attributedString = NSAttributedString(string: hoursLeft < 10 ? "0\(hoursLeft)" : "\(hoursLeft)", attributes: self.bigParams)
+        minuteNode.attributedString = NSAttributedString(string: minutesLeft < 10 ? "0\(minutesLeft)" : "\(minutesLeft)", attributes: self.bigParams)
+        secondNode.attributedString = NSAttributedString(string: secondsLeft < 10 ? "0\(secondsLeft)" : "\(secondsLeft)", attributes: self.bigParams)
     }
 
     override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {
@@ -141,5 +139,9 @@ class TripCountdownNode: ASCellNode {
         hourTextNode.frame = CGRect(x: hourNode.frame.origin.x + (hourNode.frame.width - hourTextNode.calculatedSize.width) / 2.0, y: hourNode.frame.maxY + marginBGIntraSmall, width: hourTextNode.calculatedSize.width, height: hourTextNode.calculatedSize.height)
         minuteTextNode.frame = CGRect(x: minuteNode.frame.origin.x + (minuteNode.frame.width - minuteTextNode.calculatedSize.width) / 2.0, y: minuteNode.frame.maxY + marginBGIntraSmall, width: minuteTextNode.calculatedSize.width, height: minuteTextNode.calculatedSize.height)
         secondTextNode.frame = CGRect(x: secondNode.frame.origin.x + (secondNode.frame.width - secondTextNode.calculatedSize.width) / 2.0, y: secondNode.frame.maxY + marginBGIntraSmall, width: secondTextNode.calculatedSize.width, height: secondTextNode.calculatedSize.height)
+
+        if timer == nil {
+            timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "timerTicked:", userInfo: nil, repeats: true)
+        }
     }
 }
