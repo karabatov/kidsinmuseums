@@ -23,7 +23,7 @@ public class NewsItemViewController: UIViewController, ASMultiplexImageNodeDataS
         scrollView.backgroundColor = UIColor.whiteColor()
 
         dateLabel = ASTextNode()
-        newsImage = ASMultiplexImageNode(cache: nil, downloader: ASBasicImageDownloader())
+        newsImage = ASMultiplexImageNode(cache: SDWebASDKImageManager.sharedManager(), downloader: SDWebASDKImageManager.sharedManager())
         newsText = ASTextNode()
 
         scrollView.addSubnode(dateLabel)
