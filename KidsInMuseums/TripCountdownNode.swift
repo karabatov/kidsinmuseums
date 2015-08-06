@@ -27,10 +27,9 @@ class TripCountdownNode: ASCellNode {
 
     let marginBG: CGFloat = 16.0
     let radiusBG: CGFloat = 8.0
-    let marginBGIntra: CGFloat = 32.0
-    let marginBGIntraSmall: CGFloat = 16.0
+    let marginBGIntra: CGFloat = 20.0
+    let marginBGIntraSmall: CGFloat = 8.0
 
-    let titleParams = [NSFontAttributeName: UIFont.systemFontOfSize(18.0), NSForegroundColorAttributeName: UIColor.whiteColor()]
     let bigParams = [NSFontAttributeName: UIFont.systemFontOfSize(32.0), NSForegroundColorAttributeName: UIColor.whiteColor()]
     let smallParams = [NSFontAttributeName: UIFont.systemFontOfSize(9.0), NSForegroundColorAttributeName: UIColor.whiteColor()]
 
@@ -42,6 +41,9 @@ class TripCountdownNode: ASCellNode {
         backgroundNode.cornerRadius = radiusBG
         addSubnode(backgroundNode)
 
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = NSTextAlignment.Center
+        let titleParams = [NSFontAttributeName: UIFont.systemFontOfSize(18.0), NSForegroundColorAttributeName: UIColor.whiteColor(), NSParagraphStyleAttributeName: paragraph]
         titleNode.attributedString = NSAttributedString(string: NSLocalizedString("TIME BEFORE THE FAMILY TRIP STARTS", comment: "Countdown timer heading"), attributes: titleParams)
         addSubnode(titleNode)
 
@@ -97,17 +99,10 @@ class TripCountdownNode: ASCellNode {
         let minutesLeft = (difference % 3600) / 60
         let secondsLeft = difference % 60
 
-        dispatch_async(dispatch_get_main_queue()) {
-            self.dayNode.attributedString = NSAttributedString(string: "\(daysLeft)", attributes: self.bigParams)
-            self.hourNode.attributedString = NSAttributedString(string: "\(hoursLeft)", attributes: self.bigParams)
-            self.minuteNode.attributedString = NSAttributedString(string: "\(minutesLeft)", attributes: self.bigParams)
-            self.secondNode.attributedString = NSAttributedString(string: "\(secondsLeft)", attributes: self.bigParams)
-
-            if self.nodeLoaded {
-                self.secondNode.measure(self.secondNode.view.frame.size)
-                self.secondNode.view.layoutIfNeeded()
-            }
-        }
+        self.dayNode.attributedString = NSAttributedString(string: "\(daysLeft)", attributes: self.bigParams)
+        self.hourNode.attributedString = NSAttributedString(string: hoursLeft < 10 ? "0\(hoursLeft)" : "\(hoursLeft)", attributes: self.bigParams)
+        self.minuteNode.attributedString = NSAttributedString(string: minutesLeft < 10 ? "0\(minutesLeft)" : "\(minutesLeft)", attributes: self.bigParams)
+        self.secondNode.attributedString = NSAttributedString(string: secondsLeft < 10 ? "0\(secondsLeft)" : "\(secondsLeft)", attributes: self.bigParams)
     }
 
     override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {
@@ -123,7 +118,7 @@ class TripCountdownNode: ASCellNode {
         colon1Node.measure(CGSize(width: constrainedSize.width - marginBG * 2 - marginBGIntra * 2, height: CGFloat.max))
         colon2Node.measure(CGSize(width: constrainedSize.width - marginBG * 2 - marginBGIntra * 2, height: CGFloat.max))
 
-        return CGSize(width: constrainedSize.width, height: marginBG * 2 + marginBGIntra * 3 + marginBGIntraSmall + daySize.height + dayTextSize.height)
+        return CGSize(width: constrainedSize.width, height: marginBG * 2 + marginBGIntra * 3 + marginBGIntraSmall + titleSize.height +  daySize.height + dayTextSize.height)
     }
 
     override func layout() {
@@ -142,7 +137,7 @@ class TripCountdownNode: ASCellNode {
         colon1Node.frame = CGRect(x: marginBG + marginBGIntra + avgWidth * 2 + spacingX * 2.5 - colon1Node.calculatedSize.width / 2.0, y: titleNode.frame.maxY + marginBGIntra + (minuteNode.frame.height - colon1Node.calculatedSize.height), width: colon1Node.calculatedSize.width, height: colon1Node.calculatedSize.height)
         colon2Node.frame = CGRect(x: marginBG + marginBGIntra + avgWidth * 3 + spacingX * 3.5 - colon2Node.calculatedSize.width / 2.0, y: titleNode.frame.maxY + marginBGIntra + (minuteNode.frame.height - colon2Node.calculatedSize.height), width: colon2Node.calculatedSize.width, height: colon2Node.calculatedSize.height)
 
-        dayTextNode.frame = CGRect(x: dayNode.frame.origin.x + (dayNode.frame.width - dayTextNode.calculatedSize.width) / 2.0, y: dayNode.frame.origin.y + dayNode.calculatedSize.height + marginBGIntraSmall, width: dayTextNode.calculatedSize.width, height: dayTextNode.calculatedSize.height)
+        dayTextNode.frame = CGRect(x: marginBG + marginBGIntra + spacingX + avgWidth / 2.0 - dayTextNode.calculatedSize.width / 2.0, y: calculatedSize.height - marginBG - marginBGIntra - dayTextNode.calculatedSize.height, width: dayTextNode.calculatedSize.width, height: dayTextNode.calculatedSize.height)
         hourTextNode.frame = CGRect(x: hourNode.frame.origin.x + (hourNode.frame.width - hourTextNode.calculatedSize.width) / 2.0, y: hourNode.frame.maxY + marginBGIntraSmall, width: hourTextNode.calculatedSize.width, height: hourTextNode.calculatedSize.height)
         minuteTextNode.frame = CGRect(x: minuteNode.frame.origin.x + (minuteNode.frame.width - minuteTextNode.calculatedSize.width) / 2.0, y: minuteNode.frame.maxY + marginBGIntraSmall, width: minuteTextNode.calculatedSize.width, height: minuteTextNode.calculatedSize.height)
         secondTextNode.frame = CGRect(x: secondNode.frame.origin.x + (secondNode.frame.width - secondTextNode.calculatedSize.width) / 2.0, y: secondNode.frame.maxY + marginBGIntraSmall, width: secondTextNode.calculatedSize.width, height: secondTextNode.calculatedSize.height)
