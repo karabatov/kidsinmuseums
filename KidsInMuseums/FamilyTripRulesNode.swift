@@ -24,8 +24,8 @@ class FamilyTripRulesNode: ASCellNode, UIScrollViewDelegate {
 
         addSubnode(scrollNode)
 
-        let titleParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), NSForegroundColorAttributeName: UIColor.kimGrayColor()]
-        let textParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor.kimGrayColor()]
+        let titleParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), NSForegroundColorAttributeName: UIColor.kimDarkGrayColor()]
+        let textParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor.kimDarkGrayColor()]
 
         for rule in tripRules {
             let titleStr = NSAttributedString(string: rule.title, attributes: titleParams)
