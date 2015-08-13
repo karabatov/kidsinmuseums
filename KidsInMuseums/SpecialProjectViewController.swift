@@ -10,8 +10,7 @@ import UIKit
 
 class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTableViewDataSource {
     let listView = ASTableView()
-    let baseNumberOfRows = 4
-    var numberOfRows = 4
+    var numberOfRoutes = 0
 
     override required init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -47,8 +46,7 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
     }
 
     private func updateNumberOfRows() {
-        // 2 is Trip routes header and empty cell in the end
-        numberOfRows = baseNumberOfRows + ((DataModel.sharedInstance.familyTrips.count > 0) ? DataModel.sharedInstance.familyTrips.count + 2 : 0)
+        numberOfRoutes = DataModel.sharedInstance.familyTrips.count
     }
 
     override func viewWillLayoutSubviews() {
@@ -60,78 +58,111 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
     }
 
     func familyTripRulesUpdated(notification: NSNotification) {
-        listView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Fade)
+        listView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Fade)
     }
 
     func familyTripsUpdated(notification: NSNotification) {
         updateNumberOfRows()
-        listView.reloadData()
+        listView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Fade)
     }
 
     // MARK: ASTableView
 
+    func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
+        return 3
+    }
+
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return numberOfRows
+        switch section {
+        case 0: return 2
+        case 1: return numberOfRoutes == 0 ? 0 : numberOfRoutes + 2
+        case 2: return 2
+        default: return 0
+        }
     }
 
     func tableView(tableView: ASTableView!, nodeForRowAtIndexPath indexPath: NSIndexPath!) -> ASCellNode! {
-        switch indexPath.row {
-
-        // Trip dates
+        switch indexPath.section {
         case 0:
-            if DataModel.sharedInstance.specialProject.startDate.compare(NSDate(timeIntervalSince1970: 0)) != NSComparisonResult.OrderedSame && DataModel.sharedInstance.specialProject.endDate.compare(NSDate(timeIntervalSince1970: 0)) != NSComparisonResult.OrderedSame {
-                let formatter = NSDateFormatter()
-                formatter.dateFormat = "d MMMM"
-                let startDate = formatter.stringFromDate(DataModel.sharedInstance.specialProject.startDate)
-                formatter.dateFormat = "d MMMM y"
-                let endDate = formatter.stringFromDate(DataModel.sharedInstance.specialProject.endDate)
-                let titleParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline), NSForegroundColorAttributeName: UIColor.lightGrayColor()]
-                let attrStr = NSAttributedString(string: "\(startDate) – \(endDate)".uppercaseString, attributes: titleParams)
-                let node = TripTextCell(text: attrStr)
-                return node
-            } else {
-                return ASCellNode()
-            }
+            switch indexPath.row {
 
-        // Trip rules heading
+            // Trip dates
+            case 0:
+                if DataModel.sharedInstance.specialProject.startDate.compare(NSDate(timeIntervalSince1970: 0)) != NSComparisonResult.OrderedSame && DataModel.sharedInstance.specialProject.endDate.compare(NSDate(timeIntervalSince1970: 0)) != NSComparisonResult.OrderedSame {
+                    let formatter = NSDateFormatter()
+                    formatter.dateFormat = "d MMMM"
+                    let startDate = formatter.stringFromDate(DataModel.sharedInstance.specialProject.startDate)
+                    formatter.dateFormat = "d MMMM y"
+                    let endDate = formatter.stringFromDate(DataModel.sharedInstance.specialProject.endDate)
+                    let titleParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline), NSForegroundColorAttributeName: UIColor.lightGrayColor()]
+                    let attrStr = NSAttributedString(string: "\(startDate) – \(endDate)".uppercaseString, attributes: titleParams)
+                    let node = TripTextCell(text: attrStr)
+                    return node
+                } else {
+                    return ASCellNode()
+                }
+
+            // Countdown
+            case 1:
+                if DataModel.sharedInstance.specialProject.countdown {
+                    return TripCountdownNode(date: DataModel.sharedInstance.specialProject.startDate)
+                } else {
+                    return ASCellNode()
+                }
+            default: return ASCellNode()
+            }
         case 1:
+            if numberOfRoutes == 0 {
+                return ASCellNode()
+            } else {
+                switch indexPath.row {
+
+                // Family trip routes title
+                case 0:
+                    let node = EventDescTitleNode(text: NSLocalizedString("Family trip routes", comment: "Family trip routes title"))
+                    return node
+
+                // Empty node
+                case (numberOfRoutes + 1):
+                    return EmptyNode(height: 50.0)
+
+                default:
+                    let prospectedIndex = indexPath.row - 1
+                    if prospectedIndex >= 0 && prospectedIndex < DataModel.sharedInstance.familyTrips.count {
+                        let familyTrip = DataModel.sharedInstance.familyTrips[prospectedIndex]
+                        let familyTripNode = FamilyTripNode(title: familyTrip.name, ageFrom: familyTrip.ageFrom, ageTo: familyTrip.ageTo, image: familyTrip.previewImage ?? KImage())
+                        return familyTripNode
+                    } else {
+                        return ASCellNode()
+                    }
+                }
+            }
+        case 2:
+            switch indexPath.row {
+
+            // Trip rules heading
+            case 0:
             let titleParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)]
             let attrStr = NSAttributedString(string: NSLocalizedString("Trip rules", comment: "Family trip rules heading"), attributes: titleParams)
             let node = TripTextCell(text: attrStr)
             return node
 
-        // Trip rules
-        case 2:
+            // Trip rules
+            case 1:
             return FamilyTripRulesNode(rules: DataModel.sharedInstance.familyTripRules)
 
-        // Countdown
-        case 3:
-            if DataModel.sharedInstance.specialProject.countdown {
-                return TripCountdownNode(date: DataModel.sharedInstance.specialProject.startDate)
-            } else {
-                return ASCellNode()
+            default: return ASCellNode()
             }
-
-        // Family trip routes title
-        case 4:
-            let node = EventDescTitleNode(text: NSLocalizedString("Family trip routes", comment: "Family trip routes title"))
-            return node
-        default:
-            let prospectedIndex = indexPath.row - (baseNumberOfRows + 1)
-            if prospectedIndex >= 0 && prospectedIndex < DataModel.sharedInstance.familyTrips.count {
-                let familyTrip = DataModel.sharedInstance.familyTrips[prospectedIndex]
-                let familyTripNode = FamilyTripNode(title: familyTrip.name, ageFrom: familyTrip.ageFrom, ageTo: familyTrip.ageTo, image: familyTrip.previewImage ?? KImage())
-                return familyTripNode
-            } else {
-                return EmptyNode(height: 50.0)
-            }
+        default: return ASCellNode()
         }
     }
 
     func tableView(tableView: UITableView!, shouldHighlightRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
-        let prospectedIndex = indexPath.row - (baseNumberOfRows + 1)
-        if prospectedIndex >= 0 && prospectedIndex < DataModel.sharedInstance.familyTrips.count {
-            return true
+        if indexPath.section == 1 {
+            let prospectedIndex = indexPath.row - 1
+            if prospectedIndex >= 0 && prospectedIndex < DataModel.sharedInstance.familyTrips.count {
+                return true
+            }
         }
         return false
     }
@@ -142,12 +173,14 @@ class SpecialProjectViewController: UIViewController, ASTableViewDelegate, ASTab
             self.listView.deselectRowAtIndexPath(indexPath, animated: false)
         }
 
-        let prospectedIndex = indexPath.row - (baseNumberOfRows + 1)
-        if prospectedIndex >= 0 && prospectedIndex < DataModel.sharedInstance.familyTrips.count {
-            let familyTrip = DataModel.sharedInstance.familyTrips[prospectedIndex]
-            let tripController = FamilyTripViewController(nibName: nil, bundle: nil)
-            tripController.trip = familyTrip
-            navigationController?.pushViewController(tripController, animated: true)
+        if indexPath.section == 1 {
+            let prospectedIndex = indexPath.row - 1
+            if prospectedIndex >= 0 && prospectedIndex < DataModel.sharedInstance.familyTrips.count {
+                let familyTrip = DataModel.sharedInstance.familyTrips[prospectedIndex]
+                let tripController = FamilyTripViewController(nibName: nil, bundle: nil)
+                tripController.trip = familyTrip
+                navigationController?.pushViewController(tripController, animated: true)
+            }
         }
     }
 }
