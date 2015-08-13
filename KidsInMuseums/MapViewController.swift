@@ -18,6 +18,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
     var calloutStartRect = CGRect.zeroRect
     var calloutShouldOffset = false
     var shouldDisplayMuseumId: Int?
+    var shouldDisplayFamilyTrip: FamilyTrip?
 
     // MARK: UIViewController
 
@@ -85,15 +86,17 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
                 }
                 mapView.removeAnnotations(mapView.annotations)
                 var museumsWithEvents = NSMutableSet()
-                for event in DataModel.sharedInstance.allEvents {
-                    museumsWithEvents.addObject(event.museumUserId)
-                }
-                // Also show museums in family trips (if special project is active)
-                for trip in DataModel.sharedInstance.familyTrips {
-                    for museumId in trip.museums {
+
+                if let showTrip = shouldDisplayFamilyTrip {
+                    for museumId in showTrip.museums {
                         museumsWithEvents.addObject(museumId)
                     }
+                } else {
+                    for event in DataModel.sharedInstance.allEvents {
+                        museumsWithEvents.addObject(event.museumUserId)
+                    }
                 }
+
                 museums.removeAll(keepCapacity: false)
                 for museum in DataModel.sharedInstance.museums {
                     if museumsWithEvents.containsObject(museum.id) {

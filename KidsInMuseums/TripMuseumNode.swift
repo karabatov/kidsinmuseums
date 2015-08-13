@@ -10,13 +10,15 @@ import UIKit
 
 class TripMuseumNode: ASCellNode {
     var museumFound = false
+    let familyTrip: FamilyTrip
     var museum: Museum?
     let textNode = ASTextNode()
     let divider = ASDisplayNode()
     let marginH: CGFloat = 16.0
     let marginV: CGFloat = 6.0
 
-    required init(museumId: Int) {
+    required init(museumId: Int, trip: FamilyTrip) {
+        familyTrip = trip
         if let mus = DataModel.sharedInstance.findMuseum(museumId) {
             museum = mus
             museumFound = true
@@ -66,16 +68,14 @@ class TripMuseumNode: ASCellNode {
         if let
             mus = museum,
             delegate = UIApplication.sharedApplication().delegate as? AppDelegate,
-            controllers = delegate.tabController?.viewControllers
+            controllers = delegate.tabController?.viewControllers,
+            selectedIndex = delegate.tabController?.selectedIndex
         {
-            for (index, cntr) in enumerate(controllers) {
-                if let
-                    controller = cntr as? UINavigationController,
-                    mapView = controller.topViewController as? MapViewController
-                {
-                    mapView.selectMuseum(mus)
-                    delegate.tabController?.selectedIndex = index
-                }
+            if let controller = controllers[selectedIndex] as? UINavigationController {
+                let mapView = MapViewController(nibName: nil, bundle: nil)
+                mapView.shouldDisplayFamilyTrip = familyTrip
+                mapView.shouldDisplayMuseumId = mus.id
+                controller.pushViewController(mapView, animated: true)
             }
         }
     }

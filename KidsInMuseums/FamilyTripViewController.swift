@@ -83,7 +83,7 @@ class FamilyTripViewController: UIViewController, ASTableViewDataSource, ASTable
         default:
             let prospectedIndex = indexPath.row - (baseNumberOfRows + 1)
             if prospectedIndex >= 0 && prospectedIndex < trip.museums.count {
-                let museumNode = TripMuseumNode(museumId: trip.museums[prospectedIndex])
+                let museumNode = TripMuseumNode(museumId: trip.museums[prospectedIndex], trip: trip)
                 return museumNode
             } else {
                 return EmptyNode(height: 50.0)
