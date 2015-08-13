@@ -113,6 +113,10 @@ class MoreScreen: UITableViewController {
                                 break
                             }
                         }
+
+                        // If the project has just been marked active, still do the push
+                        let special = SpecialProjectViewController(nibName: nil, bundle: nil)
+                        navigationController?.pushViewController(special, animated: true)
                     }
                 } else {
                     let special = SpecialProjectViewController(nibName: nil, bundle: nil)
