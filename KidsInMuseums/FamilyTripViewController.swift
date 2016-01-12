@@ -26,14 +26,14 @@ class FamilyTripViewController: UIViewController, ASTableViewDataSource, ASTable
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | .FlexibleWidth
+        self.view.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, .FlexibleWidth]
         self.view.backgroundColor = UIColor.whiteColor()
         self.edgesForExtendedLayout = UIRectEdge.None
 

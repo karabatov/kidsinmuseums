@@ -71,7 +71,7 @@ class EventMuseumNode: ASCellNode {
             delegate = UIApplication.sharedApplication().delegate as? AppDelegate,
             controllers = delegate.tabController?.viewControllers
         {
-            for (index, cntr) in enumerate(controllers) {
+            for (index, cntr) in controllers.enumerate() {
                 if let
                     controller = cntr as? UINavigationController,
                     mapView = controller.topViewController as? MapViewController

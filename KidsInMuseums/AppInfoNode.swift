@@ -9,7 +9,7 @@
 class AppInfoNode: ASCellNode {
     let appImage = ASImageNode()
     let infoLabel = ASTextNode()
-    var textParams: [NSObject: AnyObject]
+    var textParams: [String: AnyObject]
     let marginH: CGFloat = 20.0
     let marginV: CGFloat = 20.0
 

@@ -24,13 +24,13 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
         tabBarItem = UITabBarItem(title: title, image: UIImage(named: "icon-news"), tag: 0)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navbar back button title"), style: .Plain, target: nil, action: nil)
-        self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | .FlexibleWidth
+        self.view.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, .FlexibleWidth]
         self.view.backgroundColor = UIColor.whiteColor()
         self.edgesForExtendedLayout = UIRectEdge.None
         let b = self.view.bounds
@@ -73,7 +73,7 @@ class NewsListController: UIViewController, ASTableViewDelegate, ASTableViewData
     }
 
     func scrollToTop() {
-        listView.scrollRectToVisible(CGRect(origin: CGPoint.zeroPoint, size: CGSize(width: 1, height: 1)), animated: true)
+        listView.scrollRectToVisible(CGRect(origin: CGPoint.zero, size: CGSize(width: 1, height: 1)), animated: true)
     }
 
     // MARK: Data

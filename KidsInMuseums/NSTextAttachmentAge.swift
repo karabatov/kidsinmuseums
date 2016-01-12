@@ -7,7 +7,7 @@
 //
 
 func newPathForRoundedRect(rect: CGRect, radius: CGFloat) -> CGPathRef {
-    var retPath: CGMutablePathRef = CGPathCreateMutable()
+    let retPath: CGMutablePathRef = CGPathCreateMutable()
 
     let innerRect = CGRectInset(rect, radius, radius)
 
@@ -62,7 +62,7 @@ func attachmentImageForAge(from fromAge: Int, to toAge: Int) -> UIImage {
         UIColor.whiteColor().set()
         CGContextFillRect(context, frame)
 
-        let roundedRectPath = newPathForRoundedRect(frame, frame.size.height / 2.0)
+        let roundedRectPath = newPathForRoundedRect(frame, radius: frame.size.height / 2.0)
         orangeColor.set()
         CGContextAddPath(context, roundedRectPath)
         CGContextSetLineWidth(context, 1.0 / UIScreen.mainScreen().scale)

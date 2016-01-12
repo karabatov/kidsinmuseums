@@ -13,15 +13,15 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
     var numberOfRows = 0
     var smallFrame: CGRect
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     required init(event: Event, frame b: CGRect) {
         self.event = event
         if reviews.count > 0 {
-            self.reviews.extend(reviews)
-            self.reviews.sort({(r1: Review, r2: Review) -> Bool in
+            self.reviews.appendContentsOf(reviews)
+            self.reviews.sortInPlace({(r1: Review, r2: Review) -> Bool in
                 return r1.createdAt.compare(r2.createdAt) == NSComparisonResult.OrderedAscending
             })
         }
@@ -31,7 +31,7 @@ class EventItemViewController: UIViewController, ASTableViewDataSource, ASTableV
 
     override func viewDidLoad() {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navbar back button title"), style: .Plain, target: nil, action: nil)
-        self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | .FlexibleWidth
+        self.view.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, .FlexibleWidth]
         self.view.backgroundColor = UIColor.whiteColor()
         self.edgesForExtendedLayout = UIRectEdge.None
         listView.frame = smallFrame

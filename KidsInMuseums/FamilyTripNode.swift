@@ -36,7 +36,7 @@ class FamilyTripNode: ASCellNode, ASMultiplexImageNodeDataSource {
         super.init()
 
         let headingParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline), NSForegroundColorAttributeName: UIColor.blackColor()]
-        var titleStr = NSMutableAttributedString(string: "\(title)   ", attributes: headingParams)
+        let titleStr = NSMutableAttributedString(string: "\(title)   ", attributes: headingParams)
         let attachment = NSTextAttachment()
         attachment.image = attachmentImageForAge(from: ageFrom, to: ageTo)
         let attStr = NSAttributedString(attachment: attachment)

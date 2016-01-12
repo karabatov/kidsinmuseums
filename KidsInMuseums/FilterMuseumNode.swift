@@ -33,7 +33,7 @@ class FilterMuseumNode: ASCellNode {
         let titleStr = NSAttributedString(string: museum.name, attributes: headingParams)
         titleNode.attributedString = titleStr
 
-        var museumStr = NSMutableAttributedString()
+        let museumStr = NSMutableAttributedString()
         if let loc = location {
             let distance = self.museum.distanceFromLocation(loc)
             let locStr = NSAttributedString(string: "\(distance.humanReadable()) \u{25b8} ", attributes: museumParams)

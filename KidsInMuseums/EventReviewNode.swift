@@ -24,7 +24,7 @@ class EventReviewNode: ASCellNode {
         let nameParams = [NSFontAttributeName: nameFont, NSForegroundColorAttributeName: mainColor]
         let textParams = [NSFontAttributeName: captionFont, NSForegroundColorAttributeName: mainColor]
 
-        var textStr = NSMutableAttributedString()
+        let textStr = NSMutableAttributedString()
         if let user = review.user {
             let name = NSAttributedString(string: "\(user.name)\n\n", attributes: nameParams)
             textStr.appendAttributedString(name)

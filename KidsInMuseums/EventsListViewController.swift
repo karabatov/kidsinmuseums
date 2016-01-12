@@ -21,11 +21,11 @@ let kKIMSectionHeaderMarginV: CGFloat = 6.0
 
 let kKIMEventSectionId = -1337
 
-public func removeDuplicates<C: ExtensibleCollectionType where C.Generator.Element : Equatable>(aCollection: C) -> C {
+public func removeDuplicates<C: RangeReplaceableCollectionType where C.Generator.Element : Equatable>(aCollection: C) -> C {
     var container = C()
 
     for element in aCollection {
-        if !contains(container, element) {
+        if !container.contains(element) {
             container.append(element)
         }
     }
@@ -64,7 +64,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         tabBarItem = UITabBarItem(title: title, image: UIImage(named: "icon-events"), tag: 0)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -72,7 +72,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         listViews.append(listDay)
         listViews.append(listRating)
         listViews.append(listDistance)
-        if let filterButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as? UIButton {
+        if let filterButton: UIButton = UIButton(type: UIButtonType.System) as? UIButton {
             filterButton.setTitle(NSLocalizedString(" Filter", comment: "Filter button title"), forState: UIControlState.Normal)
             filterButton.setImage(UIImage(named: "icon-filter"), forState: UIControlState.Normal)
             filterButton.addTarget(self, action: "filterButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -83,7 +83,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navbar back button title"), style: .Plain, target: nil, action: nil)
         let calendarButton = UIBarButtonItem(image: UIImage(named: "icon-calendar"), style: UIBarButtonItemStyle.Plain, target: self, action: "calendarFilterButtonTapped:")
         self.navigationItem.rightBarButtonItem = calendarButton
-        self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | .FlexibleWidth
+        self.view.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, .FlexibleWidth]
         self.view.backgroundColor = UIColor.whiteColor()
         self.edgesForExtendedLayout = UIRectEdge.None
         let b = self.view.bounds
@@ -173,7 +173,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
     func scrollToTop() {
         for listView in listViews {
-            listView.scrollRectToVisible(CGRect(origin: CGPoint.zeroPoint, size: CGSize(width: 1, height: 1)), animated: true)
+            listView.scrollRectToVisible(CGRect(origin: CGPoint.zero, size: CGSize(width: 1, height: 1)), animated: true)
         }
     }
 
@@ -195,8 +195,8 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
 
             let reduced = events.flatMap({(event: Event) -> [NSDate] in
                 return event.futureDays(NSDate())})
-            self.days.extend(removeDuplicates(reduced))
-            self.days.sort({ (d1: NSDate, d2: NSDate) -> Bool in
+            self.days.appendContentsOf(removeDuplicates(reduced))
+            self.days.sortInPlace({ (d1: NSDate, d2: NSDate) -> Bool in
                 return d1.compare(d2) == NSComparisonResult.OrderedAscending
             })
 
@@ -206,7 +206,7 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                 var evts = events.filter({(testEvt: Event) -> Bool in
                     return testEvt.hasEventsDuringTheDay(day)
                 })
-                evts.sort({ (e1: Event, e2: Event) -> Bool in
+                evts.sortInPlace({ (e1: Event, e2: Event) -> Bool in
                     let d1 = e1.earliestEventTime(day)!.timeFrom
                     let d2 = e2.earliestEventTime(day)!.timeFrom
                     return d1.compare(d2) == NSComparisonResult.OrderedAscending
@@ -215,23 +215,23 @@ class EventsListViewController: UIViewController, ASTableViewDataSource, ASTable
                     let sectTitle = self.sectionHeaderFormatter.stringFromDate(day)
                     let sectionEvt = Event(id: kKIMEventSectionId, name: sectTitle)
                     self.eventsByDay.append(sectionEvt)
-                    self.eventsByDay.extend(evts)
+                    self.eventsByDay.appendContentsOf(evts)
                 }
             }
 
             // Distance 
             self.eventsByDistance.removeAll(keepCapacity: false)
-            self.eventsByDistance.extend(events)
+            self.eventsByDistance.appendContentsOf(events)
             if let loc = self.location {
-                self.eventsByDistance.sort({(e1: Event, e2: Event) -> Bool in
+                self.eventsByDistance.sortInPlace({(e1: Event, e2: Event) -> Bool in
                     return e1.distanceFromLocation(loc) < e2.distanceFromLocation(loc)
                 })
             }
 
             // Rating
             self.eventsByRating.removeAll(keepCapacity: false)
-            self.eventsByRating.extend(events)
-            self.eventsByRating.sort({(e1: Event, e2: Event) -> Bool in
+            self.eventsByRating.appendContentsOf(events)
+            self.eventsByRating.sortInPlace({(e1: Event, e2: Event) -> Bool in
                 return e1.rating > e2.rating
             })
 

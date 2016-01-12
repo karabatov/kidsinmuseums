@@ -15,7 +15,7 @@ class EventTitleNode: ASCellNode {
         super.init()
 
         let headingParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), NSForegroundColorAttributeName: UIColor.blackColor()]
-        var titleStr = NSMutableAttributedString(string: "\(name)   ", attributes: headingParams)
+        let titleStr = NSMutableAttributedString(string: "\(name)   ", attributes: headingParams)
         let attachment = NSTextAttachment()
         attachment.image = attachmentImageForAge(from: ageFrom, to: ageTo)
         let attStr = NSAttributedString(attachment: attachment)

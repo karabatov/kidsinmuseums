@@ -19,7 +19,7 @@ public class NewsCell : ASCellNode {
         let headingParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), NSForegroundColorAttributeName: UIColor.blackColor()]
         let descriptionParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline), NSForegroundColorAttributeName: UIColor(red: 71.0/255.0, green: 71.0/255.0, blue: 71.0/255.0, alpha: 1.0)]
 
-        var labelStr = NSMutableAttributedString()
+        let labelStr = NSMutableAttributedString()
         let dateStr = NSAttributedString(string: newsItem.formattedDate() + "\n\n", attributes: dateParams)
         let titleStr = NSAttributedString(string: newsItem.title, attributes: headingParams)
         let descriptionStr = NSAttributedString(string: "\n\n" + newsItem.description, attributes: descriptionParams)

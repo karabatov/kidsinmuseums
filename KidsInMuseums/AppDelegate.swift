@@ -50,13 +50,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         DataModel.sharedInstance // Trigger update
 
         tabController = KTabBarController()
-        var news = NewsListController(nibName: nil, bundle: nil)
+        let news = NewsListController(nibName: nil, bundle: nil)
         newsNavController = UINavigationController(rootViewController: news)
-        var map = MapViewController(nibName: nil, bundle: nil)
+        let map = MapViewController(nibName: nil, bundle: nil)
         mapNavController = UINavigationController(rootViewController: map)
-        var more = MoreScreen(style: UITableViewStyle.Grouped);
+        let more = MoreScreen(style: UITableViewStyle.Grouped);
         moreNavController = UINavigationController(rootViewController: more);
-        var events = EventsListViewController(nibName: nil, bundle: nil)
+        let events = EventsListViewController(nibName: nil, bundle: nil)
         eventsNavController = UINavigationController(rootViewController: events)
 
         // Show and select family trip controller if special project is active
@@ -104,38 +104,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
 
     internal func requestLocationPermissions() {
-        let status = CLLocationManager.authorizationStatus()
         if (CLLocationManager.authorizationStatus() == .NotDetermined) {
             if let loc = location {
-                if loc.respondsToSelector("requestWhenInUseAuthorization") {
+                if #available(iOS 8.0, *) {
                     loc.requestWhenInUseAuthorization()
+                } else {
+                    // Fallback on earlier versions
                 }
             }
         }
     }
 
     func setupLocationService(enabled: Bool) {
-        let status = CLLocationManager.authorizationStatus()
-        if (enabled && CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse) {
-            location?.startUpdatingLocation()
+        if #available(iOS 8.0, *) {
+            if (enabled && CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse) {
+                location?.startUpdatingLocation()
+            } else {
+                location?.stopUpdatingLocation()
+            }
         } else {
-            location?.stopUpdatingLocation()
+            // Fallback on earlier versions
         }
     }
 
     // MARK: CLLocationDelegate
 
-    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if (status == .AuthorizedWhenInUse && wantsLocation) {
-            setupLocationService(true)
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if #available(iOS 8.0, *) {
+            if (status == .AuthorizedWhenInUse && wantsLocation) {
+                setupLocationService(true)
+            } else {
+                setupLocationService(false)
+            }
         } else {
-            setupLocationService(false)
+            // Fallback on earlier versions
         }
     }
 
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if NSDate().timeIntervalSinceDate(lastLocationUpdate) > 3 * 60 {
-            if let lastLocation = locations.last as? CLLocation {
+            if let lastLocation = locations.last {
                 let userInfo = [kKIMLocationUpdatedKey: lastLocation]
                 NSNotificationCenter.defaultCenter().postNotificationName(kKIMLocationUpdated, object: self, userInfo:userInfo)
             }

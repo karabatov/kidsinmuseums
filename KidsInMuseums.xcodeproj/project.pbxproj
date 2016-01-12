@@ -561,12 +561,13 @@
 		D1A9372E1A3F13CE00CE8E9F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0720;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Golova Media";
 				TargetAttributes = {
 					D1A937351A3F13CE00CE8E9F = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = 4LL97AU256;
 						SystemCapabilities = {
 							com.apple.Maps.iOS = {
 								enabled = 1;
@@ -924,7 +925,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Golova Grupp OOO";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Golova Grupp OOO";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

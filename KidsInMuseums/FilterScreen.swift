@@ -42,7 +42,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         tagButton.selected = true
         museumButton = FilterButton(text: museumText)
 
-        museums = DataModel.sharedInstance.museums.sorted({ (m1: Museum, m2: Museum) -> Bool in
+        museums = DataModel.sharedInstance.museums.sort({ (m1: Museum, m2: Museum) -> Bool in
             return m1.name < m2.name
         })
         let museumsFiltered = DataModel.sharedInstance.filter.museums
@@ -78,7 +78,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         searchBar.placeholder = NSLocalizedString("Place or event", comment: "Search bar placeholder")
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -107,7 +107,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
             })
         })
 
-        if let clearButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as? UIButton {
+        if let clearButton: UIButton = UIButton(type: UIButtonType.System) as? UIButton {
             clearButton.setTitle(NSLocalizedString(" Clear", comment: "Clear button title"), forState: UIControlState.Normal)
             clearButton.setImage(UIImage(named: "icon-clear"), forState: UIControlState.Normal)
             clearButton.addTarget(self, action: "clearButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -115,7 +115,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
             let leftBarItem = UIBarButtonItem(customView: clearButton)
             navigationItem.leftBarButtonItem = leftBarItem
         }
-        if let applyButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as? UIButton {
+        if let applyButton: UIButton = UIButton(type: UIButtonType.System) as? UIButton {
             applyButton.setTitle(NSLocalizedString("Apply", comment: "Apply filter button title"), forState: UIControlState.Normal)
             applyButton.addTarget(self, action: "applyButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
             applyButton.sizeToFit()
@@ -169,7 +169,7 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         case listMuseums:
             let museum = museums[indexPath.row]
             let museumNode = FilterMuseumNode(museum: museum, location: location)
-            if contains(selectedMuseums, museum.id) {
+            if selectedMuseums.contains(museum.id) {
                 museumNode.selected = true
             }
             return museumNode
@@ -242,9 +242,9 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
         var selected: Bool
         if tableView == listMuseums {
             let museum = museums[indexPath.row]
-            if contains(selectedMuseums, museum.id) {
+            if selectedMuseums.contains(museum.id) {
                 selected = false
-                if let index = find(selectedMuseums, museum.id) {
+                if let index = selectedMuseums.indexOf(museum.id) {
                     selectedMuseums.removeAtIndex(index)
                 }
             } else {
@@ -328,8 +328,8 @@ class FilterScreen: UIViewController, ASTableViewDataSource, ASTableViewDelegate
 
     func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            if !searchBar.text.isEmpty {
-                startSearchWithText(searchBar.text)
+            if let searchText = searchBar.text where !searchText.isEmpty {
+                startSearchWithText(searchText)
                 return false
             } else {
                 searchBarCancelButtonClicked(searchBar)

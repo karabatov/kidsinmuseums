@@ -20,7 +20,7 @@ class AgeCloudNode: ASCellNode {
 
         for age in self.ageRanges {
             let ageButton = AgeButtonNode(ageRange: age)
-            ageButton.selected = contains(selectedAges, age)
+            ageButton.selected = selectedAges.contains(age)
             ageButton.addTarget(self, action: "ageButtonTapped:", forControlEvents: ASControlNodeEvent.TouchUpInside)
             ageButtons.append(ageButton)
             addSubnode(ageButton)
@@ -56,11 +56,11 @@ class AgeCloudNode: ASCellNode {
 
     func ageButtonTapped(sender: AgeButtonNode) {
         if sender.selected {
-            if !contains(selectedAges, sender.ageRange) {
+            if !selectedAges.contains(sender.ageRange) {
                 selectedAges.append(sender.ageRange)
             }
         } else {
-            if let index = find(selectedAges, sender.ageRange) {
+            if let index = selectedAges.indexOf(sender.ageRange) {
                 selectedAges.removeAtIndex(index)
             }
         }

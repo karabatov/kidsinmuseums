@@ -21,7 +21,7 @@ class AppInfoView: UIViewController, ASTableViewDataSource, ASTableViewDelegate 
         self.title = NSLocalizedString("About the app", comment: "")
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -39,9 +39,10 @@ class AppInfoView: UIViewController, ASTableViewDataSource, ASTableViewDelegate 
             var labelStr = ""
             if let
                 infoDict = NSBundle.mainBundle().infoDictionary,
-                appName = infoDict[kCFBundleNameKey] as? String,
+                appName = infoDict[kCFBundleNameKey as String] as? String,
                 appVer = infoDict["CFBundleShortVersionString"] as? String,
-                buildVer = infoDict[kCFBundleVersionKey] as? String {
+                buildVer = infoDict[kCFBundleVersionKey as String] as? String
+            {
                     labelStr += NSString(format: appInfoLocStr, appName, appVer, buildVer) as String
             }
             labelStr += supportLocStr

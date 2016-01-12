@@ -68,7 +68,7 @@ public class NewsItemViewController: UIViewController, ASMultiplexImageNodeDataS
             self.newsImage.imageIdentifiers = self.images
             self.newsImage.frame = CGRectMake(kMargin, self.dateLabel.frame.origin.y + self.dateLabel.frame.height + kMargin, b.width - 2 * kMargin, round((b.width - 2 * kMargin) / kRatio))
 
-            var newsActualText = NSMutableAttributedString()
+            let newsActualText = NSMutableAttributedString()
             let header = NSAttributedString(string: "\n" + self.newsItem.title + "\n\n", attributes: headingParams)
             let text = NSAttributedString(string: self.newsItem.text, attributes: descriptionParams)
             newsActualText.appendAttributedString(header)
@@ -85,7 +85,7 @@ public class NewsItemViewController: UIViewController, ASMultiplexImageNodeDataS
         })
     }
 
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("CRASH ALL THE THINGS")
     }
 

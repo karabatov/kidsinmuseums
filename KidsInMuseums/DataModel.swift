@@ -101,7 +101,7 @@ public class NewsItem {
     }
 
     public func formattedDate() -> String {
-        var df = NSDateFormatter()
+        let df = NSDateFormatter()
         df.dateStyle = NSDateFormatterStyle.LongStyle
         df.timeStyle = NSDateFormatterStyle.NoStyle
         return df.stringFromDate(updatedAt)
@@ -216,8 +216,8 @@ public class EventTime {
     }
 
     public func timeString() -> String {
-        var timeFormat = NSDateFormatter.dateFormatFromTemplate("jm", options: 0, locale: NSLocale.currentLocale())
-        var dateFormatter = NSDateFormatter()
+        let timeFormat = NSDateFormatter.dateFormatFromTemplate("jm", options: 0, locale: NSLocale.currentLocale())
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = timeFormat
         let timeFromStr = dateFormatter.stringFromDate(timeFrom)
         if durationHours >= 0 && durationMinutes >= 0 {
@@ -230,8 +230,8 @@ public class EventTime {
     }
 
     public func dateString() -> String {
-        var timeFormat = NSDateFormatter.dateFormatFromTemplate("dMMMM", options: 0, locale: NSLocale.currentLocale())
-        var dateFormatter = NSDateFormatter()
+        let timeFormat = NSDateFormatter.dateFormatFromTemplate("dMMMM", options: 0, locale: NSLocale.currentLocale())
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = timeFormat
         return dateFormatter.stringFromDate(timeFrom)
     }
@@ -524,7 +524,7 @@ public class Event {
         for eventTime in eventTimes {
             if eventTime.timeFrom.compare(afterDate) == NSComparisonResult.OrderedDescending {
                 let cal = NSCalendar.currentCalendar()
-                let comps = cal.components(.DayCalendarUnit | .MonthCalendarUnit | .YearCalendarUnit, fromDate: eventTime.timeFrom)
+                let comps = cal.components([.NSDayCalendarUnit, .NSMonthCalendarUnit, .NSYearCalendarUnit], fromDate: eventTime.timeFrom)
                 if let day = cal.dateFromComponents(comps) {
                     futureDays.append(day)
                 }
@@ -628,7 +628,7 @@ public class DataModel {
 
     public func dateFromString(dateString: String?, useFormat2: Bool = false) -> NSDate {
         if let dateStringGiven = dateString {
-            var format = inDateFormatter.dateFormat
+            let format = inDateFormatter.dateFormat
             if useFormat2 {
                 inDateFormatter.dateFormat = kKIMAPIDateFormat2
             }
@@ -644,7 +644,7 @@ public class DataModel {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             let specialProjectUrl = NSURL(string: kKIMAPIServerURL + kKIMAPISpecialProjectURL)
             let specialProjectRequest = NSURLSession.sharedSession().dataTaskWithURL(specialProjectUrl!) { (data, response, error) -> Void in
-                if (error == nil) {
+                if let data = data where error == nil {
                     self.specialProject = self.specialProjectWithData(data)
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
                         NSUserDefaults.standardUserDefaults().setObject(data, forKey: kKIMDataStorageKeySpecialProject)
@@ -661,7 +661,7 @@ public class DataModel {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             let tripsUrl = NSURL(string: kKIMAPIServerURL + kKIMAPIFamilyTripsURL)
             let tripsRequest = NSURLSession.sharedSession().dataTaskWithURL(tripsUrl!) { (data, response, error) -> Void in
-                if (error == nil) {
+                if let data = data where error == nil {
                     self.familyTrips = self.familyTripsWithData(data)
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationFamilyTripsUpdated, object: self)
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
@@ -679,7 +679,7 @@ public class DataModel {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             let tripsUrl = NSURL(string: kKIMAPIServerURL + kKIMAPIFamilyTripRulesURL)
             let tripsRequest = NSURLSession.sharedSession().dataTaskWithURL(tripsUrl!) { (data, response, error) -> Void in
-                if (error == nil) {
+                if let data = data where error == nil {
                     self.familyTripRules = self.familyTripRulesWithData(data)
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationFamilyTripRulesUpdated, object: self)
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
@@ -697,7 +697,7 @@ public class DataModel {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             let textBlocksUrl = NSURL(string: kKIMAPIServerURL + kKIMAPITextBlocksURL)
             let textBlocksRequest = NSURLSession.sharedSession().dataTaskWithURL(textBlocksUrl!) { (data, response, error) -> Void in
-                if (error == nil) {
+                if let data = data where error == nil {
                     self.textBlocks = self.textBlocksWithData(data)
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationTextBlocksUpdated, object: self)
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
@@ -715,7 +715,7 @@ public class DataModel {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             let newsUrl = NSURL(string: kKIMAPIServerURL + kKIMAPINewsURL)
             let newsRequest = NSURLSession.sharedSession().dataTaskWithURL(newsUrl!) { (data, response, error) -> Void in
-                if (error == nil) {
+                if let data = data where error == nil {
                     self.news = self.newsWithData(data)
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationNewsUpdated, object: self)
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
@@ -736,7 +736,7 @@ public class DataModel {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             let museumsUrl = NSURL(string: kKIMAPIServerURL + kKIMAPIMuseumsURL)
             let museumsRequest = NSURLSession.sharedSession().dataTaskWithURL(museumsUrl!) { (data, response, error) -> Void in
-                if (error == nil) {
+                if let data = data where error == nil {
                     self.museums = self.museumsWithData(data)
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationMuseumsUpdated, object: self)
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
@@ -757,7 +757,7 @@ public class DataModel {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             let eventsUrl = NSURL(string: kKIMAPIServerURL + kKIMAPIEventsURL)
             let eventsRequest = NSURLSession.sharedSession().dataTaskWithURL(eventsUrl!) { (data, response, error) -> Void in
-                if (error == nil) {
+                if let data = data where error == nil {
                     self.allEvents = self.eventsWithData(data)
                     self.filteredEvents = self.applyFilterToEvents(self.allEvents)
                     NSNotificationCenter.defaultCenter().postNotificationName(kKIMNotificationEventsUpdated, object: self)
@@ -833,7 +833,7 @@ public class DataModel {
 
     internal func specialProjectWithData(data: NSData) -> SpecialProject {
         var specialProject = SpecialProject()
-        let jsonObject: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+        let jsonObject: AnyObject! = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
         if let spcO = jsonObject as? NSDictionary {
             specialProject = SpecialProject(data: spcO)
         }
@@ -847,7 +847,7 @@ public class DataModel {
 
     internal func familyTripsWithData(data: NSData) -> [FamilyTrip] {
         var familyTrips = [FamilyTrip]()
-        let jsonObject: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+        let jsonObject: AnyObject! = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
         if let jsonArray = jsonObject as? NSArray {
             for familyTripDic: AnyObject in jsonArray {
                 if let routeItemDic = familyTripDic as? NSDictionary {
@@ -856,13 +856,13 @@ public class DataModel {
                 }
             }
         }
-        familyTrips.sort({ $0.position < $1.position })
+        familyTrips.sortInPlace({ $0.position < $1.position })
         return familyTrips
     }
 
     internal func familyTripRulesWithData(data: NSData) -> [FamilyTripRule] {
         var familyTripRules = [FamilyTripRule]()
-        let jsonObject: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+        let jsonObject: AnyObject! = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
         if let jsonArray = jsonObject as? NSArray {
             for familyTripRuleDic: AnyObject in jsonArray {
                 if let ruleItemDic = familyTripRuleDic as? NSDictionary {
@@ -871,13 +871,13 @@ public class DataModel {
                 }
             }
         }
-        familyTripRules.sort({ $0.position < $1.position })
+        familyTripRules.sortInPlace({ $0.position < $1.position })
         return familyTripRules
     }
 
     internal func textBlocksWithData(data: NSData) -> [TextBlock] {
         var textBlocks = [TextBlock]()
-        let jsonObject: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+        let jsonObject: AnyObject! = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
         if let jsonArray = jsonObject as? NSArray {
             for textObject: AnyObject in jsonArray {
                 if let textItemDic = textObject as? NSDictionary {
@@ -891,7 +891,7 @@ public class DataModel {
 
     internal func newsWithData(data: NSData) -> [NewsItem] {
         var news = [NewsItem]()
-        let jsonObject: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+        let jsonObject: AnyObject! = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
         if let jsonArray = jsonObject as? NSArray {
             for newsObject: AnyObject in jsonArray {
                 if let newsItemDic = newsObject as? NSDictionary {
@@ -900,7 +900,7 @@ public class DataModel {
                 }
             }
         }
-        news = news.sorted({ (obj1: NewsItem, obj2: NewsItem) -> Bool in
+        news = news.sort({ (obj1: NewsItem, obj2: NewsItem) -> Bool in
             if (obj1.updatedAt.compare(obj2.updatedAt) == NSComparisonResult.OrderedAscending) {
                 return false
             }
@@ -911,7 +911,7 @@ public class DataModel {
 
     internal func eventsWithData(data: NSData) -> [Event] {
         var events = [Event]()
-        let jsonObject: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+        let jsonObject: AnyObject! = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
         if let jsonArray = jsonObject as? NSArray {
             for eventObject: AnyObject in jsonArray {
                 if let eventDic = eventObject as? NSDictionary {
@@ -958,14 +958,14 @@ public class DataModel {
             if !filter.tags.isEmpty {
                 filterTag = false
                 for tag in event.tags {
-                    if contains(filter.tags, tag) {
+                    if filter.tags.contains(tag) {
                         filterTag = true
                         break
                     }
                 }
             }
             if !filter.museums.isEmpty {
-                filterMuseum = contains(filter.museums, event.museumUserId)
+                filterMuseum = filter.museums.contains(event.museumUserId)
             }
             if !filter.days.isEmpty {
                 filterDay = false
@@ -985,12 +985,12 @@ public class DataModel {
         var tags = [String]()
         for event in events {
             for tag in event.tags {
-                if !contains(tags, tag) {
+                if !tags.contains(tag) {
                     tags.append(tag)
                 }
             }
         }
-        tags.sort { (s1: String, s2: String) -> Bool in
+        tags.sortInPlace { (s1: String, s2: String) -> Bool in
             return s1 < s2
         }
         return tags
@@ -998,7 +998,7 @@ public class DataModel {
 
     internal func museumsWithData(data: NSData) -> [Museum] {
         var museums = [Museum]()
-        let jsonObject: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+        let jsonObject: AnyObject! = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
         if let jsonArray = jsonObject as? NSArray {
             for museumObject: AnyObject in jsonArray {
                 if let museumDic = museumObject as? NSDictionary {

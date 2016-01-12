@@ -15,7 +15,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
     var museums: [Museum] = [Museum]()
     let calloutView = SMCalloutView.platformCalloutView()
     let kCalloutMargin: CGFloat = 14.0
-    var calloutStartRect = CGRect.zeroRect
+    var calloutStartRect = CGRect.zero
     var calloutShouldOffset = false
     var shouldDisplayMuseumId: Int?
     var shouldDisplayFamilyTrip: FamilyTrip?
@@ -28,7 +28,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
         tabBarItem = UITabBarItem(title: title, image: UIImage(named: "icon-map"), tag: 0)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -79,7 +79,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
     func updateMarkers() {
         if DataModel.sharedInstance.dataLoaded() {
             if let mapView = view as? MKMapView {
-                if mapView.selectedAnnotations != nil && mapView.selectedAnnotations.count == 1 {
+                if mapView.selectedAnnotations.count == 1 {
                     if let ann = mapView.selectedAnnotations.first as? MuseumAnnotation {
                         shouldDisplayMuseumId = ann.museum.id
                     }
@@ -113,38 +113,35 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
     }
 
     func showMyLocation() {
-        if let
-            mapView = view as? MKMapView,
-            location = mapView.userLocation {
-            mapView.setCenterCoordinate(location.coordinate, animated: true)
+        if let mapView = view as? MKMapView {
+            mapView.setCenterCoordinate(mapView.userLocation.coordinate, animated: true)
         }
     }
 
     // MARK: MKMapViewDelegate
 
-    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
-        if overlay.isKindOfClass(MKTileOverlay) {
-            return MKTileOverlayRenderer(overlay: overlay)
-        }
-        return nil
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+        return MKTileOverlayRenderer(overlay: overlay)
     }
 
-    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation.isKindOfClass(MuseumAnnotation) {
             var annView = mapView.dequeueReusableAnnotationViewWithIdentifier(kKIMMapPinAnnotationView)
             if annView == nil {
                 annView = MKAnnotationView(annotation: annotation, reuseIdentifier: kKIMMapPinAnnotationView)
             }
-            annView.image = UIImage(named: "marker")
-            annView.centerOffset = CGPointMake(0, -annView.image.size.height / 2)
-            annView.enabled = true
-            annView.canShowCallout = false
-            return annView
+            if let annView = annView {
+                annView.image = UIImage(named: "marker")
+                annView.centerOffset = CGPointMake(0, -annView.image!.size.height / 2)
+                annView.enabled = true
+                annView.canShowCallout = false
+                return annView
+            }
         }
         return nil
     }
 
-    func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
         if let museumAnnotation = view.annotation as? MuseumAnnotation {
             let museumInfoView = MuseumInfoView(museum: museumAnnotation.museum, maxWidth: self.view.frame.size.width - kCalloutMargin * 2, showsEvents: true)
             calloutView.contentView = museumInfoView
@@ -155,7 +152,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
         }
     }
 
-    func mapView(mapView: MKMapView!, didDeselectAnnotationView view: MKAnnotationView!) {
+    func mapView(mapView: MKMapView, didDeselectAnnotationView view: MKAnnotationView) {
         calloutView.dismissCalloutAnimated(true)
     }
 
@@ -181,7 +178,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
             mapView.setCenterCoordinate(coordinate, animated: true)
 
             calloutShouldOffset = false
-            calloutStartRect.offset(dx: offset.width, dy: offset.height)
+            calloutStartRect.offsetInPlace(dx: offset.width, dy: offset.height)
             self.calloutView.dismissCalloutAnimated(false)
             let time: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(kSMCalloutViewRepositionDelayForUIScrollView * Double(NSEC_PER_SEC)))
             dispatch_after(time, dispatch_get_main_queue(), { () -> Void in
@@ -198,7 +195,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, SMCalloutViewDeleg
     }
 
     func tryDisplayingPreselectedMuseum() {
-        if let mapView = view as? MKMapView where mapView.bounds != CGRect.zeroRect {
+        if let mapView = view as? MKMapView where mapView.bounds != CGRect.zero {
             for anno in mapView.annotations {
                 if let
                     ann = anno as? MuseumAnnotation,

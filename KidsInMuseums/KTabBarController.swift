@@ -14,7 +14,7 @@ class KTabBarController: UITabBarController {
             updateSpecialProject(specialProjectEnabled)
         }
     }
-    var specialButton = UIButton.buttonWithType(.Custom) as! UIButton
+    var specialButton = UIButton(type: .Custom)
     let buttonImage = UIImage(named: "icon-family-trip")!
 
     override func viewDidLoad() {

@@ -33,7 +33,7 @@ class MuseumInfoView: UIScrollView {
         }
 
         if !museum.address.isEmpty {
-            var addressStr = NSMutableAttributedString()
+            let addressStr = NSMutableAttributedString()
 
             let addrTitleStr = NSAttributedString(string: NSLocalizedString("Address: ", comment: "Address, museum info card"), attributes: greyTextParams)
             addressStr.appendAttributedString(addrTitleStr)
@@ -56,7 +56,7 @@ class MuseumInfoView: UIScrollView {
         }
 
         if !museum.phone.isEmpty {
-            var phoneStr = NSMutableAttributedString()
+            let phoneStr = NSMutableAttributedString()
 
             let phoneTitleStr = NSAttributedString(string: NSLocalizedString("Phone: ", comment: "Phone, museum info card"), attributes: greyTextParams)
             phoneStr.appendAttributedString(phoneTitleStr)
@@ -126,7 +126,7 @@ class MuseumInfoView: UIScrollView {
         self.frame = CGRectMake(0, 0, maxWidth, height)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 

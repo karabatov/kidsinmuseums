@@ -33,7 +33,7 @@ class FilterInfoNode: ASDisplayNode {
             let titleStart = NSLocalizedString("Filter applied: ", comment: "Filter node beginning text")
             let titleStr = NSMutableAttributedString(string: titleStart, attributes: plainParams)
             var filterStr = ""
-            for (index, value) in enumerate(filterArr) {
+            for (index, value) in filterArr.enumerate() {
                 if index != 0 {
                     filterStr += ", "
                 }

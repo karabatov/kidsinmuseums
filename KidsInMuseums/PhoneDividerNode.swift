@@ -38,7 +38,7 @@ class PhoneDividerNode: TextDividerNode {
     func dialPhone() {
         if textView.attributedString != nil {
             let phoneSet = NSCharacterSet(charactersInString: "+0123456789")
-            let phone = join("", textView.attributedString.string.componentsSeparatedByCharactersInSet(phoneSet.invertedSet))
+            let phone = textView.attributedString.string.componentsSeparatedByCharactersInSet(phoneSet.invertedSet).joinWithSeparator("")
             if let url = NSURL(string: "tel://\(phone)") {
                 UIApplication.sharedApplication().openURL(url)
             }

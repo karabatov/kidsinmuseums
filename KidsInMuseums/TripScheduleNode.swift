@@ -19,7 +19,7 @@ class TripScheduleNode: ASCellNode {
         super.init()
 
         let textParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor.blackColor()]
-        var titleStr = NSMutableAttributedString(string: text, attributes: textParams)
+        let titleStr = NSMutableAttributedString(string: text, attributes: textParams)
         if !text.isEmpty && !comment.isEmpty {
             titleStr.appendAttributedString(NSAttributedString(string: "\n", attributes: textParams))
         }

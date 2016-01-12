@@ -20,7 +20,7 @@ class CalendarFilter: UIViewController, ASTableViewDataSource, ASTableViewDelega
         super.init(nibName: nil, bundle: nil)
         edgesForExtendedLayout = UIRectEdge.None
         title = NSLocalizedString("Calendar", comment: "Calendar filter title")
-        if let clearButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as? UIButton {
+        if let clearButton: UIButton = UIButton(type: UIButtonType.System) as? UIButton {
             clearButton.setTitle(NSLocalizedString(" Clear", comment: "Clear button title"), forState: UIControlState.Normal)
             clearButton.setImage(UIImage(named: "icon-clear"), forState: UIControlState.Normal)
             clearButton.addTarget(self, action: "clearButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -28,7 +28,7 @@ class CalendarFilter: UIViewController, ASTableViewDataSource, ASTableViewDelega
             let leftBarItem = UIBarButtonItem(customView: clearButton)
             navigationItem.leftBarButtonItem = leftBarItem
         }
-        if let applyButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as? UIButton {
+        if let applyButton: UIButton = UIButton(type: UIButtonType.System) as? UIButton {
             applyButton.setTitle(NSLocalizedString("Apply", comment: "Apply filter button title"), forState: UIControlState.Normal)
             applyButton.addTarget(self, action: "applyButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
             applyButton.sizeToFit()
@@ -45,7 +45,7 @@ class CalendarFilter: UIViewController, ASTableViewDataSource, ASTableViewDelega
         view.addSubview(listDays)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -67,7 +67,7 @@ class CalendarFilter: UIViewController, ASTableViewDataSource, ASTableViewDelega
         if days.count > indexPath.row {
             let day = days[indexPath.row]
             let dayNode = DayFilterNode(text: dateFormatter.stringFromDate(day))
-            dayNode.selected = contains(selectedDays, day)
+            dayNode.selected = selectedDays.contains(day)
             return dayNode
         }
         return ASCellNode()
@@ -81,9 +81,9 @@ class CalendarFilter: UIViewController, ASTableViewDataSource, ASTableViewDelega
         if days.count > indexPath.row {
             var selected: Bool
             let day = days[indexPath.row]
-            if contains(selectedDays, day) {
+            if selectedDays.contains(day) {
                 selected = false
-                if let index = find(selectedDays, day) {
+                if let index = selectedDays.indexOf(day) {
                     selectedDays.removeAtIndex(index)
                 }
             } else {

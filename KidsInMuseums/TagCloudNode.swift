@@ -24,7 +24,7 @@ class TagCloudNode: ASCellNode {
         for tag in self.tags {
             let tagButton = TagButtonNode(tagStr: tag)
             if self.enabled {
-                tagButton.selected = contains(selectedTags, tag)
+                tagButton.selected = selectedTags.contains(tag)
                 tagButton.addTarget(self, action: "tagButtonTapped:", forControlEvents: ASControlNodeEvent.TouchUpInside)
             }
             tagButtons.append(tagButton)
@@ -61,11 +61,11 @@ class TagCloudNode: ASCellNode {
 
     func tagButtonTapped(sender: TagButtonNode) {
         if sender.selected {
-            if !contains(selectedTags, sender.tagStr) {
+            if !selectedTags.contains(sender.tagStr) {
                 selectedTags.append(sender.tagStr)
             }
         } else {
-            if let index = find(selectedTags, sender.tagStr) {
+            if let index = selectedTags.indexOf(sender.tagStr) {
                 selectedTags.removeAtIndex(index)
             }
         }

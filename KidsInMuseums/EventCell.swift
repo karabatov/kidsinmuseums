@@ -35,19 +35,19 @@ public class EventCell: ASCellNode {
         let headingParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), NSForegroundColorAttributeName: UIColor.blackColor()]
         let museumParams = [NSFontAttributeName: caption1Font, NSForegroundColorAttributeName: UIColor(red: 74.0/255.0, green: 74.0/255.0, blue: 74.0/255.0, alpha: 1.0)]
         let timeParams = [NSFontAttributeName: UIFont.systemFontOfSize(timeFontSize), NSForegroundColorAttributeName: UIColor(red: 151.0/255.0, green: 151.0/255.0, blue: 151.0/255.0, alpha: 1.0)]
-        var star = FAKFontAwesome.starOIconWithSize(caption1Font.pointSize)
+        let star = FAKFontAwesome.starOIconWithSize(caption1Font.pointSize)
         star.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 248.0/255.0, green: 184.0/255.0, blue: 28.0/255.0, alpha: 1.0))
 
-        var wholeTitleStr = NSMutableAttributedString()
+        let wholeTitleStr = NSMutableAttributedString()
         let titleStr = NSAttributedString(string: "\(event.name)   ", attributes: headingParams)
         wholeTitleStr.appendAttributedString(titleStr)
 
-        var attachment = NSTextAttachment()
+        let attachment = NSTextAttachment()
         attachment.image = attachmentImageForAge(from: event.ageFrom, to: event.ageTo)
         let attStr = NSAttributedString(attachment: attachment)
         wholeTitleStr.appendAttributedString(attStr)
 
-        var museumStr = NSMutableAttributedString()
+        let museumStr = NSMutableAttributedString()
         if let museum = event.museum() {
             if let loc = location {
                 let distance = event.distanceFromLocation(loc)
@@ -59,7 +59,7 @@ public class EventCell: ASCellNode {
             museumStr.appendAttributedString(museumTitleStr)
         }
 
-        var timeStr = NSMutableAttributedString()
+        let timeStr = NSMutableAttributedString()
         if let evtTime = event.earliestEventTime(referenceDate) {
             let showTimeStr = NSAttributedString(string: evtTime.humanReadable(filterMode), attributes: timeParams)
             timeStr.appendAttributedString(showTimeStr)

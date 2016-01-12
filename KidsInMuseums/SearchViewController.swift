@@ -12,7 +12,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, ASTableViewDe
     let searchBar = UISearchBar()
     let listSearch = ASTableView()
     var searchEvents: [Event] = DataModel.sharedInstance.allEvents
-    let museums = DataModel.sharedInstance.museums.sorted({ (m1: Museum, m2: Museum) -> Bool in
+    let museums = DataModel.sharedInstance.museums.sort({ (m1: Museum, m2: Museum) -> Bool in
         return m1.name < m2.name
     })
     var searchMuseums: [Museum] = []
@@ -124,8 +124,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, ASTableViewDe
 
     func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            if !searchBar.text.isEmpty {
-                startSearchWithText(searchBar.text)
+            if let searchText = searchBar.text where !searchText.isEmpty {
+                startSearchWithText(searchText)
                 return false
             } else {
                 searchBarCancelButtonClicked(searchBar)

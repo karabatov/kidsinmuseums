@@ -52,7 +52,7 @@ class FamilyTripRulesNode: ASCellNode, UIScrollViewDelegate {
     override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {
         var maxHeight: CGFloat = 0.0
 
-        for (index, _) in enumerate(tripRules) {
+        for (index, _) in tripRules.enumerate() {
             let titleSize = titleNodes[index].measure(CGSize(width: constrainedSize.width - marginH * 2, height: CGFloat.max))
             let textSize = textNodes[index].measure(CGSize(width: constrainedSize.width - marginH * 2, height: CGFloat.max))
             maxHeight = max(maxHeight, titleSize.height + textSize.height + marginV * 3)
@@ -64,7 +64,7 @@ class FamilyTripRulesNode: ASCellNode, UIScrollViewDelegate {
     override func layout() {
         scrollNode.frame = CGRect(x: 0, y: 0, width: calculatedSize.width, height: calculatedSize.height - marginPageControl)
 
-        for (index, _) in enumerate(tripRules) {
+        for (index, _) in tripRules.enumerate() {
             let offset: CGFloat = calculatedSize.width * CGFloat(index)
 
             let titleSize = titleNodes[index].calculatedSize

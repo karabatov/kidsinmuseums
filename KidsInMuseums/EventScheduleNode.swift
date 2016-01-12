@@ -19,7 +19,7 @@ class EventScheduleNode: ASCellNode {
         super.init()
 
         let textParams = [NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1), NSForegroundColorAttributeName: UIColor.blackColor()]
-        var titleStr = NSMutableAttributedString()
+        let titleStr = NSMutableAttributedString()
 
         if event.eventHumanTimes.count > 0 {
             if let humanTime = event.eventHumanTimes.first {
